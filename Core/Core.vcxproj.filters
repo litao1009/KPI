@@ -5,6 +5,9 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="Controller">
+      <UniqueIdentifier>{3b7c1a38-19de-4fee-9255-608eaa36f7c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Frame\OgreEnv.cpp">
@@ -18,6 +21,9 @@
     </ClCompile>
     <ClCompile Include="Frame\IController.cpp">
       <Filter>Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\DummyController.cpp">
+      <Filter>Controller</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -44,6 +50,9 @@
     </ClInclude>
     <ClInclude Include="Frame\IController.h">
       <Filter>Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\DummyController.h">
+      <Filter>Controller</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -244,3 +244,10 @@ void OgreEnv::RemoveController(const IControllerSPtr &frameListener)
 	auto itor = std::remove(imp_.ChildList_.begin(), imp_.ChildList_.end(), frameListener);
 	imp_.ChildList_.erase(itor, imp_.ChildList_.end());
 }
+
+void OgreEnv::RemoveAllController()
+{
+	auto& imp_ = *ImpUPtr_;
+
+	imp_.ChildList_.clear();
+}

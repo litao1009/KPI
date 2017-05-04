@@ -85,12 +85,14 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Controller\DummyController.cpp" />
     <ClCompile Include="Frame\IController.cpp" />
     <ClCompile Include="Frame\OgreEnv.cpp" />
     <ClCompile Include="Frame\OgreWndWrapper.cpp" />
     <ClCompile Include="Frame\SysEventRecorder.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Controller\DummyController.h" />
     <ClInclude Include="Frame\IController.h" />
     <ClInclude Include="Frame\IControllerFwd.h" />
     <ClInclude Include="Frame\OgreEnv.h" />

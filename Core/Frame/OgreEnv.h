@@ -50,4 +50,6 @@ public:
 	void	AddController(const IControllerSPtr& controller);
 
 	void	RemoveController(const IControllerSPtr& controller);
+
+	void	RemoveAllController();
 };

@@ -4,9 +4,13 @@
 
 #pragma once
 
+#include <memory>
+
 class CMainFrame : public CFrameWnd
 {
-	
+	class	Imp;
+	std::unique_ptr<Imp>	ImpUPtr_;
+
 protected: // 仅从序列化创建
 	CMainFrame();
 	DECLARE_DYNCREATE(CMainFrame)
@@ -37,6 +41,8 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	DECLARE_MESSAGE_MAP()
 
+public:
+	afx_msg void OnDestroy();
 };
 
 

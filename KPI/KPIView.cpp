@@ -11,8 +11,7 @@
 
 #include "KPIDoc.h"
 #include "KPIView.h"
-#include "Frame/OgreEnv.h"
-#include "Frame/OgreWndWrapper.h"
+
 //#ifdef _DEBUG
 //#define new DEBUG_NEW
 //#endif
@@ -20,8 +19,6 @@
 class	CKPIView::Imp
 {
 public:
-
-	OgreWndWrapperUPtr	OgreWnd_;
 };
 
 // CKPIView
@@ -86,10 +83,8 @@ CKPIDoc* CKPIView::GetDocument() const // 非调试版本是内联的
 BOOL CKPIView::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext /*= NULL*/)
 {
 	auto ret = CView::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
-
-	auto curHwnd = reinterpret_cast<int>( GetSafeHwnd() );
 	
-	ImpUPtr_->OgreWnd_ = OgreEnv::GetInstance().CreateRenderWindow(curHwnd, rect.right - rect.left, rect.bottom - rect.top);
+	GetParentFrame()->SetActiveView(this);
 
 	return ret;
 }
@@ -118,8 +113,6 @@ void CKPIView::OnSize(UINT nType, int cx, int cy)
 
 void CKPIView::OnDestroy()
 {
-	ImpUPtr_->OgreWnd_->Destory();
-
 	CView::OnDestroy();
 
 	// TODO:  在此处添加消息处理程序代码

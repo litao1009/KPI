@@ -6,37 +6,12 @@ compositor_node deformation2DNode
 	{
 		pass clear
 		{
-			colour_value 0 0 0 1
+			colour_value 1 0 0 1
 		}
 
 		pass render_scene
 		{
-			rq_last 70
-		}
-		
-		pass render_scene
-		{
-			rq_first 71
-		}
-	}
-	
-	out 0 rt0
-}
-
-compositor_node screenShot
-{
-	in 0 rt0
-	
-	target rt0
-	{
-		pass clear
-		{
-			colour_value 0 0 0 0
-		}
-
-		pass render_scene
-		{
-			rq_last 70
+			
 		}
 	}
 	
@@ -46,9 +21,4 @@ compositor_node screenShot
 workspace deformation2DWorkspace
 {
 	connect_output deformation2DNode 0
-}
-
-workspace screenShotWorkspace
-{
-	connect_output screenShot 0
 }
