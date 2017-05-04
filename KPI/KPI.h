@@ -20,7 +20,14 @@ public:
 	CKPIApp();
 
 
-// ÖØÐ´
+	virtual BOOL OnIdle(LONG lCount) override;
+
+	virtual BOOL IsIdleMessage(MSG* pMsg) override;
+
+
+	virtual int ExitInstance() override;
+
+	// ÖØÐ´
 public:
 	virtual BOOL InitInstance();
 

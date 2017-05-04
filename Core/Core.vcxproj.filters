@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Frame">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Frame\OgreEnv.cpp">
+      <Filter>Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="Frame\OgreWndWrapper.cpp">
+      <Filter>Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="Frame\SysEventRecorder.cpp">
+      <Filter>Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="Frame\IController.cpp">
+      <Filter>Frame</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Frame\OgreEnv.h">
+      <Filter>Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="Frame\OgreWndWrapper.h">
+      <Filter>Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="Frame\OgreWndWrapperFwd.h">
+      <Filter>Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="Frame\SysEvent.h">
+      <Filter>Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="Frame\SysEventFwd.h">
+      <Filter>Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="Frame\SysEventRecorder.h">
+      <Filter>Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="Frame\IControllerFwd.h">
+      <Filter>Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="Frame\IController.h">
+      <Filter>Frame</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

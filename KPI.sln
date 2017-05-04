@@ -25,6 +25,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreMain", "ogre\OgreMain\O
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RenderSystem_GL", "ogre\RenderSystems\GL\RenderSystem_GL.vcxproj", "{CCA67BC2-7FE1-3389-A360-C72A5CBF6578}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Core", "Core\Core.vcxproj", "{F5FBB616-EACB-4699-BDA3-837839149D93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -103,6 +105,12 @@ Global
 		{CCA67BC2-7FE1-3389-A360-C72A5CBF6578}.Release|Win32.Build.0 = Release|Win32
 		{CCA67BC2-7FE1-3389-A360-C72A5CBF6578}.Release|x64.ActiveCfg = Release|x64
 		{CCA67BC2-7FE1-3389-A360-C72A5CBF6578}.Release|x64.Build.0 = Release|x64
+		{F5FBB616-EACB-4699-BDA3-837839149D93}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F5FBB616-EACB-4699-BDA3-837839149D93}.Debug|Win32.Build.0 = Debug|Win32
+		{F5FBB616-EACB-4699-BDA3-837839149D93}.Debug|x64.ActiveCfg = Debug|Win32
+		{F5FBB616-EACB-4699-BDA3-837839149D93}.Release|Win32.ActiveCfg = Release|Win32
+		{F5FBB616-EACB-4699-BDA3-837839149D93}.Release|Win32.Build.0 = Release|Win32
+		{F5FBB616-EACB-4699-BDA3-837839149D93}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

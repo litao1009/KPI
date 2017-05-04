@@ -11,22 +11,32 @@
 
 #include "KPIDoc.h"
 #include "KPIView.h"
+#include "Frame/OgreEnv.h"
+#include "Frame/OgreWndWrapper.h"
+//#ifdef _DEBUG
+//#define new DEBUG_NEW
+//#endif
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
+class	CKPIView::Imp
+{
+public:
 
+	OgreWndWrapperUPtr	OgreWnd_;
+};
 
 // CKPIView
 
 IMPLEMENT_DYNCREATE(CKPIView, CView)
 
 BEGIN_MESSAGE_MAP(CKPIView, CView)
+	ON_WM_ERASEBKGND()
+	ON_WM_SIZE()
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 // CKPIView 构造/析构
 
-CKPIView::CKPIView()
+CKPIView::CKPIView() :ImpUPtr_(std::make_unique<Imp>())
 {
 	// TODO:  在此处添加构造代码
 
@@ -40,21 +50,15 @@ BOOL CKPIView::PreCreateWindow(CREATESTRUCT& cs)
 {
 	// TODO:  在此处通过修改
 	//  CREATESTRUCT cs 来修改窗口类或样式
-	auto ret = CView::PreCreateWindow(cs);
 
-	return ret;
+	return CView::PreCreateWindow(cs);
 }
 
 // CKPIView 绘制
 
 void CKPIView::OnDraw(CDC* /*pDC*/)
 {
-	CKPIDoc* pDoc = GetDocument();
-	ASSERT_VALID(pDoc);
-	if (!pDoc)
-		return;
-
-	auto t = IsWindow(GetSafeHwnd());
+	
 
 	// TODO:  在此处为本机数据添加绘制代码
 }
@@ -78,7 +82,45 @@ CKPIDoc* CKPIView::GetDocument() const // 非调试版本是内联的
 	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CKPIDoc)));
 	return (CKPIDoc*)m_pDocument;
 }
+
+BOOL CKPIView::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext /*= NULL*/)
+{
+	auto ret = CView::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
+
+	auto curHwnd = reinterpret_cast<int>( GetSafeHwnd() );
+	
+	ImpUPtr_->OgreWnd_ = OgreEnv::GetInstance().CreateRenderWindow(curHwnd, rect.right - rect.left, rect.bottom - rect.top);
+
+	return ret;
+}
+
 #endif //_DEBUG
 
 
 // CKPIView 消息处理程序
+
+
+BOOL CKPIView::OnEraseBkgnd(CDC* pDC)
+{
+	// TODO:  在此添加消息处理程序代码和/或调用默认值
+
+	return TRUE;
+}
+
+
+void CKPIView::OnSize(UINT nType, int cx, int cy)
+{
+	CView::OnSize(nType, cx, cy);
+
+	// TODO:  在此处添加消息处理程序代码
+}
+
+
+void CKPIView::OnDestroy()
+{
+	ImpUPtr_->OgreWnd_->Destory();
+
+	CView::OnDestroy();
+
+	// TODO:  在此处添加消息处理程序代码
+}

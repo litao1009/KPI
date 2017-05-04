@@ -13,9 +13,9 @@
 
 #include <propkey.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
+//#ifdef _DEBUG
+//#define new DEBUG_NEW
+//#endif
 
 // CKPIDoc
 

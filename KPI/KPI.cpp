@@ -11,9 +11,11 @@
 #include "KPIDoc.h"
 #include "KPIView.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
+#include "Frame/OgreEnv.h"
+
+//#ifdef _DEBUG
+//#define new DEBUG_NEW
+//#endif
 
 
 // CKPIApp
@@ -36,6 +38,24 @@ CKPIApp::CKPIApp()
 
 	// TODO:  在此处添加构造代码，
 	// 将所有重要的初始化放置在 InitInstance 中
+}
+
+BOOL CKPIApp::OnIdle(LONG lCount)
+{
+	OgreEnv::GetInstance().RenderOneFrame();
+	return TRUE;
+}
+
+BOOL CKPIApp::IsIdleMessage(MSG* pMsg)
+{
+	return TRUE;
+}
+
+int CKPIApp::ExitInstance()
+{
+	OgreEnv::GetInstance().UnInit();
+
+	return 0;
 }
 
 // 唯一的一个 CKPIApp 对象
@@ -93,7 +113,7 @@ BOOL CKPIApp::InitInstance()
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
 
-
+	OgreEnv::GetInstance().Init();
 
 	// 调度在命令行中指定的命令。  如果
 	// 用 /RegServer、/Register、/Unregserver 或 /Unregister 启动应用程序，则返回 FALSE。
@@ -103,6 +123,7 @@ BOOL CKPIApp::InitInstance()
 	// 唯一的一个窗口已初始化，因此显示它并对其进行更新
 	m_pMainWnd->ShowWindow(SW_SHOW);
 	m_pMainWnd->UpdateWindow();
+
 	return TRUE;
 }
 
