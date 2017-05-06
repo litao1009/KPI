@@ -136,7 +136,7 @@ fragment_program FP/Base/Color/WithoutLight/GLSL glsl
 	
 	default_params
 	{
-		param_named_auto colour surface_diffuse_colour
+		param_named_auto colour custom 0
 		param_named_auto worldMatrix world_matrix
 		param_named_auto lightPosition light_position_object_space 0
 		param_named_auto lightDiffuse light_diffuse_colour 0

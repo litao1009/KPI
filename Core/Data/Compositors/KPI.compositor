@@ -1,0 +1,29 @@
+compositor_node KPINode
+{
+	in 0 rt0
+	
+	target rt0
+	{
+		pass clear
+		{
+			colour_value 0 0 0 1
+		}
+		
+		pass render_quad
+		{
+			material Background
+		}
+
+		pass render_scene
+		{
+			
+		}
+	}
+	
+	out 0 rt0
+}
+
+workspace KPINodeWorkspace
+{
+	connect_output KPINode 0
+}

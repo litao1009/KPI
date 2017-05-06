@@ -1,0 +1,79 @@
+import * from "Base.material"
+
+material Background
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+			depth_write off
+			
+			texture_unit
+			{
+				texture background.png 2d 0
+			}
+			
+			vertex_program_ref VP/Base
+			{
+			}
+			
+			fragment_program_ref FP/Base/Tex
+			{
+				param_named diffuseTex int 0
+			}
+		}
+	}
+}
+
+material Comparison
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+			depth_write off
+			
+			texture_unit
+			{
+				texture comparison.jpg 2d 0
+			}
+			
+			vertex_program_ref VP/Base
+			{
+			}
+			
+			fragment_program_ref FP/Base/Tex
+			{
+				param_named diffuseTex int 0
+			}
+		}
+	}
+}
+
+material TexNumber
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+			depth_write off
+			
+			texture_unit
+			{
+				texture num.png 2d 0
+			}
+			
+			vertex_program_ref VP/Base
+			{
+			}
+			
+			fragment_program_ref FP/Base/Tex
+			{
+				param_named diffuseTex int 0
+			}
+		}
+	}
+}

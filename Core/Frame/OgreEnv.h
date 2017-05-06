@@ -8,6 +8,11 @@
 #include <memory>
 #include <functional>
 
+namespace Ogre
+{
+class OverlaySystem;
+}
+
 class OgreEnv
 {
 	class Imp;
@@ -32,6 +37,8 @@ public:
 	void	RenderOneFrame();
 
 public:
+
+	Ogre::OverlaySystem*	GetOverlaySystem() const;
 
 	OgreWndWrapperUPtr	CreateRenderWindow(uint32_t handle, uint32_t width, uint32_t height);
 

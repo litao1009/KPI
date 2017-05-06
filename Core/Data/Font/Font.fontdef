@@ -1,0 +1,26 @@
+Font/cuckoo
+{
+	type 		truetype
+	source 		cuckoo.ttf
+	size 		15
+	resolution 	48
+}
+
+Font/ctrl_freak
+{
+	type 		truetype
+	source 		ctrl_freak.ttf
+	size 		20
+	resolution  48
+}
+
+Font/msyh
+{
+	type 		truetype
+	source 		msyh.ttf
+	size 		16
+	resolution  72
+	
+	
+	code_points 33-176 19968-40869
+}

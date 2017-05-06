@@ -171,7 +171,7 @@ namespace Ogre {
     //---------------------------------------------------------------------
     OverlayElement* OverlayContainer::getChild(const String& name)
     {
-        ChildMap::iterator i = mChildren.find(name);
+        ChildMap::iterator i = mChildren.find(getName() + "/" + name);
         if (i == mChildren.end())
         {
             OGRE_EXCEPT(Exception::ERR_ITEM_NOT_FOUND, "Child with name " + name + 

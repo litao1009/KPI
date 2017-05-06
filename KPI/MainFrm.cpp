@@ -29,6 +29,7 @@ IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_CREATE()
 	ON_WM_DESTROY()
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -56,6 +57,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 
 	auto cf = GetActiveView();
+	
 
 	auto curHwnd = reinterpret_cast<int>( cf->GetSafeHwnd() );
 	RECT rect;
@@ -104,5 +106,16 @@ void CMainFrame::OnDestroy()
 
 	CFrameWnd::OnDestroy();
 
+	// TODO:  在此处添加消息处理程序代码
+}
+
+
+void CMainFrame::OnSize(UINT nType, int cx, int cy)
+{
+	CFrameWnd::OnSize(nType, cx, cy);
+	if ( ImpUPtr_->OgreWnd_ )
+	{
+		ImpUPtr_->OgreWnd_->Resize(0, 0);
+	}
 	// TODO:  在此处添加消息处理程序代码
 }

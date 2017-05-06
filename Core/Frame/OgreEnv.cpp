@@ -5,9 +5,12 @@
 #include "IController.h"
 
 #include "FrameEvent/FrameEvent.h"
+#include "Extension/ExtensionUtil.h"
 
 #include "OgreGLPlugin.h"
 #include "Ogre.h"
+
+#include "OgreOverlaySystem.h"
 
 #include <vector>
 #include <mutex>
@@ -23,6 +26,7 @@ public:
 	FrameEventResponser				UIResponser_;
 	std::vector<FrameEvent>			FrameEventList_;
 	std::mutex						FrameEventMutex_;
+	std::unique_ptr<Ogre::OverlaySystem>	OverlaySys_;
 
 public:
 
@@ -101,6 +105,8 @@ void OgreEnv::Init()
 	root->setRenderSystem(root->getAvailableRenderers().front());
 	root->initialise(false);
 
+	imp_.OverlaySys_ = std::make_unique<Ogre::OverlaySystem>();
+
 	Ogre::ConfigFile cfg;
 	{
 		std::ifstream ifs("Data/resources.cfg", std::ios::binary);
@@ -127,6 +133,8 @@ void OgreEnv::Init()
 	imp_.Context_ = wglGetCurrentContext();
 
 	Ogre::ResourceGroupManager::getSingletonPtr()->initialiseAllResourceGroups();
+
+	ExtensionUtil::GetInstance().Init();
 }
 
 void OgreEnv::UnInit()
@@ -135,7 +143,11 @@ void OgreEnv::UnInit()
 
 	imp_.ChildList_.clear();
 
+	imp_.OverlaySys_.reset();
+
 	delete Ogre::Root::getSingletonPtr();
+
+	ExtensionUtil::GetInstance().UnInit();
 
 	imp_.Plugins_.clear();
 }
@@ -159,6 +171,13 @@ void OgreEnv::RenderOneFrame()
 	s_LastTime = curTime;
 
 	root.renderOneFrame();
+}
+
+Ogre::OverlaySystem* OgreEnv::GetOverlaySystem() const
+{
+	auto& imp_ = *ImpUPtr_;
+
+	return imp_.OverlaySys_.get();
 }
 
 OgreWndWrapperUPtr OgreEnv::CreateRenderWindow(uint32_t handle, uint32_t width, uint32_t height)

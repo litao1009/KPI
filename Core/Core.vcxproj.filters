@@ -8,6 +8,9 @@
     <Filter Include="Controller">
       <UniqueIdentifier>{3b7c1a38-19de-4fee-9255-608eaa36f7c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Frame\Extension">
+      <UniqueIdentifier>{bde81a95-ed47-41b3-9608-f712b7223b36}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Frame\OgreEnv.cpp">
@@ -24,6 +27,18 @@
     </ClCompile>
     <ClCompile Include="Controller\DummyController.cpp">
       <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Frame\Extension\ExtensionUtil.cpp">
+      <Filter>Frame\Extension</Filter>
+    </ClCompile>
+    <ClCompile Include="Frame\Extension\RectExt.cpp">
+      <Filter>Frame\Extension</Filter>
+    </ClCompile>
+    <ClCompile Include="Frame\Extension\TextAreaExt.cpp">
+      <Filter>Frame\Extension</Filter>
+    </ClCompile>
+    <ClCompile Include="Frame\Extension\TexNumber.cpp">
+      <Filter>Frame\Extension</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -53,6 +68,21 @@
     </ClInclude>
     <ClInclude Include="Controller\DummyController.h">
       <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Frame\Extension\ExtensionUtil.h">
+      <Filter>Frame\Extension</Filter>
+    </ClInclude>
+    <ClInclude Include="Frame\Extension\RectExt.h">
+      <Filter>Frame\Extension</Filter>
+    </ClInclude>
+    <ClInclude Include="Frame\Extension\TExtMovableObjFactory.h">
+      <Filter>Frame\Extension</Filter>
+    </ClInclude>
+    <ClInclude Include="Frame\Extension\TextAreaExt.h">
+      <Filter>Frame\Extension</Filter>
+    </ClInclude>
+    <ClInclude Include="Frame\Extension\TexNumber.h">
+      <Filter>Frame\Extension</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
