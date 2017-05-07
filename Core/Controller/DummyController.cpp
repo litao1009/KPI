@@ -61,7 +61,7 @@ DummyController::DummyController(Ogre::RenderWindow *rt) :ImpUPtr_(new Imp)
 	
 	auto comMgr = Ogre::Root::getSingletonPtr()->getCompositorManager2();
 
-	imp_.WorkSpce_ = comMgr->addWorkspace(imp_.Smgr_, imp_.RT_, camera, "KPINodeWorkspace", true);
+	imp_.WorkSpce_ = comMgr->addWorkspace(imp_.Smgr_, imp_.RT_, camera, "IndicatorWorkspace", true);
 
 	auto pieceWidth = imp_.RT_->getWidth() / 4.f;
 
