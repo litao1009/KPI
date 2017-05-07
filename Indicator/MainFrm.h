@@ -44,6 +44,8 @@ protected:
 public:
 	afx_msg void OnDestroy();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnImport();
+	afx_msg void OnModifyParam();
 };
 
 

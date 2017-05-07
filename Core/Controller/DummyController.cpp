@@ -9,6 +9,7 @@
 
 #include "Frame/Extension/RectExt.h"
 #include "Frame/Extension/TexNumber.h"
+#include "FrameEvent/IndicatorEvt.h"
 
 #include "OgreOverlayManager.h"
 #include "OgreOverlay.h"
@@ -242,34 +243,34 @@ public:
 	}
 };
 
-DummyController::DummyController(Ogre::RenderWindow *rt) :ImpUPtr_(new Imp)
+DummyController::DummyController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 {
 	auto& imp_ = *ImpUPtr_;
 	imp_.RT_ = rt;
-	
-	imp_.Smgr_ = Ogre::Root::getSingletonPtr()->createSceneManager(Ogre::ST_GENERIC, 1, Ogre::INSTANCING_CULLING_SINGLETHREAD, "DummyScene");
+
+	imp_.Smgr_ = Ogre::Root::getSingletonPtr()->createSceneManager( Ogre::ST_GENERIC, 1, Ogre::INSTANCING_CULLING_SINGLETHREAD, "DummyScene" );
 
 	auto sceneHeight = 1024.f;
 	auto sceneWidth = 2048.f;
 
-	auto camera = imp_.Smgr_->createCamera("MainCamera");
-	camera->setAutoAspectRatio(true);
-	camera->setFOVy(Ogre::Degree(60.f));
-	camera->setNearClipDistance(5.f);
-	camera->setFarClipDistance(5000.f);
-	camera->setProjectionType(Ogre::PT_ORTHOGRAPHIC);
+	auto camera = imp_.Smgr_->createCamera( "MainCamera" );
+	camera->setAutoAspectRatio( true );
+	camera->setFOVy( Ogre::Degree( 60.f ) );
+	camera->setNearClipDistance( 5.f );
+	camera->setFarClipDistance( 5000.f );
+	camera->setProjectionType( Ogre::PT_ORTHOGRAPHIC );
 	camera->setOrthoWindowHeight( sceneHeight );
-	
+
 	auto cameraNode = imp_.Smgr_->getRootSceneNode()->createChildSceneNode();
 	camera->detachFromParent();
-	cameraNode->attachObject(camera);
-	camera->setDirection(Ogre::Vector3::NEGATIVE_UNIT_Z);
-	cameraNode->setPosition(Ogre::Vector3(0, 0, 2000));
+	cameraNode->attachObject( camera );
+	camera->setDirection( Ogre::Vector3::NEGATIVE_UNIT_Z );
+	cameraNode->setPosition( Ogre::Vector3( 0, 0, 2000 ) );
 	imp_.Camera_ = camera;
-	
+
 	auto comMgr = Ogre::Root::getSingletonPtr()->getCompositorManager2();
 
-	imp_.WorkSpce_ = comMgr->addWorkspace(imp_.Smgr_, imp_.RT_, camera, "IndicatorWorkspace", true);
+	imp_.WorkSpce_ = comMgr->addWorkspace( imp_.Smgr_, imp_.RT_, camera, "IndicatorWorkspace", true );
 
 	auto cmat = Ogre::MaterialManager::getSingleton().getByName( "Comparison" );
 	cmat->load();
@@ -282,7 +283,7 @@ DummyController::DummyController(Ogre::RenderWindow *rt) :ImpUPtr_(new Imp)
 		auto posNode = imp_.Smgr_->getRootSceneNode()->createChildSceneNode();
 		posNode->setPosition( ( sceneWidth / 2 ) - ( comparisonAreaWidth / 2 ), 0.f, 0.f );
 
-		auto rect = RectExtFactory::CreateInstance(imp_.Smgr_);
+		auto rect = RectExtFactory::CreateInstance( imp_.Smgr_ );
 		rect->SetMaterial( cmat->getName() );
 
 		auto scaleNode = posNode->createChildSceneNode();
@@ -331,7 +332,7 @@ DummyController::DummyController(Ogre::RenderWindow *rt) :ImpUPtr_(new Imp)
 
 					imp_.Pointer1Node_ = pointerNode;
 				}
-				
+
 				{
 					auto charPosNode = panelPosNode->createChildSceneNode();
 					charPosNode->setPosition( 0.f, texOffset, 0.f );
@@ -376,7 +377,7 @@ DummyController::DummyController(Ogre::RenderWindow *rt) :ImpUPtr_(new Imp)
 					imp_.Ind1Char3_ = char3;
 				}
 			}
-			
+
 			{//introduction
 				auto introdPosNode = ind->createChildSceneNode();
 				introdPosNode->setPosition( 0.f, introductionOffset, 0.f );
@@ -578,13 +579,19 @@ DummyController::~DummyController()
 	Unload();
 
 	auto comMgr = Ogre::Root::getSingletonPtr()->getCompositorManager2();
-	comMgr->removeWorkspace(imp_.WorkSpce_);
-	Ogre::Root::getSingletonPtr()->destroySceneManager(imp_.Smgr_);
+	comMgr->removeWorkspace( imp_.WorkSpce_ );
+	Ogre::Root::getSingletonPtr()->destroySceneManager( imp_.Smgr_ );
 }
 
-void DummyController::_FrameStart(const Ogre::FrameEvent& fevt)
+void DummyController::_FrameStart( const Ogre::FrameEvent& fevt )
 {
 	auto& imp_ = *ImpUPtr_;
 
 	auto& evtRecorder = GetSysEventRecorder();
+
+	auto evt = PopFrameEvent<IndicatorEvt>();
+	if ( evt )
+	{
+		imp_.UpdateValue( evt->Moisture, evt->Fat, evt->Melanin );
+	}
 }

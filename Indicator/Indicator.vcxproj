@@ -109,6 +109,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DlgParam.h" />
     <ClInclude Include="Indicator.h" />
     <ClInclude Include="IndicatorDoc.h" />
     <ClInclude Include="IndicatorView.h" />
@@ -118,6 +119,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DlgParam.cpp" />
     <ClCompile Include="Indicator.cpp" />
     <ClCompile Include="IndicatorIDoc.cpp" />
     <ClCompile Include="IndicatorView.cpp" />
