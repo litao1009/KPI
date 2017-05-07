@@ -154,4 +154,31 @@ void TexNumber::Destory()
 void TexNumber::SetIndex(int index)
 {
 	auto& imp_ = *ImpUPtr_;
+
+	auto uvBeg = index / 11.f;
+	auto uvEnd = ( index + 1 ) / 11.f;
+
+	auto uvEle = imp_.RO_.vertexData->vertexDeclaration->findElementBySemantic( Ogre::VES_TEXTURE_COORDINATES );
+
+	auto vbuf = imp_.RO_.vertexData->vertexBufferBinding->getBuffer( 0 );
+
+	auto pBuf = reinterpret_cast<uint8_t*>( vbuf->lock( Ogre::HardwareBuffer::HBL_WRITE_ONLY ) );
+	
+	float* pVal{};
+	uvEle->baseVertexPointerToElement( pBuf, &pVal );
+	reinterpret_cast<Ogre::Vector2*>( pVal )->x = uvBeg;
+
+	pBuf += vbuf->getVertexSize();
+	uvEle->baseVertexPointerToElement( pBuf, &pVal );
+	reinterpret_cast<Ogre::Vector2*>( pVal )->x = uvBeg;
+
+	pBuf += vbuf->getVertexSize();
+	uvEle->baseVertexPointerToElement( pBuf, &pVal );
+	reinterpret_cast<Ogre::Vector2*>( pVal )->x = uvEnd;
+
+	pBuf += vbuf->getVertexSize();
+	uvEle->baseVertexPointerToElement( pBuf, &pVal );
+	reinterpret_cast<Ogre::Vector2*>( pVal )->x = uvEnd;
+
+	vbuf->unlock();
 }

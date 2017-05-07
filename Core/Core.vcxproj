@@ -97,6 +97,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Controller\DummyController.h" />
+    <ClInclude Include="FrameEvent\FrameEvent.h" />
+    <ClInclude Include="FrameEvent\FrameEventFwd.h" />
+    <ClInclude Include="FrameEvent\IndicatorEvt.h" />
     <ClInclude Include="Frame\Extension\ExtensionUtil.h" />
     <ClInclude Include="Frame\Extension\RectExt.h" />
     <ClInclude Include="Frame\Extension\TexNumber.h" />

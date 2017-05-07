@@ -52,6 +52,86 @@ material Comparison
 	}
 }
 
+material Panel
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+			depth_write off
+			
+			texture_unit
+			{
+				texture panel.png 2d 0
+			}
+			
+			vertex_program_ref VP/Base
+			{
+			}
+			
+			fragment_program_ref FP/Base/Tex
+			{
+				param_named diffuseTex int 0
+			}
+		}
+	}
+}
+
+material PanelPointer
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+			depth_write off
+			
+			scene_blend alpha_blend
+			
+			texture_unit
+			{
+				texture panel_pointer.png 2d 0
+			}
+			
+			vertex_program_ref VP/Base
+			{
+			}
+			
+			fragment_program_ref FP/Base/Tex
+			{
+				param_named diffuseTex int 0
+			}
+		}
+	}
+}
+
+material Introduction
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+			depth_write off
+			
+			texture_unit
+			{
+				texture introduction.png 2d 0
+			}
+			
+			vertex_program_ref VP/Base
+			{
+			}
+			
+			fragment_program_ref FP/Base/Tex
+			{
+				param_named diffuseTex int 0
+			}
+		}
+	}
+}
+
 material TexNumber
 {
 	technique
@@ -60,6 +140,8 @@ material TexNumber
 		{
 			depth_check off
 			depth_write off
+			
+			scene_blend alpha_blend
 			
 			texture_unit
 			{

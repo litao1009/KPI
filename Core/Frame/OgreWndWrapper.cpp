@@ -3,6 +3,8 @@
 
 #include "Ogre.h"
 
+#include "FrameEvent/IndicatorEvt.h"
+
 OgreWndWrapper::OgreWndWrapper(Ogre::RenderWindow* wnd)
 {
 	Wnd_ = wnd;
@@ -16,6 +18,9 @@ OgreWndWrapper::~OgreWndWrapper()
 void OgreWndWrapper::Resize(uint32_t width, uint32_t height)
 {
 	Wnd_->windowMovedOrResized();
+
+	auto evt = std::make_shared<ResizeEvt>();
+	OgreEnv::GetInstance().PostFrameEventTo3D( evt->ConvertToFrameEvent() );
 }
 
 uint32_t OgreWndWrapper::GetWidth() const

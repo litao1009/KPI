@@ -2,6 +2,7 @@
 #include "TExtMovableObjFactory.h"
 
 #include "RectExt.h"
+#include "TexNumber.h"
 
 #include "Ogre.h"
 
@@ -42,6 +43,7 @@ void ExtensionUtil::Init()
 	if ( list.empty() )
 	{
 		list.emplace_back(std::make_unique<RectExtFactory>());
+		list.emplace_back( std::make_unique<TexNumberFactory>() );
 	}
 
 	for ( auto& cur : list)
