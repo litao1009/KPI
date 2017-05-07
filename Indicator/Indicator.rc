@@ -107,8 +107,8 @@ IDR_MAINFRAME MENU
 BEGIN
     POPUP "文件(&F)"
     BEGIN
-        MENUITEM "导入\tO",                       ID_IMPORT
-        MENUITEM "调整\tR",                       ID_MODIFY_PARAM
+        MENUITEM "导入参数\tO",                     ID_IMPORT
+        MENUITEM "调整参数\tR",                     ID_MODIFY_PARAM
     END
     POPUP "帮助(&H)"
     BEGIN

@@ -52,6 +52,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.;$(SolutionDir)ois/includes;$(SolutionDir)ogre/OgreMain/include;$(SolutionDir)ogre/Components/Overlay/include;$(SolutionDir)ogre/RenderSystems/GL/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -71,6 +72,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.;$(SolutionDir)ois/includes;$(SolutionDir)ogre/OgreMain/include;$(SolutionDir)ogre/Components/Overlay/include;$(SolutionDir)ogre/RenderSystems/GL/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -78,7 +81,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Y /E $(ProjectDir)Data $(SolutionDir)build\bin\$(PlatformTarget)\$(Configuration)\Data\</Command>
+      <Command>copy /Y $(ProjectDir)Data\res.db $(SolutionDir)build\bin\$(PlatformTarget)\$(Configuration)\</Command>
     </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>Opengl32.lib</AdditionalDependencies>

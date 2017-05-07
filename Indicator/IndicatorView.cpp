@@ -79,6 +79,8 @@ CIndicatorDoc* CIndicatorView::GetDocument() const // 非调试版本是内联的
 	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CIndicatorDoc)));
 	return (CIndicatorDoc*)m_pDocument;
 }
+#endif //_DEBUG
+
 
 BOOL CIndicatorView::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext /*= NULL*/)
 {
@@ -88,8 +90,6 @@ BOOL CIndicatorView::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD
 
 	return ret;
 }
-
-#endif //_DEBUG
 
 
 // CKPIView 消息处理程序

@@ -107,11 +107,12 @@ void OgreEnv::Init()
 
 	imp_.OverlaySys_ = std::make_unique<Ogre::OverlaySystem>();
 
+#ifdef _DEBUG
 	Ogre::ConfigFile cfg;
 	{
-		std::ifstream ifs("Data/resources.cfg", std::ios::binary);
-		Ogre::DataStreamPtr srcData(new Ogre::FileStreamDataStream(&ifs, false));
-		cfg.load(srcData);
+		std::ifstream ifs( "Data/resources.cfg", std::ios::binary );
+		Ogre::DataStreamPtr srcData( new Ogre::FileStreamDataStream( &ifs, false ) );
+		cfg.load( srcData );
 	}
 
 	auto sectionItor = cfg.getSectionIterator();
@@ -120,9 +121,12 @@ void OgreEnv::Init()
 		auto sec = curSec.first;
 		for ( auto& curSet : *( curSec.second ) )
 		{
-			Ogre::ResourceGroupManager::getSingleton().addResourceLocation(curSet.second, curSet.first, sec);
+			Ogre::ResourceGroupManager::getSingleton().addResourceLocation( curSet.second, curSet.first, sec );
 		}
 	}
+#else
+	Ogre::ResourceGroupManager::getSingleton().addResourceLocation( "res.db", "Zip", "General" );
+#endif
 
 	Ogre::NameValuePairList params;
 	params.emplace("title", "ContextWnd");
