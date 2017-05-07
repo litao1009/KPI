@@ -14,10 +14,10 @@
 // 有关此类的实现，请参阅 KPI.cpp
 //
 
-class CKPIApp : public CWinApp
+class CIndicatorApp : public CWinApp
 {
 public:
-	CKPIApp();
+	CIndicatorApp();
 
 
 	virtual BOOL OnIdle(LONG lCount) override;
@@ -36,4 +36,4 @@ public:
 	DECLARE_MESSAGE_MAP()
 };
 
-extern CKPIApp theApp;
+extern CIndicatorApp theApp;

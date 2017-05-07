@@ -6,11 +6,11 @@
 #pragma once
 
 
-class CKPIDoc : public CDocument
+class CIndicatorDoc : public CDocument
 {
 protected: // 仅从序列化创建
-	CKPIDoc();
-	DECLARE_DYNCREATE(CKPIDoc)
+	CIndicatorDoc();
+	DECLARE_DYNCREATE(CIndicatorDoc)
 
 // 特性
 public:
@@ -29,7 +29,7 @@ public:
 
 // 实现
 public:
-	virtual ~CKPIDoc();
+	virtual ~CIndicatorDoc();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;

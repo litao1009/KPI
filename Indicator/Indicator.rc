@@ -52,7 +52,7 @@ BEGIN
     "\r\n"
     "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
     "LANGUAGE 4, 2\r\n"
-    "#include ""res\\KPI.rc2""  // 非 Microsoft Visual C++ 编辑的资源\r\n"
+    "#include ""res\\Indicator.rc2""  // 非 Microsoft Visual C++ 编辑的资源\r\n"
     "#include ""l.CHS\\afxres.rc""      // 标准组件\r\n"
     "#endif\r\n"
     "\0"
@@ -68,8 +68,8 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDR_MAINFRAME           ICON                    "res\\KPI.ico"
-IDR_KPITYPE             ICON                    "res\\KPIDoc.ico"
+IDR_MAINFRAME           ICON                    "res\\Indicator.ico"
+IDR_KPITYPE             ICON                    "res\\IndicatorDoc.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -112,7 +112,7 @@ BEGIN
     END
     POPUP "帮助(&H)"
     BEGIN
-        MENUITEM "关于 KPI(&A)...",               ID_APP_ABOUT
+        MENUITEM "关于 Indicator(&A)...",               ID_APP_ABOUT
     END
 END
 
@@ -147,11 +147,11 @@ END
 
 IDD_ABOUTBOX DIALOGEX 0, 0, 170, 62
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "关于 KPI"
+CAPTION "关于 Indicator"
 FONT 9, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,14,14,21,20
-    LTEXT           "KPI，1.0 版",IDC_STATIC,42,14,114,8,SS_NOPREFIX
+    LTEXT           "Indicator，1.0 版",IDC_STATIC,42,14,114,8,SS_NOPREFIX
     LTEXT           "Copyright (C) 2017",IDC_STATIC,42,26,114,8
     DEFPUSHBUTTON   "确定",IDOK,113,41,50,14,WS_GROUP
 END
@@ -180,11 +180,11 @@ BEGIN
         BLOCK "080404B0"
         BEGIN
             VALUE "CompanyName", "TODO:  <公司名>"
-            VALUE "FileDescription", "KPI"
+            VALUE "FileDescription", "Indicator"
             VALUE "FileVersion", "1.0.0.1"
-            VALUE "InternalName", "KPI.exe"
+            VALUE "InternalName", "Indicator.exe"
             VALUE "LegalCopyright", "TODO:  (C) <公司名>。  保留所有权利。"
-            VALUE "OriginalFilename", "KPI.exe"
+            VALUE "OriginalFilename", "Indicator.exe"
             VALUE "ProductName", "TODO:  <产品名>"
             VALUE "ProductVersion", "1.0.0.1"
         END
@@ -222,12 +222,12 @@ END
 
 STRINGTABLE
 BEGIN
-    IDR_MAINFRAME           "KPI\n\nKPI\n\n\nKPI.Document\nKPI.Document"
+    IDR_MAINFRAME           "Indicator\n\nIndicator\n\n\nIndicator.Document\nIndicator.Document"
 END
 
 STRINGTABLE
 BEGIN
-    AFX_IDS_APP_TITLE       "KPI"
+    AFX_IDS_APP_TITLE       "Indicator"
     AFX_IDS_IDLEMESSAGE     "就绪"
 END
 
@@ -341,7 +341,7 @@ END
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 LANGUAGE 4, 2
-#include "res\KPI.rc2"  // 非 Microsoft Visual C++ 编辑的资源
+#include "res\Indicator.rc2"  // 非 Microsoft Visual C++ 编辑的资源
 #include "l.CHS\afxres.rc"      // 标准组件
 #endif
 

@@ -5,11 +5,11 @@
 #include "stdafx.h"
 #include "afxwinappex.h"
 #include "afxdialogex.h"
-#include "KPI.h"
+#include "Indicator.h"
 #include "MainFrm.h"
 
-#include "KPIDoc.h"
-#include "KPIView.h"
+#include "IndicatorDoc.h"
+#include "IndicatorView.h"
 
 #include "Frame/OgreEnv.h"
 
@@ -20,8 +20,8 @@
 
 // CKPIApp
 
-BEGIN_MESSAGE_MAP(CKPIApp, CWinApp)
-	ON_COMMAND(ID_APP_ABOUT, &CKPIApp::OnAppAbout)
+BEGIN_MESSAGE_MAP(CIndicatorApp, CWinApp)
+	ON_COMMAND(ID_APP_ABOUT, &CIndicatorApp::OnAppAbout)
 	// 基于文件的标准文档命令
 	ON_COMMAND(ID_FILE_NEW, &CWinApp::OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN, &CWinApp::OnFileOpen)
@@ -30,7 +30,7 @@ END_MESSAGE_MAP()
 
 // CKPIApp 构造
 
-CKPIApp::CKPIApp()
+CIndicatorApp::CIndicatorApp()
 {
 	// TODO:  将以下应用程序 ID 字符串替换为唯一的 ID 字符串；建议的字符串格式
 	//为 CompanyName.ProductName.SubProduct.VersionInformation
@@ -40,18 +40,18 @@ CKPIApp::CKPIApp()
 	// 将所有重要的初始化放置在 InitInstance 中
 }
 
-BOOL CKPIApp::OnIdle(LONG lCount)
+BOOL CIndicatorApp::OnIdle(LONG lCount)
 {
 	OgreEnv::GetInstance().RenderOneFrame();
 	return TRUE;
 }
 
-BOOL CKPIApp::IsIdleMessage(MSG* pMsg)
+BOOL CIndicatorApp::IsIdleMessage(MSG* pMsg)
 {
 	return TRUE;
 }
 
-int CKPIApp::ExitInstance()
+int CIndicatorApp::ExitInstance()
 {
 	OgreEnv::GetInstance().UnInit();
 
@@ -60,12 +60,12 @@ int CKPIApp::ExitInstance()
 
 // 唯一的一个 CKPIApp 对象
 
-CKPIApp theApp;
+CIndicatorApp theApp;
 
 
 // CKPIApp 初始化
 
-BOOL CKPIApp::InitInstance()
+BOOL CIndicatorApp::InitInstance()
 {
 	// 如果一个运行在 Windows XP 上的应用程序清单指定要
 	// 使用 ComCtl32.dll 版本 6 或更高版本来启用可视化方式，
@@ -101,9 +101,9 @@ BOOL CKPIApp::InitInstance()
 	CSingleDocTemplate* pDocTemplate;
 	pDocTemplate = new CSingleDocTemplate(
 		IDR_MAINFRAME,
-		RUNTIME_CLASS(CKPIDoc),
+		RUNTIME_CLASS(CIndicatorDoc),
 		RUNTIME_CLASS(CMainFrame),       // 主 SDI 框架窗口
-		RUNTIME_CLASS(CKPIView));
+		RUNTIME_CLASS(CIndicatorView));
 	if (!pDocTemplate)
 		return FALSE;
 	AddDocTemplate(pDocTemplate);
@@ -161,7 +161,7 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 // 用于运行对话框的应用程序命令
-void CKPIApp::OnAppAbout()
+void CIndicatorApp::OnAppAbout()
 {
 	CAboutDlg aboutDlg;
 	aboutDlg.DoModal();

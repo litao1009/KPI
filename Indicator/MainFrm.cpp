@@ -3,7 +3,7 @@
 //
 
 #include "stdafx.h"
-#include "KPI.h"
+#include "Indicator.h"
 
 #include "MainFrm.h"
 

@@ -12,7 +12,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6D8C70CC-7FEB-4B17-AA2F-12F65CE5D45F}</ProjectGuid>
-    <RootNamespace>KPI</RootNamespace>
+    <RootNamespace>Indicator</RootNamespace>
     <Keyword>MFCProj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -109,18 +109,18 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="KPI.h" />
-    <ClInclude Include="KPIDoc.h" />
-    <ClInclude Include="KPIView.h" />
+    <ClInclude Include="Indicator.h" />
+    <ClInclude Include="IndicatorDoc.h" />
+    <ClInclude Include="IndicatorView.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="KPI.cpp" />
-    <ClCompile Include="KPIDoc.cpp" />
-    <ClCompile Include="KPIView.cpp" />
+    <ClCompile Include="Indicator.cpp" />
+    <ClCompile Include="IndicatorIDoc.cpp" />
+    <ClCompile Include="IndicatorView.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -128,14 +128,14 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="KPI.rc" />
+    <ResourceCompile Include="Indicator.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\KPI.rc2" />
+    <None Include="res\Indicator.rc2" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\KPI.ico" />
-    <Image Include="res\KPIDoc.ico" />
+    <Image Include="res\Indicator.ico" />
+    <Image Include="res\IndicatorDoc.ico" />
     <Image Include="res\Toolbar.bmp" />
   </ItemGroup>
   <ItemGroup>
@@ -148,7 +148,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties RESOURCE_FILE="KPI.rc" />
+      <UserProperties RESOURCE_FILE="Indicator.rc" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

@@ -6,20 +6,20 @@
 
 #include <memory>
 
-class CKPIView : public CView
+class CIndicatorView : public CView
 {
 	class	Imp;
 	std::unique_ptr<Imp>	ImpUPtr_;
 
 protected: // 仅从序列化创建
 
-	CKPIView();
-	DECLARE_DYNCREATE(CKPIView)
+	CIndicatorView();
+	DECLARE_DYNCREATE(CIndicatorView)
 
 // 特性
 public:
 
-	CKPIDoc* GetDocument() const;
+	CIndicatorDoc* GetDocument() const;
 
 	// 操作
 public:
@@ -33,7 +33,7 @@ protected:
 
 // 实现
 public:
-	virtual ~CKPIView();
+	virtual ~CIndicatorView();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
@@ -51,7 +51,7 @@ public:
 };
 
 #ifndef _DEBUG  // KPIView.cpp 中的调试版本
-inline CKPIDoc* CKPIView::GetDocument() const
-   { return reinterpret_cast<CKPIDoc*>(m_pDocument); }
+inline CIndicatorDoc* CIndicatorView::GetDocument() const
+   { return reinterpret_cast<CIndicatorDoc*>(m_pDocument); }
 #endif
 

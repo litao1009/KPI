@@ -18,9 +18,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="KPI.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -30,30 +27,33 @@
     <ClInclude Include="MainFrm.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="KPIDoc.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="KPIView.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Indicator.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndicatorView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndicatorDoc.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="KPI.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="MainFrm.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="KPIDoc.cpp">
+    <ClCompile Include="Indicator.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="KPIView.cpp">
+    <ClCompile Include="IndicatorView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IndicatorIDoc.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

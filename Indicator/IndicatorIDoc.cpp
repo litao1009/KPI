@@ -6,10 +6,10 @@
 // SHARED_HANDLERS 可以在实现预览、缩略图和搜索筛选器句柄的
 // ATL 项目中进行定义，并允许与该项目共享文档代码。
 #ifndef SHARED_HANDLERS
-#include "KPI.h"
+#include "Indicator.h"
 #endif
 
-#include "KPIDoc.h"
+#include "IndicatorDoc.h"
 
 #include <propkey.h>
 
@@ -19,25 +19,25 @@
 
 // CKPIDoc
 
-IMPLEMENT_DYNCREATE(CKPIDoc, CDocument)
+IMPLEMENT_DYNCREATE(CIndicatorDoc, CDocument)
 
-BEGIN_MESSAGE_MAP(CKPIDoc, CDocument)
+BEGIN_MESSAGE_MAP(CIndicatorDoc, CDocument)
 END_MESSAGE_MAP()
 
 
 // CKPIDoc 构造/析构
 
-CKPIDoc::CKPIDoc()
+CIndicatorDoc::CIndicatorDoc()
 {
 	// TODO:  在此添加一次性构造代码
 
 }
 
-CKPIDoc::~CKPIDoc()
+CIndicatorDoc::~CIndicatorDoc()
 {
 }
 
-BOOL CKPIDoc::OnNewDocument()
+BOOL CIndicatorDoc::OnNewDocument()
 {
 	if (!CDocument::OnNewDocument())
 		return FALSE;
@@ -53,7 +53,7 @@ BOOL CKPIDoc::OnNewDocument()
 
 // CKPIDoc 序列化
 
-void CKPIDoc::Serialize(CArchive& ar)
+void CIndicatorDoc::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{
@@ -68,7 +68,7 @@ void CKPIDoc::Serialize(CArchive& ar)
 #ifdef SHARED_HANDLERS
 
 // 缩略图的支持
-void CKPIDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
+void CIndicatorDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
 {
 	// 修改此代码以绘制文档数据
 	dc.FillSolidRect(lprcBounds, RGB(255, 255, 255));
@@ -89,7 +89,7 @@ void CKPIDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
 }
 
 // 搜索处理程序的支持
-void CKPIDoc::InitializeSearchContent()
+void CIndicatorDoc::InitializeSearchContent()
 {
 	CString strSearchContent;
 	// 从文档数据设置搜索内容。
@@ -99,7 +99,7 @@ void CKPIDoc::InitializeSearchContent()
 	SetSearchContent(strSearchContent);
 }
 
-void CKPIDoc::SetSearchContent(const CString& value)
+void CIndicatorDoc::SetSearchContent(const CString& value)
 {
 	if (value.IsEmpty())
 	{
@@ -122,12 +122,12 @@ void CKPIDoc::SetSearchContent(const CString& value)
 // CKPIDoc 诊断
 
 #ifdef _DEBUG
-void CKPIDoc::AssertValid() const
+void CIndicatorDoc::AssertValid() const
 {
 	CDocument::AssertValid();
 }
 
-void CKPIDoc::Dump(CDumpContext& dc) const
+void CIndicatorDoc::Dump(CDumpContext& dc) const
 {
 	CDocument::Dump(dc);
 }

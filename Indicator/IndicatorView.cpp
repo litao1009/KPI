@@ -6,26 +6,26 @@
 // SHARED_HANDLERS 可以在实现预览、缩略图和搜索筛选器句柄的
 // ATL 项目中进行定义，并允许与该项目共享文档代码。
 #ifndef SHARED_HANDLERS
-#include "KPI.h"
+#include "Indicator.h"
 #endif
 
-#include "KPIDoc.h"
-#include "KPIView.h"
+#include "IndicatorDoc.h"
+#include "IndicatorView.h"
 
 //#ifdef _DEBUG
 //#define new DEBUG_NEW
 //#endif
 
-class	CKPIView::Imp
+class	CIndicatorView::Imp
 {
 public:
 };
 
 // CKPIView
 
-IMPLEMENT_DYNCREATE(CKPIView, CView)
+IMPLEMENT_DYNCREATE(CIndicatorView, CView)
 
-BEGIN_MESSAGE_MAP(CKPIView, CView)
+BEGIN_MESSAGE_MAP(CIndicatorView, CView)
 	ON_WM_ERASEBKGND()
 	ON_WM_SIZE()
 	ON_WM_DESTROY()
@@ -33,17 +33,17 @@ END_MESSAGE_MAP()
 
 // CKPIView 构造/析构
 
-CKPIView::CKPIView() :ImpUPtr_(std::make_unique<Imp>())
+CIndicatorView::CIndicatorView() :ImpUPtr_(std::make_unique<Imp>())
 {
 	// TODO:  在此处添加构造代码
 
 }
 
-CKPIView::~CKPIView()
+CIndicatorView::~CIndicatorView()
 {
 }
 
-BOOL CKPIView::PreCreateWindow(CREATESTRUCT& cs)
+BOOL CIndicatorView::PreCreateWindow(CREATESTRUCT& cs)
 {
 	// TODO:  在此处通过修改
 	//  CREATESTRUCT cs 来修改窗口类或样式
@@ -53,7 +53,7 @@ BOOL CKPIView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CKPIView 绘制
 
-void CKPIView::OnDraw(CDC* /*pDC*/)
+void CIndicatorView::OnDraw(CDC* /*pDC*/)
 {
 	
 
@@ -64,23 +64,23 @@ void CKPIView::OnDraw(CDC* /*pDC*/)
 // CKPIView 诊断
 
 #ifdef _DEBUG
-void CKPIView::AssertValid() const
+void CIndicatorView::AssertValid() const
 {
 	CView::AssertValid();
 }
 
-void CKPIView::Dump(CDumpContext& dc) const
+void CIndicatorView::Dump(CDumpContext& dc) const
 {
 	CView::Dump(dc);
 }
 
-CKPIDoc* CKPIView::GetDocument() const // 非调试版本是内联的
+CIndicatorDoc* CIndicatorView::GetDocument() const // 非调试版本是内联的
 {
-	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CKPIDoc)));
-	return (CKPIDoc*)m_pDocument;
+	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CIndicatorDoc)));
+	return (CIndicatorDoc*)m_pDocument;
 }
 
-BOOL CKPIView::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext /*= NULL*/)
+BOOL CIndicatorView::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext /*= NULL*/)
 {
 	auto ret = CView::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 	
@@ -95,7 +95,7 @@ BOOL CKPIView::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwSty
 // CKPIView 消息处理程序
 
 
-BOOL CKPIView::OnEraseBkgnd(CDC* pDC)
+BOOL CIndicatorView::OnEraseBkgnd(CDC* pDC)
 {
 	// TODO:  在此添加消息处理程序代码和/或调用默认值
 
@@ -103,7 +103,7 @@ BOOL CKPIView::OnEraseBkgnd(CDC* pDC)
 }
 
 
-void CKPIView::OnSize(UINT nType, int cx, int cy)
+void CIndicatorView::OnSize(UINT nType, int cx, int cy)
 {
 	CView::OnSize(nType, cx, cy);
 
@@ -111,7 +111,7 @@ void CKPIView::OnSize(UINT nType, int cx, int cy)
 }
 
 
-void CKPIView::OnDestroy()
+void CIndicatorView::OnDestroy()
 {
 	CView::OnDestroy();
 
