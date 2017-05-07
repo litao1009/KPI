@@ -15,6 +15,14 @@
 #include "OgreOverlayContainer.h"
 #include "OgreOverlaySystem.h"
 
+#include <vector>
+
+static const auto panelOffset = 264.f;
+static const auto introductionOffset = -188.f;
+static const auto texOffset = -10.f;
+static const auto charWidth = 40.f;
+static const auto charHeight = 80.f;
+
 enum ERenderGroup
 {
 	ERG_Panel = Ogre::RENDER_QUEUE_MAIN,
@@ -35,11 +43,202 @@ public:
 	Ogre::SceneNode*			Pointer2Node_{};
 	Ogre::SceneNode*			Pointer3Node_{};
 
+	Ogre::SceneNode*			Ind1Char1Node_{};
+	Ogre::SceneNode*			Ind1Char2Node_{};
+	Ogre::SceneNode*			Ind1Char3Node_{};
+	Ogre::SceneNode*			Ind1Char4Node_{};
+	TexNumber*					Ind1Char1_{};
+	TexNumber*					Ind1Char2_{};
+	TexNumber*					Ind1Char3_{};
+
+	Ogre::SceneNode*			Ind2Char1Node_{};
+	Ogre::SceneNode*			Ind2Char2Node_{};
+	Ogre::SceneNode*			Ind2Char3Node_{};
+	Ogre::SceneNode*			Ind2Char4Node_{};
+	TexNumber*					Ind2Char1_{};
+	TexNumber*					Ind2Char2_{};
+	TexNumber*					Ind2Char3_{};
+
+	Ogre::SceneNode*			Ind3Char1Node_{};
+	Ogre::SceneNode*			Ind3Char2Node_{};
+	Ogre::SceneNode*			Ind3Char3Node_{};
+	Ogre::SceneNode*			Ind3Char4Node_{};
+	TexNumber*					Ind3Char1_{};
+	TexNumber*					Ind3Char2_{};
+	TexNumber*					Ind3Char3_{};
+
 public:
 
-	void	UpdateValue()
+	void	UpdateValue( int moisture, int fat, int melanin )
 	{
+		moisture = std::max( 0, moisture );
+		moisture = std::min( moisture, 100 );
+		fat = std::max( 0, fat );
+		fat = std::min( fat, 100 );
+		melanin = std::max( 0, melanin );
+		melanin = std::min( melanin, 100 );
 
+		{
+			auto p1 = ( moisture ) % 10;
+			auto p2 = ( moisture / 10 ) % 10;
+			auto p3 = ( moisture / 100 ) % 10;
+
+			if ( moisture == 100 )
+			{
+				Ind1Char1_->SetIndex( p3 );
+				Ind1Char2_->SetIndex( p2 );
+				Ind1Char3_->SetIndex( p1 );
+
+				Ind1Char1Node_->setVisible( true );
+				Ind1Char2Node_->setVisible( true );
+				Ind1Char3Node_->setVisible( true );
+				Ind1Char4Node_->setVisible( true );
+
+				Ind1Char1Node_->setPosition( -charWidth * 1.5f, 0.f, 0.f );
+				Ind1Char2Node_->setPosition( -charWidth * .5f, 0.f, 0.f );
+				Ind1Char3Node_->setPosition( charWidth * .5f, 0.f, 0.f );
+				Ind1Char4Node_->setPosition( charWidth * 1.5f, 0.f, 0.f );
+			}
+			else if ( moisture < 10 )
+			{
+				Ind1Char3_->SetIndex( p1 );
+
+				Ind1Char1Node_->setVisible( false );
+				Ind1Char2Node_->setVisible( false );
+				Ind1Char3Node_->setVisible( true );
+				Ind1Char4Node_->setVisible( true );
+
+				//Ind1Char1Node_->setPosition( -charWidth, 0.f, 0.f );
+				Ind1Char3Node_->setPosition( -charWidth * .5f, 0.f, 0.f );
+				Ind1Char4Node_->setPosition( charWidth * .5f, 0.f, 0.f );
+			}
+			else
+			{
+				Ind1Char2_->SetIndex( p2 );
+				Ind1Char3_->SetIndex( p1 );
+
+				Ind1Char1Node_->setVisible( false );
+				Ind1Char2Node_->setVisible( true );
+				Ind1Char3Node_->setVisible( true );
+				Ind1Char4Node_->setVisible( true );
+
+				Ind1Char2Node_->setPosition( -charWidth, 0.f, 0.f );
+				Ind1Char3Node_->setPosition( 0.f, 0.f, 0.f );
+				Ind1Char4Node_->setPosition( charWidth, 0.f, 0.f );
+			}
+
+			Ogre::Quaternion qua;
+			qua.FromAngleAxis( Ogre::Degree( moisture * 1.8f ), Ogre::Vector3::NEGATIVE_UNIT_Z );
+			Pointer1Node_->setOrientation( qua );
+		}
+
+
+		{
+			auto p1 = ( fat ) % 10;
+			auto p2 = ( fat / 10 ) % 10;
+			auto p3 = ( fat / 100 ) % 10;
+
+			if ( fat == 100 )
+			{
+				Ind2Char1_->SetIndex( p3 );
+				Ind2Char2_->SetIndex( p2 );
+				Ind2Char3_->SetIndex( p1 );
+
+				Ind2Char1Node_->setVisible( true );
+				Ind2Char2Node_->setVisible( true );
+				Ind2Char3Node_->setVisible( true );
+				Ind2Char4Node_->setVisible( true );
+
+				Ind2Char1Node_->setPosition( -charWidth * 1.5f, 0.f, 0.f );
+				Ind2Char2Node_->setPosition( -charWidth * .5f, 0.f, 0.f );
+				Ind2Char3Node_->setPosition( charWidth * .5f, 0.f, 0.f );
+				Ind2Char4Node_->setPosition( charWidth * 1.5f, 0.f, 0.f );
+			}
+			else if ( fat < 10 )
+			{
+				Ind2Char3_->SetIndex( p1 );
+
+				Ind2Char1Node_->setVisible( false );
+				Ind2Char2Node_->setVisible( false );
+				Ind2Char3Node_->setVisible( true );
+				Ind2Char4Node_->setVisible( true );
+
+				Ind2Char3Node_->setPosition( -charWidth * .5f, 0.f, 0.f );
+				Ind2Char4Node_->setPosition( charWidth * .5f, 0.f, 0.f );
+			}
+			else
+			{
+				Ind2Char2_->SetIndex( p2 );
+				Ind2Char3_->SetIndex( p1 );
+
+				Ind2Char1Node_->setVisible( false );
+				Ind2Char2Node_->setVisible( true );
+				Ind2Char3Node_->setVisible( true );
+				Ind2Char4Node_->setVisible( true );
+
+				Ind2Char2Node_->setPosition( -charWidth, 0.f, 0.f );
+				Ind2Char3Node_->setPosition( 0.f, 0.f, 0.f );
+				Ind2Char4Node_->setPosition( charWidth, 0.f, 0.f );
+			}
+
+			Ogre::Quaternion qua;
+			qua.FromAngleAxis( Ogre::Degree( fat * 1.8f ), Ogre::Vector3::NEGATIVE_UNIT_Z );
+			Pointer2Node_->setOrientation( qua );
+		}
+
+
+		{
+			auto p1 = ( melanin ) % 10;
+			auto p2 = ( melanin / 10 ) % 10;
+			auto p3 = ( melanin / 100 ) % 10;
+
+			if ( melanin == 100 )
+			{
+				Ind3Char1_->SetIndex( p3 );
+				Ind3Char2_->SetIndex( p2 );
+				Ind3Char3_->SetIndex( p1 );
+
+				Ind3Char1Node_->setVisible( true );
+				Ind3Char2Node_->setVisible( true );
+				Ind3Char3Node_->setVisible( true );
+				Ind3Char4Node_->setVisible( true );
+
+				Ind3Char1Node_->setPosition( -charWidth * 1.5f, 0.f, 0.f );
+				Ind3Char2Node_->setPosition( -charWidth * .5f, 0.f, 0.f );
+				Ind3Char3Node_->setPosition( charWidth * .5f, 0.f, 0.f );
+				Ind3Char4Node_->setPosition( charWidth * 1.5f, 0.f, 0.f );
+			}
+			else if ( melanin < 10 )
+			{
+				Ind3Char3_->SetIndex( p1 );
+
+				Ind3Char1Node_->setVisible( false );
+				Ind3Char2Node_->setVisible( false );
+				Ind3Char3Node_->setVisible( true );
+				Ind3Char4Node_->setVisible( true );
+
+				Ind3Char3Node_->setPosition( -charWidth * .5f, 0.f, 0.f );
+				Ind3Char4Node_->setPosition( charWidth * .5f, 0.f, 0.f );
+			}
+			else
+			{
+				Ind3Char2_->SetIndex( p2 );
+				Ind3Char3_->SetIndex( p1 );
+
+				Ind3Char1Node_->setVisible( false );
+				Ind3Char2Node_->setVisible( true );
+				Ind3Char3Node_->setVisible( true );
+				Ind3Char4Node_->setVisible( true );
+
+				Ind3Char2Node_->setPosition( -charWidth, 0.f, 0.f );
+				Ind3Char3Node_->setPosition( 0.f, 0.f, 0.f );
+				Ind3Char4Node_->setPosition( charWidth, 0.f, 0.f );
+			}
+
+			Ogre::Quaternion qua;
+			qua.FromAngleAxis( Ogre::Degree( melanin * 1.8f ), Ogre::Vector3::NEGATIVE_UNIT_Z );
+			Pointer3Node_->setOrientation( qua );
+		}
 	}
 };
 
@@ -72,38 +271,32 @@ DummyController::DummyController(Ogre::RenderWindow *rt) :ImpUPtr_(new Imp)
 
 	imp_.WorkSpce_ = comMgr->addWorkspace(imp_.Smgr_, imp_.RT_, camera, "IndicatorWorkspace", true);
 
-	auto indicatorAreaWidth = 1600.f;
-	auto comparisonAreaWidth = sceneWidth - indicatorAreaWidth;
+	auto cmat = Ogre::MaterialManager::getSingleton().getByName( "Comparison" );
+	cmat->load();
+	auto ctex = cmat->getTechnique( 0 )->getPass( 0 )->getTextureUnitState( 0 )->_getTexturePtr();
+
+	auto comparisonAreaWidth = ctex->getWidth();
+	auto indicatorAreaWidth = sceneWidth - comparisonAreaWidth;
 
 	{//comparison
 		auto posNode = imp_.Smgr_->getRootSceneNode()->createChildSceneNode();
 		posNode->setPosition( ( sceneWidth / 2 ) - ( comparisonAreaWidth / 2 ), 0.f, 0.f );
 
-		auto mat = Ogre::MaterialManager::getSingleton().getByName( "Comparison" );
-		mat->load();
-		auto tex = mat->getTechnique( 0 )->getPass( 0 )->getTextureUnitState( 0 )->_getTexturePtr();
-
 		auto rect = RectExtFactory::CreateInstance(imp_.Smgr_);
-		rect->SetMaterial( mat->getName() );
+		rect->SetMaterial( cmat->getName() );
 
 		auto scaleNode = posNode->createChildSceneNode();
-		scaleNode->setScale( tex->getWidth(), tex->getHeight(), 1.f );
+		scaleNode->setScale( ctex->getWidth(), ctex->getHeight(), 1.f );
 
 		scaleNode->attachObject( rect );
 	}
 
 	auto singleIndicatorArea = indicatorAreaWidth / 3;
-	auto panelOffset = 264.f;
-	auto introductionOffset = -188.f;
-	auto texOffset = -45.f;
+
 
 	{//indicator
 		auto indicatorRootNode = imp_.Smgr_->getRootSceneNode()->createChildSceneNode();
 		indicatorRootNode->setPosition( ( indicatorAreaWidth / 2 ) - ( sceneWidth / 2 ), 0.f, 0.f );
-
-		auto panelMat = Ogre::MaterialManager::getSingleton().getByName( "Panel" );
-		panelMat->load();
-		auto panelTex = panelMat->getTechnique( 0 )->getPass( 0 )->getTextureUnitState( 0 )->_getTexturePtr();
 
 		auto introdMat = Ogre::MaterialManager::getSingleton().getByName( "Introduction" );
 		introdMat->load();
@@ -118,6 +311,10 @@ DummyController::DummyController(Ogre::RenderWindow *rt) :ImpUPtr_(new Imp)
 				panelPosNode->setPosition( 0.f, panelOffset, 0.f );
 
 				{
+					auto panelMat = Ogre::MaterialManager::getSingleton().getByName( "Panel1" );
+					panelMat->load();
+					auto panelTex = panelMat->getTechnique( 0 )->getPass( 0 )->getTextureUnitState( 0 )->_getTexturePtr();
+
 					auto panelScaleNode = panelPosNode->createChildSceneNode();
 					panelScaleNode->setScale( panelTex->getWidth(), panelTex->getHeight(), 1.f );
 
@@ -132,9 +329,7 @@ DummyController::DummyController(Ogre::RenderWindow *rt) :ImpUPtr_(new Imp)
 					pointRect->setRenderQueueGroup( ERG_Pointer );
 					pointerNode->attachObject( pointRect );
 
-					Ogre::Quaternion qua;
-					qua.FromAngleAxis( Ogre::Degree( 60.f ), Ogre::Vector3::NEGATIVE_UNIT_Z );
-					pointerNode->setOrientation( qua );
+					imp_.Pointer1Node_ = pointerNode;
 				}
 				
 				{
@@ -145,8 +340,40 @@ DummyController::DummyController(Ogre::RenderWindow *rt) :ImpUPtr_(new Imp)
 					auto char1 = TexNumberFactory::CreateInstance( imp_.Smgr_ );
 					char1->SetIndex( 1 );
 					char1->setRenderQueueGroup( ERG_Num );
-					char1Node->setScale( 40.f, 80.f, 1.f );
+					char1Node->setScale( charWidth, charHeight, 1.f );
 					char1Node->attachObject( char1 );
+					char1Node->setPosition( -charWidth, 0.f, 0.f );
+
+					auto char2Node = charPosNode->createChildSceneNode();
+					auto char2 = TexNumberFactory::CreateInstance( imp_.Smgr_ );
+					char2->SetIndex( 1 );
+					char2->setRenderQueueGroup( ERG_Num );
+					char2Node->setScale( charWidth, charHeight, 1.f );
+					char2Node->attachObject( char2 );
+
+					auto char3Node = charPosNode->createChildSceneNode();
+					auto char3 = TexNumberFactory::CreateInstance( imp_.Smgr_ );
+					char3->SetIndex( 1 );
+					char3->setRenderQueueGroup( ERG_Num );
+					char3Node->setScale( charWidth, charHeight, 1.f );
+					char3Node->attachObject( char3 );
+					char3Node->setPosition( charWidth, 0.f, 0.f );
+
+					auto char4Node = charPosNode->createChildSceneNode();
+					auto char4 = TexNumberFactory::CreateInstance( imp_.Smgr_ );
+					char4->SetIndex( 10 );
+					char4->setRenderQueueGroup( ERG_Num );
+					char4Node->setScale( charWidth, charHeight, 1.f );
+					char4Node->attachObject( char4 );
+					char4Node->setPosition( charWidth, 0.f, 0.f );
+
+					imp_.Ind1Char1Node_ = char1Node;
+					imp_.Ind1Char2Node_ = char2Node;
+					imp_.Ind1Char3Node_ = char3Node;
+					imp_.Ind1Char4Node_ = char4Node;
+					imp_.Ind1Char1_ = char1;
+					imp_.Ind1Char2_ = char2;
+					imp_.Ind1Char3_ = char3;
 				}
 			}
 			
@@ -162,7 +389,186 @@ DummyController::DummyController(Ogre::RenderWindow *rt) :ImpUPtr_(new Imp)
 				introdScaleNode->attachObject( introdRect );
 			}
 		}
+
+		{//indicator2
+			auto ind = indicatorRootNode->createChildSceneNode();
+			ind->setPosition( 0, 0.f, 0.f );
+
+			{//panel
+				auto panelPosNode = ind->createChildSceneNode();
+				panelPosNode->setPosition( 0.f, panelOffset, 0.f );
+
+				{
+					auto panelMat = Ogre::MaterialManager::getSingleton().getByName( "Panel2" );
+					panelMat->load();
+					auto panelTex = panelMat->getTechnique( 0 )->getPass( 0 )->getTextureUnitState( 0 )->_getTexturePtr();
+
+					auto panelScaleNode = panelPosNode->createChildSceneNode();
+					panelScaleNode->setScale( panelTex->getWidth(), panelTex->getHeight(), 1.f );
+
+					auto panelRect = RectExtFactory::CreateInstance( imp_.Smgr_ );
+					panelRect->SetMaterial( panelMat->getName() );
+					panelRect->setRenderQueueGroup( ERG_Panel );
+					panelScaleNode->attachObject( panelRect );
+
+					auto pointerNode = panelScaleNode->createChildSceneNode();
+					auto pointRect = RectExtFactory::CreateInstance( imp_.Smgr_ );
+					pointRect->SetMaterial( "PanelPointer" );
+					pointRect->setRenderQueueGroup( ERG_Pointer );
+					pointerNode->attachObject( pointRect );
+
+					imp_.Pointer2Node_ = pointerNode;
+				}
+
+				{
+					auto charPosNode = panelPosNode->createChildSceneNode();
+					charPosNode->setPosition( 0.f, texOffset, 0.f );
+
+					auto char1Node = charPosNode->createChildSceneNode();
+					auto char1 = TexNumberFactory::CreateInstance( imp_.Smgr_ );
+					char1->SetIndex( 1 );
+					char1->setRenderQueueGroup( ERG_Num );
+					char1Node->setScale( charWidth, charHeight, 1.f );
+					char1Node->attachObject( char1 );
+					char1Node->setPosition( -charWidth, 0.f, 0.f );
+
+					auto char2Node = charPosNode->createChildSceneNode();
+					auto char2 = TexNumberFactory::CreateInstance( imp_.Smgr_ );
+					char2->SetIndex( 1 );
+					char2->setRenderQueueGroup( ERG_Num );
+					char2Node->setScale( charWidth, charHeight, 1.f );
+					char2Node->attachObject( char2 );
+
+					auto char3Node = charPosNode->createChildSceneNode();
+					auto char3 = TexNumberFactory::CreateInstance( imp_.Smgr_ );
+					char3->SetIndex( 1 );
+					char3->setRenderQueueGroup( ERG_Num );
+					char3Node->setScale( charWidth, charHeight, 1.f );
+					char3Node->attachObject( char3 );
+					char3Node->setPosition( charWidth, 0.f, 0.f );
+
+					auto char4Node = charPosNode->createChildSceneNode();
+					auto char4 = TexNumberFactory::CreateInstance( imp_.Smgr_ );
+					char4->SetIndex( 10 );
+					char4->setRenderQueueGroup( ERG_Num );
+					char4Node->setScale( charWidth, charHeight, 1.f );
+					char4Node->attachObject( char4 );
+					char4Node->setPosition( charWidth, 0.f, 0.f );
+
+					imp_.Ind2Char1Node_ = char1Node;
+					imp_.Ind2Char2Node_ = char2Node;
+					imp_.Ind2Char3Node_ = char3Node;
+					imp_.Ind2Char4Node_ = char4Node;
+					imp_.Ind2Char1_ = char1;
+					imp_.Ind2Char2_ = char2;
+					imp_.Ind2Char3_ = char3;
+				}
+			}
+
+			{//introduction
+				auto introdPosNode = ind->createChildSceneNode();
+				introdPosNode->setPosition( 0.f, introductionOffset, 0.f );
+
+				auto introdScaleNode = introdPosNode->createChildSceneNode();
+				introdScaleNode->setScale( introdTex->getWidth(), introdTex->getHeight(), 1.f );
+
+				auto introdRect = RectExtFactory::CreateInstance( imp_.Smgr_ );
+				introdRect->SetMaterial( introdMat->getName() );
+				introdScaleNode->attachObject( introdRect );
+			}
+		}
+
+
+		{//indicator3
+			auto ind = indicatorRootNode->createChildSceneNode();
+			ind->setPosition( singleIndicatorArea, 0.f, 0.f );
+
+			{//panel
+				auto panelPosNode = ind->createChildSceneNode();
+				panelPosNode->setPosition( 0.f, panelOffset, 0.f );
+
+				{
+					auto panelMat = Ogre::MaterialManager::getSingleton().getByName( "Panel3" );
+					panelMat->load();
+					auto panelTex = panelMat->getTechnique( 0 )->getPass( 0 )->getTextureUnitState( 0 )->_getTexturePtr();
+
+					auto panelScaleNode = panelPosNode->createChildSceneNode();
+					panelScaleNode->setScale( panelTex->getWidth(), panelTex->getHeight(), 1.f );
+
+					auto panelRect = RectExtFactory::CreateInstance( imp_.Smgr_ );
+					panelRect->SetMaterial( panelMat->getName() );
+					panelRect->setRenderQueueGroup( ERG_Panel );
+					panelScaleNode->attachObject( panelRect );
+
+					auto pointerNode = panelScaleNode->createChildSceneNode();
+					auto pointRect = RectExtFactory::CreateInstance( imp_.Smgr_ );
+					pointRect->SetMaterial( "PanelPointer" );
+					pointRect->setRenderQueueGroup( ERG_Pointer );
+					pointerNode->attachObject( pointRect );
+
+					imp_.Pointer3Node_ = pointerNode;
+				}
+
+				{
+					auto charPosNode = panelPosNode->createChildSceneNode();
+					charPosNode->setPosition( 0.f, texOffset, 0.f );
+
+					auto char1Node = charPosNode->createChildSceneNode();
+					auto char1 = TexNumberFactory::CreateInstance( imp_.Smgr_ );
+					char1->SetIndex( 1 );
+					char1->setRenderQueueGroup( ERG_Num );
+					char1Node->setScale( charWidth, charHeight, 1.f );
+					char1Node->attachObject( char1 );
+					char1Node->setPosition( -charWidth, 0.f, 0.f );
+
+					auto char2Node = charPosNode->createChildSceneNode();
+					auto char2 = TexNumberFactory::CreateInstance( imp_.Smgr_ );
+					char2->SetIndex( 1 );
+					char2->setRenderQueueGroup( ERG_Num );
+					char2Node->setScale( charWidth, charHeight, 1.f );
+					char2Node->attachObject( char2 );
+
+					auto char3Node = charPosNode->createChildSceneNode();
+					auto char3 = TexNumberFactory::CreateInstance( imp_.Smgr_ );
+					char3->SetIndex( 1 );
+					char3->setRenderQueueGroup( ERG_Num );
+					char3Node->setScale( charWidth, charHeight, 1.f );
+					char3Node->attachObject( char3 );
+					char3Node->setPosition( charWidth, 0.f, 0.f );
+
+					auto char4Node = charPosNode->createChildSceneNode();
+					auto char4 = TexNumberFactory::CreateInstance( imp_.Smgr_ );
+					char4->SetIndex( 10 );
+					char4->setRenderQueueGroup( ERG_Num );
+					char4Node->setScale( charWidth, charHeight, 1.f );
+					char4Node->attachObject( char4 );
+					char4Node->setPosition( charWidth, 0.f, 0.f );
+
+					imp_.Ind3Char1Node_ = char1Node;
+					imp_.Ind3Char2Node_ = char2Node;
+					imp_.Ind3Char3Node_ = char3Node;
+					imp_.Ind3Char4Node_ = char4Node;
+					imp_.Ind3Char1_ = char1;
+					imp_.Ind3Char2_ = char2;
+					imp_.Ind3Char3_ = char3;
+				}
+			}
+
+			{//introduction
+				auto introdPosNode = ind->createChildSceneNode();
+				introdPosNode->setPosition( 0.f, introductionOffset, 0.f );
+
+				auto introdScaleNode = introdPosNode->createChildSceneNode();
+				introdScaleNode->setScale( introdTex->getWidth(), introdTex->getHeight(), 1.f );
+
+				auto introdRect = RectExtFactory::CreateInstance( imp_.Smgr_ );
+				introdRect->SetMaterial( introdMat->getName() );
+				introdScaleNode->attachObject( introdRect );
+			}
+		}
 	}
+
+	imp_.UpdateValue( 5, 20, 100 );
 }
 
 DummyController::~DummyController()

@@ -37,7 +37,7 @@ material Comparison
 			
 			texture_unit
 			{
-				texture comparison.jpg 2d 0
+				texture comparison.png 2d 0
 			}
 			
 			vertex_program_ref VP/Base
@@ -52,7 +52,7 @@ material Comparison
 	}
 }
 
-material Panel
+material Panel1
 {
 	technique
 	{
@@ -61,9 +61,11 @@ material Panel
 			depth_check off
 			depth_write off
 			
+			scene_blend alpha_blend
+			
 			texture_unit
 			{
-				texture panel.png 2d 0
+				texture panel1.png 2d 0
 			}
 			
 			vertex_program_ref VP/Base
@@ -73,6 +75,34 @@ material Panel
 			fragment_program_ref FP/Base/Tex
 			{
 				param_named diffuseTex int 0
+			}
+		}
+	}
+}
+
+material Panel2 : Panel1
+{
+	technique
+	{
+		pass
+		{			
+			texture_unit
+			{
+				texture panel2.png 2d 0
+			}
+		}
+	}
+}
+
+material Panel3 : Panel1
+{
+	technique
+	{
+		pass
+		{			
+			texture_unit
+			{
+				texture panel3.png 2d 0
 			}
 		}
 	}
@@ -114,6 +144,8 @@ material Introduction
 		{
 			depth_check off
 			depth_write off
+			
+			scene_blend alpha_blend
 			
 			texture_unit
 			{
