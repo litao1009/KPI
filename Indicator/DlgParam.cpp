@@ -29,15 +29,40 @@ void CDlgParam::DoDataExchange(CDataExchange* pDX)
 	DDX_Control( pDX, IDC_TXT_SF, TxtSF_ );
 	DDX_Control( pDX, IDC_TXT_YF, TxtYF_ );
 	DDX_Control( pDX, IDOK, BtnOK_ );
+	DDX_Control( pDX, IDC_CB_SEX, CBSex_ );
+	DDX_Control( pDX, IDC_TXT_AGE, TxtAge_ );
 }
 
 
 BEGIN_MESSAGE_MAP(CDlgParam, CDialogEx)
 	ON_EN_CHANGE( IDC_TXT_SF, &CDlgParam::OnEnChangeTxtSf )
-	ON_EN_UPDATE( IDC_TXT_SF, &CDlgParam::OnEnUpdateTxtSf )
 	ON_EN_CHANGE( IDC_TXT_YF, &CDlgParam::OnEnChangeTxtYf )
 	ON_EN_CHANGE( IDC_TXT_HSS, &CDlgParam::OnEnChangeTxtHss )
+	ON_EN_CHANGE( IDC_TXT_AGE, &CDlgParam::OnEnChangeTxtAge )
+	ON_CBN_SELCHANGE( IDC_CB_SEX, &CDlgParam::OnCbnSelchangeCbSex )
 END_MESSAGE_MAP()
+
+
+BOOL CDlgParam::OnInitDialog()
+{
+	CDialogEx::OnInitDialog();
+
+	// TODO:  在此添加额外的初始化
+	TxtSF_.SetWindowTextW( _T( "50" ) );
+	TxtYF_.SetWindowTextW( _T( "50" ) );
+	TxtHss_.SetWindowTextW( _T( "50" ) );
+	TxtAge_.SetWindowTextW( _T( "20" ) );
+	CBSex_.SetCurSel( 0 );
+	
+	OnEnChangeTxtSf();
+	OnEnChangeTxtYf();
+	OnEnChangeTxtHss();
+	OnEnChangeTxtAge();
+	OnCbnSelchangeCbSex();
+
+	return TRUE;  // return TRUE unless you set the focus to a control
+	// 异常:  OCX 属性页应返回 FALSE
+}
 
 
 // CDlgParam 消息处理程序
@@ -56,6 +81,16 @@ int CDlgParam::GetYF() const
 int CDlgParam::GetHSS() const
 {
 	return HSS_;
+}
+
+int CDlgParam::GetAge() const
+{
+	return Age_;
+}
+
+bool CDlgParam::IsMale() const
+{
+	return Male_;
 }
 
 void CDlgParam::OnEnChangeTxtSf()
@@ -146,28 +181,38 @@ void CDlgParam::OnEnChangeTxtHss()
 	}
 }
 
-
-
-void CDlgParam::OnEnUpdateTxtSf()
+void CDlgParam::OnEnChangeTxtAge()
 {
 	// TODO:  如果该控件是 RICHEDIT 控件，它将不
 	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
-	// 函数，以将 EM_SETEVENTMASK 消息发送到该控件，
-	// 同时将 ENM_UPDATE 标志“或”运算到 lParam 掩码中。
+	// 函数并调用 CRichEditCtrl().SetEventMask()，
+	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
 
 	// TODO:  在此添加控件通知处理程序代码
+	CString str;
+	TxtAge_.GetWindowTextW( str );
+
+	std::wstring wstr = str.GetBuffer();
+	str.ReleaseBuffer();
+
+	if ( !wstr.empty() )
+	{
+		SF_ = std::stoi( wstr );
+
+		if ( SF_ > 100 )
+		{
+			SF_ = 100;
+		}
+
+		TxtAge_.SetWindowTextW( std::to_wstring( SF_ ).c_str() );
+		TxtAge_.SetSel( 0, -1 );
+		TxtAge_.SetSel( -1 );
+	}
 }
 
 
-BOOL CDlgParam::OnInitDialog()
+void CDlgParam::OnCbnSelchangeCbSex()
 {
-	CDialogEx::OnInitDialog();
-
-	// TODO:  在此添加额外的初始化
-	TxtSF_.SetWindowTextW( _T( "50" ) );
-	TxtYF_.SetWindowTextW( _T( "50" ) );
-	TxtHss_.SetWindowTextW( _T( "50" ) );
-
-	return TRUE;  // return TRUE unless you set the focus to a control
-	// 异常:  OCX 属性页应返回 FALSE
+	// TODO:  在此添加控件通知处理程序代码
+	Male_ = CBSex_.GetCurSel() == 0;
 }

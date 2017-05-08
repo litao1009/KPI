@@ -16,4 +16,6 @@ public:
 	float	Moisture{};
 	float	Fat{};
 	float	Melanin{};
+	bool	Male{};
+	int		Age_{};
 };

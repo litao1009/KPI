@@ -80,6 +80,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
+	cs.cx = 1536 + 20;
+	cs.cy = 768 + 62;
+
 	if( !CFrameWnd::PreCreateWindow(cs) )
 		return FALSE;
 	// TODO:  在此处通过修改
@@ -187,6 +190,8 @@ void CMainFrame::OnModifyParam()
 		evt->Fat = dlg.GetYF();
 		evt->Moisture = dlg.GetSF();
 		evt->Melanin = dlg.GetHSS();
+		evt->Male = dlg.IsMale();
+		evt->Age_ = dlg.GetAge();
 
 		OgreEnv::GetInstance().PostFrameEventTo3D( evt->ConvertToFrameEvent() );
 	}
