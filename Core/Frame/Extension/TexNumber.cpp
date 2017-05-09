@@ -158,6 +158,12 @@ void TexNumber::SetIndex(int index)
 	auto uvBeg = index / 11.f;
 	auto uvEnd = ( index + 1 ) / 11.f;
 
+	if ( index < 0 )
+	{
+		uvBeg = 0.f;
+		uvEnd = 0.f;
+	}
+
 	auto uvEle = imp_.RO_.vertexData->vertexDeclaration->findElementBySemantic( Ogre::VES_TEXTURE_COORDINATES );
 
 	auto vbuf = imp_.RO_.vertexData->vertexBufferBinding->getBuffer( 0 );

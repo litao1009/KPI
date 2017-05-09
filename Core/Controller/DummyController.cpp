@@ -72,7 +72,12 @@ public:
 	TexNumber*					Age1_{};
 	TexNumber*					Age2_{};
 	TexNumber*					Age3_{};
-	Ogre::SceneNode*			Age1Node_{};
+
+	TexNumber*					SumNum1_{};
+	TexNumber*					SumNum2_{};
+	TexNumber*					SumNum3_{};
+	TexNumber*					SumNum4_{};
+	TexNumber*					SumNum5_{};
 
 public:
 
@@ -94,17 +99,89 @@ public:
 		auto a2 = ( age / 10 ) % 10;
 		auto a3 = ( age / 100 ) % 10;
 
-		Age1_->SetIndex(a3);
-		Age2_->SetIndex(a2);
+		Age1_->SetIndex(a3 == 0 ? -1 : a3);
+		Age2_->SetIndex(a2 == 0 ? -1 : a2);
 		Age3_->SetIndex(a1);
 
-		if ( a3 == 0 )
+		if ( age < 10 )
 		{
-			Age1Node_->setVisible(false);
+			SumNum1_->SetIndex(-1);
+			SumNum2_->SetIndex(0);
+			SumNum3_->SetIndex(-1);
+			SumNum4_->SetIndex(-1);
+			SumNum5_->SetIndex(9);
+		}
+		else if ( age < 20 )
+		{
+			SumNum1_->SetIndex(1);
+			SumNum2_->SetIndex(0);
+			SumNum3_->SetIndex(-1);
+			SumNum4_->SetIndex(1);
+			SumNum5_->SetIndex(9);
+		}
+		else if ( age < 30 )
+		{
+			SumNum1_->SetIndex(2);
+			SumNum2_->SetIndex(0);
+			SumNum3_->SetIndex(-1);
+			SumNum4_->SetIndex(2);
+			SumNum5_->SetIndex(9);
+		}
+		else if ( age < 40 )
+		{
+			SumNum1_->SetIndex(3);
+			SumNum2_->SetIndex(0);
+			SumNum3_->SetIndex(-1);
+			SumNum4_->SetIndex(3);
+			SumNum5_->SetIndex(9);
+		}
+		else if ( age < 50 )
+		{
+			SumNum1_->SetIndex(4);
+			SumNum2_->SetIndex(0);
+			SumNum3_->SetIndex(-1);
+			SumNum4_->SetIndex(4);
+			SumNum5_->SetIndex(9);
+		}
+		else if ( age < 60 )
+		{
+			SumNum1_->SetIndex(5);
+			SumNum2_->SetIndex(0);
+			SumNum3_->SetIndex(-1);
+			SumNum4_->SetIndex(5);
+			SumNum5_->SetIndex(9);
+		}
+		else if ( age < 70 )
+		{
+			SumNum1_->SetIndex(6);
+			SumNum2_->SetIndex(0);
+			SumNum3_->SetIndex(-1);
+			SumNum4_->SetIndex(6);
+			SumNum5_->SetIndex(9);
+		}
+		else if ( age < 80 )
+		{
+			SumNum1_->SetIndex(7);
+			SumNum2_->SetIndex(0);
+			SumNum3_->SetIndex(-1);
+			SumNum4_->SetIndex(7);
+			SumNum5_->SetIndex(9);
+		}
+		else if ( age < 90 )
+		{
+			SumNum1_->SetIndex(8);
+			SumNum2_->SetIndex(0);
+			SumNum3_->SetIndex(-1);
+			SumNum4_->SetIndex(8);
+			SumNum5_->SetIndex(9);
 		}
 		else
 		{
-			Age1Node_->setVisible(true);
+			SumNum1_->SetIndex(9);
+			SumNum2_->SetIndex(0);
+			SumNum3_->SetIndex(1);
+			SumNum4_->SetIndex(0);
+			SumNum5_->SetIndex(0);
 		}
 	}
 
@@ -370,11 +447,11 @@ DummyController::DummyController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 			auto numNode = ageNode->createChildSceneNode();
 			numNode->setPosition(50.f, 0.f, 0.f);
 			{//num
-				imp_.Age1Node_ = numNode->createChildSceneNode();
-				imp_.Age1Node_->setScale(40.f, 40.f, 1.f);
-				imp_.Age1Node_->setPosition(-60.f, 0.f, 0.f);
+				auto n1Node = numNode->createChildSceneNode();
+				n1Node->setScale(40.f, 40.f, 1.f);
+				n1Node->setPosition(-60.f, 0.f, 0.f);
 				imp_.Age1_ = TexNumberFactory::CreateInstance(imp_.Smgr_);
-				imp_.Age1Node_->attachObject(imp_.Age1_);
+				n1Node->attachObject(imp_.Age1_);
 
 				auto n2Node = numNode->createChildSceneNode();
 				n2Node->setScale(40.f, 40.f, 1.f);
@@ -388,8 +465,6 @@ DummyController::DummyController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 				imp_.Age3_ = TexNumberFactory::CreateInstance(imp_.Smgr_);
 				n3Node->attachObject(imp_.Age3_);
 			}
-
-			imp_.SetAge(20);
 		}
 
 		{//summy
@@ -417,10 +492,49 @@ DummyController::DummyController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 
 			{//seg
 				auto segNode = sumNode->createChildSceneNode();
-				segNode->setPosition(90.f, 0.f, 0.f);
+				//segNode->setPosition(-10.f, 0.f, 0.f);
+
+				auto charScaleNode = segNode->createChildSceneNode();
+				charScaleNode->setScale(20.f, 20.f, 1.f);
+
+				auto offsetNode = charScaleNode->createChildSceneNode();
+				offsetNode->setPosition(-.5f, 0.f, 0.f);
+
+				auto n5Node = offsetNode->createChildSceneNode();
+				imp_.SumNum5_ = TexNumberFactory::CreateInstance(imp_.Smgr_);
+				n5Node->attachObject(imp_.SumNum5_);
+
+				auto n4Node = offsetNode->createChildSceneNode();
+				imp_.SumNum4_ = TexNumberFactory::CreateInstance(imp_.Smgr_);
+				n4Node->setPosition(-1.f, 0.f, 0.f);
+				n4Node->attachObject(imp_.SumNum4_);
+
+				auto n3Node = offsetNode->createChildSceneNode();
+				imp_.SumNum3_ = TexNumberFactory::CreateInstance(imp_.Smgr_);
+				n3Node->setPosition(-2.f, 0.f, 0.f);
+				n3Node->attachObject(imp_.SumNum3_);
+
+				auto sbNode = offsetNode->createChildSceneNode();
+				auto sb = RectExtFactory::CreateInstance(imp_.Smgr_);
+				sb->SetUV(9.f / 10.f, 10.f / 10.f, 0.f, 1.f);
+				sb->SetMaterial("TexChar");
+				sbNode->setPosition(-3.f, 0.f, 0.f);
+				sbNode->attachObject(sb);
+
+				auto n2Node = offsetNode->createChildSceneNode();
+				imp_.SumNum2_ = TexNumberFactory::CreateInstance(imp_.Smgr_);
+				n2Node->setPosition(-4.f, 0.f, 0.f);
+				n2Node->attachObject(imp_.SumNum2_);
+
+				auto n1Node = offsetNode->createChildSceneNode();
+				imp_.SumNum1_ = TexNumberFactory::CreateInstance(imp_.Smgr_);
+				n1Node->setPosition(-5.f, 0.f, 0.f);
+				n1Node->attachObject(imp_.SumNum1_);
 			}
 		}
 	}
+
+	imp_.SetAge(20);
 
 	auto singleIndicatorArea = indicatorAreaWidth / 3;
 
