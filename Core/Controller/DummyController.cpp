@@ -523,12 +523,12 @@ DummyController::DummyController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 
 				auto n2Node = offsetNode->createChildSceneNode();
 				imp_.SumNum2_ = TexNumberFactory::CreateInstance(imp_.Smgr_);
-				n2Node->setPosition(-4.f, 0.f, 0.f);
+				n2Node->setPosition(-4.5f, 0.f, 0.f);
 				n2Node->attachObject(imp_.SumNum2_);
 
 				auto n1Node = offsetNode->createChildSceneNode();
 				imp_.SumNum1_ = TexNumberFactory::CreateInstance(imp_.Smgr_);
-				n1Node->setPosition(-5.f, 0.f, 0.f);
+				n1Node->setPosition(-5.5f, 0.f, 0.f);
 				n1Node->attachObject(imp_.SumNum1_);
 			}
 		}
