@@ -68,7 +68,45 @@ public:
 	TexNumber*					Ind3Char2_{};
 	TexNumber*					Ind3Char3_{};
 
+	RectExt*					Sex_{};
+	TexNumber*					Age1_{};
+	TexNumber*					Age2_{};
+	TexNumber*					Age3_{};
+	Ogre::SceneNode*			Age1Node_{};
+
 public:
+
+	void	SetSex(bool male)
+	{
+		if ( male )
+		{
+			Sex_->SetUV(2 / 8.f, 3 / 8.f, 0.f, 1.f);
+		}
+		else
+		{
+			Sex_->SetUV(3 / 8.f, 4 / 8.f, 0.f, 1.f);
+		}
+	}
+
+	void	SetAge(int age)
+	{
+		auto a1 = age % 10;
+		auto a2 = ( age / 10 ) % 10;
+		auto a3 = ( age / 100 ) % 10;
+
+		Age1_->SetIndex(a3);
+		Age2_->SetIndex(a2);
+		Age3_->SetIndex(a1);
+
+		if ( a3 == 0 )
+		{
+			Age1Node_->setVisible(false);
+		}
+		else
+		{
+			Age1Node_->setVisible(true);
+		}
+	}
 
 	void	UpdateValue( int moisture, int fat, int melanin )
 	{
@@ -288,8 +326,75 @@ DummyController::DummyController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 
 		auto scaleNode = posNode->createChildSceneNode();
 		scaleNode->setScale( ctex->getWidth(), ctex->getHeight(), 1.f );
-
 		scaleNode->attachObject( rect );
+
+		{//sex
+			auto sexNode = posNode->createChildSceneNode();
+			sexNode->setPosition(0.f, 392.f, 0.f);
+
+			{
+				auto sex1Node = sexNode->createChildSceneNode();
+				sex1Node->setPosition(-90.f, 0.f, 0.f);
+				sex1Node->setScale(90.f, 45.f, 1.f);
+				auto sexRect = RectExtFactory::CreateInstance(imp_.Smgr_);
+				sexRect->SetMaterial("TexChar");
+				sexRect->SetUV(0.f, 2 / 8.f, 0.f, 1.f);
+				sex1Node->attachObject(sexRect);
+			}
+
+			{
+				auto sex2Node = sexNode->createChildSceneNode();
+				sex2Node->setPosition(50.f, 0.f, 0.f);
+				sex2Node->setScale(45.f, 45.f, 1.f);
+				imp_.Sex_ = RectExtFactory::CreateInstance(imp_.Smgr_);
+				imp_.Sex_->SetMaterial("TexChar");
+				imp_.SetSex(true);
+				sex2Node->attachObject(imp_.Sex_);
+			}
+		}
+
+		{//age
+			auto ageNode = posNode->createChildSceneNode();
+			ageNode->setPosition(0.f, 342.f, 0.f);
+
+			{//tex
+				auto texNode = ageNode->createChildSceneNode();
+				texNode->setPosition(-90.f, 0.f, 0.f);
+				texNode->setScale(90.f, 45.f, 1.f);
+				auto ageRect = RectExtFactory::CreateInstance(imp_.Smgr_);
+				ageRect->SetMaterial("TexChar");
+				ageRect->SetUV(4 / 8.f, 6 / 8.f, 0.f, 1.f);
+				texNode->attachObject(ageRect);
+			}
+
+			auto numNode = ageNode->createChildSceneNode();
+			numNode->setPosition(50.f, 0.f, 0.f);
+			{//num
+				imp_.Age1Node_ = numNode->createChildSceneNode();
+				imp_.Age1Node_->setScale(40.f, 40.f, 1.f);
+				imp_.Age1Node_->setPosition(-60.f, 0.f, 0.f);
+				imp_.Age1_ = TexNumberFactory::CreateInstance(imp_.Smgr_);
+				imp_.Age1Node_->attachObject(imp_.Age1_);
+
+				auto n2Node = numNode->createChildSceneNode();
+				n2Node->setScale(40.f, 40.f, 1.f);
+				n2Node->setPosition(-20.f, 0.f, 0.f);
+				imp_.Age2_ = TexNumberFactory::CreateInstance(imp_.Smgr_);
+				n2Node->attachObject(imp_.Age2_);
+
+				auto n3Node = numNode->createChildSceneNode();
+				n3Node->setScale(40.f, 40.f, 1.f);
+				n3Node->setPosition(20.f, 0.f, 0.f);
+				imp_.Age3_ = TexNumberFactory::CreateInstance(imp_.Smgr_);
+				n3Node->attachObject(imp_.Age3_);
+			}
+
+			imp_.SetAge(20);
+		}
+
+		{//summy
+
+		}
 	}
 
 	auto singleIndicatorArea = indicatorAreaWidth / 3;
@@ -577,7 +682,7 @@ DummyController::~DummyController()
 	auto& imp_ = *ImpUPtr_;
 
 	Unload();
-
+	
 	auto comMgr = Ogre::Root::getSingletonPtr()->getCompositorManager2();
 	comMgr->removeWorkspace( imp_.WorkSpce_ );
 	Ogre::Root::getSingletonPtr()->destroySceneManager( imp_.Smgr_ );
@@ -593,5 +698,7 @@ void DummyController::_FrameStart( const Ogre::FrameEvent& fevt )
 	if ( evt )
 	{
 		imp_.UpdateValue( evt->Moisture, evt->Fat, evt->Melanin );
+		imp_.SetSex(evt->Male);
+		imp_.SetAge(evt->Age_);
 	}
 }

@@ -197,14 +197,14 @@ void CDlgParam::OnEnChangeTxtAge()
 
 	if ( !wstr.empty() )
 	{
-		SF_ = std::stoi( wstr );
+		Age_ = std::stoi( wstr );
 
-		if ( SF_ > 100 )
+		if ( Age_ > 100 )
 		{
-			SF_ = 100;
+			Age_ = 100;
 		}
 
-		TxtAge_.SetWindowTextW( std::to_wstring( SF_ ).c_str() );
+		TxtAge_.SetWindowTextW(std::to_wstring(Age_).c_str());
 		TxtAge_.SetSel( 0, -1 );
 		TxtAge_.SetSel( -1 );
 	}

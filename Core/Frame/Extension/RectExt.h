@@ -52,6 +52,8 @@ public:
 	void	SetMaterial(const std::string& name);
 
 	void	Destory();
+
+	void	SetUV(float uBeg, float uEnd, float vBeg, float vEnd);
 };
 
 class	RectExtFactory : public TExtMovableObjFactory<RectExt>

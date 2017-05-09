@@ -128,3 +128,34 @@ void RectExt::Destory()
 
 	Smgr_->destroyMovableObject(this);
 }
+
+void RectExt::SetUV(float uBeg, float uEnd, float vBeg, float vEnd)
+{
+	auto uvEle = RO_.vertexData->vertexDeclaration->findElementBySemantic(Ogre::VES_TEXTURE_COORDINATES);
+
+	auto vbuf = RO_.vertexData->vertexBufferBinding->getBuffer(0);
+
+	auto pBuf = reinterpret_cast<uint8_t*>( vbuf->lock(Ogre::HardwareBuffer::HBL_WRITE_ONLY) );
+
+	float* pVal{};
+	uvEle->baseVertexPointerToElement(pBuf, &pVal);
+	reinterpret_cast<Ogre::Vector2*>( pVal )->x = uBeg;
+	reinterpret_cast<Ogre::Vector2*>( pVal )->y = vBeg;
+
+	pBuf += vbuf->getVertexSize();
+	uvEle->baseVertexPointerToElement(pBuf, &pVal);
+	reinterpret_cast<Ogre::Vector2*>( pVal )->x = uBeg;
+	reinterpret_cast<Ogre::Vector2*>( pVal )->y = vEnd;
+
+	pBuf += vbuf->getVertexSize();
+	uvEle->baseVertexPointerToElement(pBuf, &pVal);
+	reinterpret_cast<Ogre::Vector2*>( pVal )->x = uEnd;
+	reinterpret_cast<Ogre::Vector2*>( pVal )->y = vEnd;
+
+	pBuf += vbuf->getVertexSize();
+	uvEle->baseVertexPointerToElement(pBuf, &pVal);
+	reinterpret_cast<Ogre::Vector2*>( pVal )->x = uEnd;
+	reinterpret_cast<Ogre::Vector2*>( pVal )->y = vBeg;
+
+	vbuf->unlock();
+}
