@@ -80,11 +80,11 @@ public:
 	{
 		if ( male )
 		{
-			Sex_->SetUV(2 / 8.f, 3 / 8.f, 0.f, 1.f);
+			Sex_->SetUV(2 / 10.f, 3 / 10.f, 0.f, 1.f);
 		}
 		else
 		{
-			Sex_->SetUV(3 / 8.f, 4 / 8.f, 0.f, 1.f);
+			Sex_->SetUV(3 / 10.f, 4 / 10.f, 0.f, 1.f);
 		}
 	}
 
@@ -338,7 +338,7 @@ DummyController::DummyController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 				sex1Node->setScale(90.f, 45.f, 1.f);
 				auto sexRect = RectExtFactory::CreateInstance(imp_.Smgr_);
 				sexRect->SetMaterial("TexChar");
-				sexRect->SetUV(0.f, 2 / 8.f, 0.f, 1.f);
+				sexRect->SetUV(0.f, 2 / 10.f, 0.f, 1.f);
 				sex1Node->attachObject(sexRect);
 			}
 
@@ -363,7 +363,7 @@ DummyController::DummyController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 				texNode->setScale(90.f, 45.f, 1.f);
 				auto ageRect = RectExtFactory::CreateInstance(imp_.Smgr_);
 				ageRect->SetMaterial("TexChar");
-				ageRect->SetUV(4 / 8.f, 6 / 8.f, 0.f, 1.f);
+				ageRect->SetUV(4 / 10.f, 6 / 10.f, 0.f, 1.f);
 				texNode->attachObject(ageRect);
 			}
 
@@ -393,7 +393,32 @@ DummyController::DummyController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 		}
 
 		{//summy
+			auto sumCharHeight = 30.f;
+			auto sumCharWidth = 30.f;
+			auto sumCharAspect = sumCharWidth / sumCharHeight;
 
+			auto sumNode = posNode->createChildSceneNode();
+			sumNode->setPosition(0.f, -240.f, 0.f);
+
+			{//post
+				auto postNode = sumNode->createChildSceneNode();
+				postNode->setPosition(10.f, 0.f, 0.f);
+				auto scaleNode = postNode->createChildSceneNode();
+				scaleNode->setScale(sumCharHeight * sumCharAspect, sumCharHeight, 1.f);
+				auto nbNode = scaleNode->createChildSceneNode();
+				nbNode->setScale(4.f, 1.f, 1.f);
+				auto offsetNode = nbNode->createChildSceneNode();
+				offsetNode->setPosition(0.5f, 0.f, 0.f);
+				auto postTex = RectExtFactory::CreateInstance(imp_.Smgr_);
+				postTex->SetMaterial("TexChar");
+				postTex->SetUV(4 / 10.f, 8 / 10.f, 0.f, 1.f);
+				offsetNode->attachObject(postTex);
+			}
+
+			{//seg
+				auto segNode = sumNode->createChildSceneNode();
+				segNode->setPosition(90.f, 0.f, 0.f);
+			}
 		}
 	}
 
