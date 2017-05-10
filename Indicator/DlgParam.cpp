@@ -7,6 +7,8 @@
 #include "afxdialogex.h"
 
 #include <string>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/ini_parser.hpp>
 
 // CDlgParam 对话框
 
@@ -40,6 +42,7 @@ BEGIN_MESSAGE_MAP(CDlgParam, CDialogEx)
 	ON_EN_CHANGE( IDC_TXT_HSS, &CDlgParam::OnEnChangeTxtHss )
 	ON_EN_CHANGE( IDC_TXT_AGE, &CDlgParam::OnEnChangeTxtAge )
 	ON_CBN_SELCHANGE( IDC_CB_SEX, &CDlgParam::OnCbnSelchangeCbSex )
+	ON_BN_CLICKED( IDC_BTN_IMPORT, &CDlgParam::OnBnClickedBtnImport )
 END_MESSAGE_MAP()
 
 
@@ -215,4 +218,45 @@ void CDlgParam::OnCbnSelchangeCbSex()
 {
 	// TODO:  在此添加控件通知处理程序代码
 	Male_ = CBSex_.GetCurSel() == 0;
+}
+
+void CDlgParam::OnBnClickedBtnImport()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	CFileDialog dlg( TRUE, 0, 0, 6UL, _T( "文件 (*.ini)|*.ini||" ) );
+
+	auto ret = dlg.DoModal();
+	if ( ret == 1 )
+	{
+		auto fp = dlg.GetPathName();
+		std::wstring wstr = fp.GetBuffer();
+		fp.ReleaseBuffer();
+
+		try
+		{
+			std::ifstream ifs( wstr );
+
+			boost::property_tree::ptree pt;
+			boost::property_tree::ini_parser::read_ini( ifs, pt );
+
+			auto sf = pt.get<int>( "水分" );
+			auto yz = pt.get<int>( "油脂" );
+			auto hss = pt.get<int>( "黑色素" );
+
+			SF_ = sf;
+			YF_ = yz;
+			HSS_ = hss;
+
+			TxtSF_.SetWindowText( std::to_wstring( SF_ ).c_str() );
+			TxtYF_.SetWindowText( std::to_wstring( YF_ ).c_str() );
+			TxtHss_.SetWindowText( std::to_wstring( HSS_ ).c_str() );
+
+			GetDlgItem( IDOK )->SetFocus();
+		}
+		catch ( ... )
+		{
+			MessageBox( _T( "ini格式错误！" ) );
+		}
+		
+	}
 }

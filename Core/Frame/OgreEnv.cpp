@@ -164,7 +164,7 @@ void OgreEnv::RenderOneFrame()
 
 	auto curTime = root.getTimer()->getMicroseconds();
 	auto frameTime = curTime - s_LastTime;
-	auto limitFPS = 60;
+	auto limitFPS = 10;
 	auto limitFrameTime = 1E6 / static_cast<float >(limitFPS);
 
 	if ( frameTime < limitFrameTime )

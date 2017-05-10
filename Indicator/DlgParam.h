@@ -58,4 +58,5 @@ public:
 	afx_msg void OnEnChangeTxtAge();
 	afx_msg void OnCbnSelchangeCbSex();
 	
+	afx_msg void OnBnClickedBtnImport();
 };

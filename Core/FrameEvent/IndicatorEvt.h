@@ -9,6 +9,12 @@ public:
 
 };
 
+class	ClearEvt : public TFrameEvent<ClearEvt>
+{
+public:
+
+};
+
 class	IndicatorEvt : public TFrameEvent<IndicatorEvt>
 {
 public:

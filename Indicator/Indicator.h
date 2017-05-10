@@ -27,6 +27,9 @@ public:
 
 	virtual int ExitInstance() override;
 
+
+	virtual BOOL PumpMessage() override;
+
 	// ÖØÐ´
 public:
 	virtual BOOL InitInstance();

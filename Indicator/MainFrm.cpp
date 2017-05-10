@@ -134,8 +134,7 @@ void CMainFrame::OnSize(UINT nType, int cx, int cy)
 
 void CMainFrame::OnImport()
 {
-	// TODO:  在此添加命令处理程序代码
-
+	// TODO:  在此添加命令处理程序代码	
 	CFileDialog dlg(TRUE, 0, 0, 6UL, _T("文件 (*.txt)|*.txt||"));
 	
 	auto ret = dlg.DoModal();
@@ -182,6 +181,11 @@ void CMainFrame::OnImport()
 void CMainFrame::OnModifyParam()
 {
 	// TODO:  在此添加命令处理程序代码
+	{
+		auto evt = std::make_shared<ClearEvt>();
+		OgreEnv::GetInstance().PostFrameEventTo3D( evt->ConvertToFrameEvent() );
+	}
+
 	CDlgParam dlg;
 	auto ret = dlg.DoModal();
 	if ( ret == 1 )

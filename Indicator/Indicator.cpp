@@ -48,6 +48,11 @@ BOOL CIndicatorApp::OnIdle(LONG lCount)
 
 BOOL CIndicatorApp::IsIdleMessage(MSG* pMsg)
 {
+	if ( pMsg->message == WM_TIMER )
+	{
+		OgreEnv::GetInstance().RenderOneFrame();
+	}
+
 	return TRUE;
 }
 
@@ -56,6 +61,17 @@ int CIndicatorApp::ExitInstance()
 	OgreEnv::GetInstance().UnInit();
 
 	return 0;
+}
+
+BOOL CIndicatorApp::PumpMessage()
+{
+	MSG msg;
+	if ( 0 != PeekMessage( &msg, NULL, 0, 0, PM_NOREMOVE ) )
+	{
+		return CWinApp::PumpMessage();
+	}
+
+	return TRUE;
 }
 
 // 唯一的一个 CKPIApp 对象
