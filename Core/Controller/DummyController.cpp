@@ -100,7 +100,16 @@ public:
 		auto a3 = ( age / 100 ) % 10;
 
 		Age1_->SetIndex(a3 == 0 ? -1 : a3);
-		Age2_->SetIndex(a2 == 0 ? -1 : a2);
+		
+		if ( a2 == 0 )
+		{
+			Age2_->SetIndex( a3 == 0 ? -1 : a2 );
+		}
+		else
+		{
+			Age2_->SetIndex( a2 );
+		}
+		
 		Age3_->SetIndex(a1);
 
 		if ( age < 10 )
@@ -440,7 +449,7 @@ DummyController::DummyController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 				texNode->setScale(90.f, 45.f, 1.f);
 				auto ageRect = RectExtFactory::CreateInstance(imp_.Smgr_);
 				ageRect->SetMaterial("TexChar");
-				ageRect->SetUV(4 / 10.f, 6 / 10.f, 0.f, 1.f);
+				ageRect->SetUV(5 / 10.f, 7 / 10.f, 0.f, 1.f);
 				texNode->attachObject(ageRect);
 			}
 
