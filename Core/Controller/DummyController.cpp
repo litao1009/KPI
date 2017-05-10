@@ -20,9 +20,9 @@
 
 static const auto panelOffset = 264.f;
 static const auto introductionOffset = -188.f;
-static const auto texOffset = -10.f;
-static const auto charWidth = 40.f;
-static const auto charHeight = 80.f;
+static const auto texOffset = -5.f;
+static const auto charWidth = 30.f;
+static const auto charHeight = 60.f;
 
 enum ERenderGroup
 {
