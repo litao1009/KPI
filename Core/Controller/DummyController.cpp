@@ -81,6 +81,10 @@ public:
 
 	Ogre::SceneNode*			ResultNode_{};
 
+	RectExt*					S_{};
+	RectExt*					Y_{};
+	RectExt*					H_{};
+
 public:
 
 	void	SetSex(bool male)
@@ -257,6 +261,19 @@ public:
 			Ogre::Quaternion qua;
 			qua.FromAngleAxis( Ogre::Degree( moisture * 1.8f ), Ogre::Vector3::NEGATIVE_UNIT_Z );
 			Pointer1Node_->setOrientation( qua );
+
+			if ( moisture < 30 )
+			{
+				S_->SetMaterial( "S1" );
+			}
+			else if ( moisture <= 55 )
+			{
+				S_->SetMaterial( "S2" );
+			}
+			else
+			{
+				S_->SetMaterial( "S3" );
+			}
 		}
 
 
@@ -311,6 +328,19 @@ public:
 			Ogre::Quaternion qua;
 			qua.FromAngleAxis( Ogre::Degree( fat * 1.8f ), Ogre::Vector3::NEGATIVE_UNIT_Z );
 			Pointer2Node_->setOrientation( qua );
+
+			if ( fat < 30 )
+			{
+				Y_->SetMaterial( "Y1" );
+			}
+			else if ( fat <= 65 )
+			{
+				Y_->SetMaterial( "Y2" );
+			}
+			else
+			{
+				Y_->SetMaterial( "Y3" );
+			}
 		}
 
 
@@ -365,6 +395,19 @@ public:
 			Ogre::Quaternion qua;
 			qua.FromAngleAxis( Ogre::Degree( melanin * 1.8f ), Ogre::Vector3::NEGATIVE_UNIT_Z );
 			Pointer3Node_->setOrientation( qua );
+
+			if ( melanin < 30 )
+			{
+				H_->SetMaterial( "H1" );
+			}
+			else if ( melanin <= 65 )
+			{
+				H_->SetMaterial( "H2" );
+			}
+			else
+			{
+				H_->SetMaterial( "H3" );
+			}
 		}
 
 		ResultNode_->setVisible( true );
@@ -639,9 +682,9 @@ DummyController::DummyController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 				auto introdScaleNode = introdPosNode->createChildSceneNode();
 				introdScaleNode->setScale( introdTex->getWidth(), introdTex->getHeight(), 1.f );
 
-				auto introdRect = RectExtFactory::CreateInstance( imp_.Smgr_ );
-				introdRect->SetMaterial( introdMat->getName() );
-				introdScaleNode->attachObject( introdRect );
+				imp_.S_ = RectExtFactory::CreateInstance( imp_.Smgr_ );
+				imp_.S_->SetMaterial( introdMat->getName() );
+				introdScaleNode->attachObject( imp_.S_ );
 			}
 		}
 
@@ -727,9 +770,9 @@ DummyController::DummyController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 				auto introdScaleNode = introdPosNode->createChildSceneNode();
 				introdScaleNode->setScale( introdTex->getWidth(), introdTex->getHeight(), 1.f );
 
-				auto introdRect = RectExtFactory::CreateInstance( imp_.Smgr_ );
-				introdRect->SetMaterial( introdMat->getName() );
-				introdScaleNode->attachObject( introdRect );
+				imp_.Y_ = RectExtFactory::CreateInstance( imp_.Smgr_ );
+				imp_.Y_->SetMaterial( introdMat->getName() );
+				introdScaleNode->attachObject( imp_.Y_ );
 			}
 		}
 
@@ -816,9 +859,9 @@ DummyController::DummyController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 				auto introdScaleNode = introdPosNode->createChildSceneNode();
 				introdScaleNode->setScale( introdTex->getWidth(), introdTex->getHeight(), 1.f );
 
-				auto introdRect = RectExtFactory::CreateInstance( imp_.Smgr_ );
-				introdRect->SetMaterial( introdMat->getName() );
-				introdScaleNode->attachObject( introdRect );
+				imp_.H_ = RectExtFactory::CreateInstance( imp_.Smgr_ );
+				imp_.H_->SetMaterial( introdMat->getName() );
+				introdScaleNode->attachObject( imp_.H_ );
 			}
 		}
 	}
@@ -826,6 +869,9 @@ DummyController::DummyController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 	imp_.SetAge( 0 );
 	imp_.UpdateValue( 0, 0, 0 );
 	imp_.ResultNode_->setVisible( false );
+	imp_.S_->SetMaterial( "Introduction" );
+	imp_.Y_->SetMaterial( "Introduction" );
+	imp_.H_->SetMaterial( "Introduction" );
 }
 
 DummyController::~DummyController()
@@ -862,6 +908,9 @@ void DummyController::_FrameStart( const Ogre::FrameEvent& fevt )
 			imp_.SetAge( 0 );
 			imp_.UpdateValue( 0, 0, 0 );
 			imp_.ResultNode_->setVisible( false );
+			imp_.S_->SetMaterial( "Introduction" );
+			imp_.Y_->SetMaterial( "Introduction" );
+			imp_.H_->SetMaterial( "Introduction" );
 		}
 	}
 }

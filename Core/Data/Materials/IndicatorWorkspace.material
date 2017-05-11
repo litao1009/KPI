@@ -164,6 +164,132 @@ material Introduction
 	}
 }
 
+material S1 : Introduction
+{
+	technique
+	{
+		pass
+		{			
+			texture_unit
+			{
+				texture s1.png 2d 0
+			}
+		}
+	}
+}
+
+material S2 : Introduction
+{
+	technique
+	{
+		pass
+		{			
+			texture_unit
+			{
+				texture s2.png 2d 0
+			}
+		}
+	}
+}
+
+material S3 : Introduction
+{
+	technique
+	{
+		pass
+		{			
+			texture_unit
+			{
+				texture s3.png 2d 0
+			}
+		}
+	}
+}
+
+material Y1 : Introduction
+{
+	technique
+	{
+		pass
+		{			
+			texture_unit
+			{
+				texture y1.png 2d 0
+			}
+		}
+	}
+}
+
+material Y2 : Introduction
+{
+	technique
+	{
+		pass
+		{			
+			texture_unit
+			{
+				texture y2.png 2d 0
+			}
+		}
+	}
+}
+
+material Y3 : Introduction
+{
+	technique
+	{
+		pass
+		{			
+			texture_unit
+			{
+				texture y3.png 2d 0
+			}
+		}
+	}
+}
+
+material H1 : Introduction
+{
+	technique
+	{
+		pass
+		{			
+			texture_unit
+			{
+				texture h1.png 2d 0
+			}
+		}
+	}
+}
+
+material H2 : Introduction
+{
+	technique
+	{
+		pass
+		{			
+			texture_unit
+			{
+				texture h2.png 2d 0
+			}
+		}
+	}
+}
+
+material H3 : Introduction
+{
+	technique
+	{
+		pass
+		{			
+			texture_unit
+			{
+				texture h3.png 2d 0
+			}
+		}
+	}
+}
+
 material TexNumber
 {
 	technique

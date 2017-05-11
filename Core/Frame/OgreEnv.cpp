@@ -91,8 +91,8 @@ void OgreEnv::Init()
 {
 	auto& imp_ = *ImpUPtr_;
 
-	auto root = new Ogre::Root("", "");
-	
+	auto root = new Ogre::Root("", "", "");
+
 	imp_.Plugins_.emplace_back(std::make_unique<Ogre::GLPlugin>());
 
 	for (auto& curPlugin : imp_.Plugins_ )
