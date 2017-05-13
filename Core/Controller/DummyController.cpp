@@ -19,7 +19,8 @@
 #include <vector>
 
 static const auto panelOffset = 264.f;
-static const auto introductionOffset = -188.f;
+static const auto introductionOffset = 20.f;
+static const auto resultOffset = -200.f;
 static const auto texOffset = -5.f;
 static const auto charWidth = 30.f;
 static const auto charHeight = 60.f;
@@ -676,15 +677,29 @@ DummyController::DummyController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 			}
 
 			{//introduction
-				auto introdPosNode = ind->createChildSceneNode();
-				introdPosNode->setPosition( 0.f, introductionOffset, 0.f );
+				auto introdNode = ind->createChildSceneNode();
+				introdNode->setPosition( 0.f, introductionOffset, 0.f );
 
-				auto introdScaleNode = introdPosNode->createChildSceneNode();
-				introdScaleNode->setScale( introdTex->getWidth(), introdTex->getHeight(), 1.f );
+				auto tex = Ogre::TextureManager::getSingleton().load( "s.png", "General" );
+
+				auto introidScaleNode = introdNode->createChildSceneNode();
+				introidScaleNode->setScale( tex->getWidth(), tex->getHeight(), 1.f );
+
+				auto introd = RectExtFactory::CreateInstance( imp_.Smgr_ );
+				introd->SetMaterial( "S" );
+				introidScaleNode->attachObject( introd );
+
+
+
+				auto resultNode = ind->createChildSceneNode();
+				resultNode->setPosition( 0.f, resultOffset, 0.f );
+
+				auto reslutScaleNode = resultNode->createChildSceneNode();
+				reslutScaleNode->setScale( introdTex->getWidth(), introdTex->getHeight(), 1.f );
 
 				imp_.S_ = RectExtFactory::CreateInstance( imp_.Smgr_ );
 				imp_.S_->SetMaterial( introdMat->getName() );
-				introdScaleNode->attachObject( imp_.S_ );
+				reslutScaleNode->attachObject( imp_.S_ );
 			}
 		}
 
@@ -764,15 +779,28 @@ DummyController::DummyController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 			}
 
 			{//introduction
-				auto introdPosNode = ind->createChildSceneNode();
-				introdPosNode->setPosition( 0.f, introductionOffset, 0.f );
+				auto introdNode = ind->createChildSceneNode();
+				introdNode->setPosition( 0.f, introductionOffset, 0.f );
 
-				auto introdScaleNode = introdPosNode->createChildSceneNode();
-				introdScaleNode->setScale( introdTex->getWidth(), introdTex->getHeight(), 1.f );
+				auto tex = Ogre::TextureManager::getSingleton().load( "y.png", "General" );
+
+				auto introidScaleNode = introdNode->createChildSceneNode();
+				introidScaleNode->setScale( tex->getWidth(), tex->getHeight(), 1.f );
+
+				auto introd = RectExtFactory::CreateInstance( imp_.Smgr_ );
+				introd->SetMaterial( "Y" );
+				introidScaleNode->attachObject( introd );
+
+
+				auto resultNode = ind->createChildSceneNode();
+				resultNode->setPosition( 0.f, resultOffset, 0.f );
+
+				auto reslutScaleNode = resultNode->createChildSceneNode();
+				reslutScaleNode->setScale( introdTex->getWidth(), introdTex->getHeight(), 1.f );
 
 				imp_.Y_ = RectExtFactory::CreateInstance( imp_.Smgr_ );
 				imp_.Y_->SetMaterial( introdMat->getName() );
-				introdScaleNode->attachObject( imp_.Y_ );
+				reslutScaleNode->attachObject( imp_.Y_ );
 			}
 		}
 
@@ -853,15 +881,28 @@ DummyController::DummyController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 			}
 
 			{//introduction
-				auto introdPosNode = ind->createChildSceneNode();
-				introdPosNode->setPosition( 0.f, introductionOffset, 0.f );
+				auto introdNode = ind->createChildSceneNode();
+				introdNode->setPosition( 0.f, introductionOffset, 0.f );
 
-				auto introdScaleNode = introdPosNode->createChildSceneNode();
-				introdScaleNode->setScale( introdTex->getWidth(), introdTex->getHeight(), 1.f );
+				auto tex = Ogre::TextureManager::getSingleton().load( "h.png", "General" );
+
+				auto introidScaleNode = introdNode->createChildSceneNode();
+				introidScaleNode->setScale( tex->getWidth(), tex->getHeight(), 1.f );
+
+				auto introd = RectExtFactory::CreateInstance( imp_.Smgr_ );
+				introd->SetMaterial( "H" );
+				introidScaleNode->attachObject( introd );
+
+
+				auto resultNode = ind->createChildSceneNode();
+				resultNode->setPosition( 0.f, resultOffset, 0.f );
+
+				auto reslutScaleNode = resultNode->createChildSceneNode();
+				reslutScaleNode->setScale( introdTex->getWidth(), introdTex->getHeight(), 1.f );
 
 				imp_.H_ = RectExtFactory::CreateInstance( imp_.Smgr_ );
 				imp_.H_->SetMaterial( introdMat->getName() );
-				introdScaleNode->attachObject( imp_.H_ );
+				reslutScaleNode->attachObject( imp_.H_ );
 			}
 		}
 	}

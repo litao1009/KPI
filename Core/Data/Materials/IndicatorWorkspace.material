@@ -164,6 +164,20 @@ material Introduction
 	}
 }
 
+material S : Introduction
+{
+	technique
+	{
+		pass
+		{			
+			texture_unit
+			{
+				texture s.png 2d 0
+			}
+		}
+	}
+}
+
 material S1 : Introduction
 {
 	technique
@@ -206,6 +220,20 @@ material S3 : Introduction
 	}
 }
 
+material Y : Introduction
+{
+	technique
+	{
+		pass
+		{			
+			texture_unit
+			{
+				texture y.png 2d 0
+			}
+		}
+	}
+}
+
 material Y1 : Introduction
 {
 	technique
@@ -243,6 +271,20 @@ material Y3 : Introduction
 			texture_unit
 			{
 				texture y3.png 2d 0
+			}
+		}
+	}
+}
+
+material H : Introduction
+{
+	technique
+	{
+		pass
+		{			
+			texture_unit
+			{
+				texture h.png 2d 0
 			}
 		}
 	}

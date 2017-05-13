@@ -223,7 +223,7 @@ void CDlgParam::OnCbnSelchangeCbSex()
 void CDlgParam::OnBnClickedBtnImport()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	CFileDialog dlg( TRUE, 0, 0, 6UL, _T( "文件 (*.ini)|*.ini||" ) );
+	CFileDialog dlg( TRUE, 0, 0, 6UL, _T( "文件 (*.txt)|*.txt||" ) );
 
 	auto ret = dlg.DoModal();
 	if ( ret == 1 )
