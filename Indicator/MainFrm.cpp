@@ -80,8 +80,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
-	cs.cx = 1536 + 20;
-	cs.cy = 768 + 62;
+	auto height = 800;
+	cs.cx = height * 2 + 20;
+	cs.cy = height + 62;
+	cs.style &= ~WS_MAXIMIZEBOX;
+	cs.style &= ~WS_THICKFRAME;
 
 	if( !CFrameWnd::PreCreateWindow(cs) )
 		return FALSE;

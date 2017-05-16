@@ -19,11 +19,12 @@
 #include <vector>
 
 static const auto panelOffset = 264.f;
-static const auto introductionOffset = 20.f;
+static const auto introductionOffset = 70.f;
 static const auto resultOffset = -200.f;
 static const auto texOffset = -5.f;
 static const auto charWidth = 30.f;
 static const auto charHeight = 60.f;
+static const auto introductionScale = 1.2f;
 
 enum ERenderGroup
 {
@@ -85,6 +86,10 @@ public:
 	RectExt*					S_{};
 	RectExt*					Y_{};
 	RectExt*					H_{};
+
+	TexNumber*					ComN1_{};
+	TexNumber*					ComN2_{};
+	TexNumber*					ComN3_{};
 
 public:
 
@@ -411,6 +416,37 @@ public:
 			}
 		}
 
+		{
+			auto compVal = moisture - .2f * fat - .1f * melanin;
+			compVal = std::max( compVal, 0.f );
+			compVal = std::min( compVal, 100.f );
+			auto comValInt = static_cast<int>( compVal );
+
+			auto p1 = ( comValInt ) % 10;
+			auto p2 = ( comValInt / 10 ) % 10;
+			auto p3 = ( comValInt / 100 ) % 10;
+
+			if ( comValInt == 100 )
+			{
+				ComN1_->SetIndex( 1 );
+				ComN2_->SetIndex( 0 );
+				ComN3_->SetIndex( 0 );
+			}
+			else if ( comValInt < 10 )
+			{
+				ComN1_->SetIndex( -1 );
+				ComN2_->SetIndex( -1 );
+				ComN3_->SetIndex( p1 );
+			}
+			else
+			{
+				ComN1_->SetIndex( -1 );
+				ComN2_->SetIndex( p2 );
+				ComN3_->SetIndex( p1 );
+			}
+		}
+		
+
 		ResultNode_->setVisible( true );
 	}
 };
@@ -522,6 +558,29 @@ DummyController::DummyController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 				imp_.Age3_ = TexNumberFactory::CreateInstance(imp_.Smgr_);
 				n3Node->attachObject(imp_.Age3_);
 			}
+		}
+
+		{//nr
+			imp_.ComN3_ = TexNumberFactory::CreateInstance( imp_.Smgr_ );
+			imp_.ComN3_->SetIndex( 1 );
+			auto n1Node = imp_.ResultNode_->createChildSceneNode();
+			n1Node->setPosition( 0.f, -20.f, 0.f );
+			n1Node->setScale( 35.f, 55.f, 1.f );
+			n1Node->attachObject( imp_.ComN3_ );
+
+			imp_.ComN2_ = TexNumberFactory::CreateInstance( imp_.Smgr_ );
+			imp_.ComN2_->SetIndex( 2 );
+			auto n2Node = imp_.ResultNode_->createChildSceneNode();
+			n2Node->setPosition( -35.f, -20.f, 0.f );
+			n2Node->setScale( 35.f, 55.f, 1.f );
+			n2Node->attachObject( imp_.ComN2_ );
+
+			imp_.ComN1_ = TexNumberFactory::CreateInstance( imp_.Smgr_ );
+			imp_.ComN1_->SetIndex( 1 );
+			auto n3Node = imp_.ResultNode_->createChildSceneNode();
+			n3Node->setPosition( -70.f, -20.f, 0.f );
+			n3Node->setScale( 35.f, 55.f, 1.f );
+			n3Node->attachObject( imp_.ComN1_ );
 		}
 
 		{//summy
@@ -683,7 +742,7 @@ DummyController::DummyController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 				auto tex = Ogre::TextureManager::getSingleton().load( "s.png", "General" );
 
 				auto introidScaleNode = introdNode->createChildSceneNode();
-				introidScaleNode->setScale( tex->getWidth(), tex->getHeight(), 1.f );
+				introidScaleNode->setScale( tex->getWidth() * introductionScale, tex->getHeight()* introductionScale, 1.f );
 
 				auto introd = RectExtFactory::CreateInstance( imp_.Smgr_ );
 				introd->SetMaterial( "S" );
@@ -785,7 +844,7 @@ DummyController::DummyController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 				auto tex = Ogre::TextureManager::getSingleton().load( "y.png", "General" );
 
 				auto introidScaleNode = introdNode->createChildSceneNode();
-				introidScaleNode->setScale( tex->getWidth(), tex->getHeight(), 1.f );
+				introidScaleNode->setScale( tex->getWidth() * introductionScale, tex->getHeight()* introductionScale, 1.f );
 
 				auto introd = RectExtFactory::CreateInstance( imp_.Smgr_ );
 				introd->SetMaterial( "Y" );
@@ -887,7 +946,7 @@ DummyController::DummyController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 				auto tex = Ogre::TextureManager::getSingleton().load( "h.png", "General" );
 
 				auto introidScaleNode = introdNode->createChildSceneNode();
-				introidScaleNode->setScale( tex->getWidth(), tex->getHeight(), 1.f );
+				introidScaleNode->setScale( tex->getWidth() * introductionScale, tex->getHeight()* introductionScale, 1.f );
 
 				auto introd = RectExtFactory::CreateInstance( imp_.Smgr_ );
 				introd->SetMaterial( "H" );
