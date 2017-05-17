@@ -4,16 +4,16 @@
 
 #include "OgrePrerequisites.h"
 
-class DummyController : public IController
+class ChartController : public IController
 {
 	class 	Imp;
 	std::unique_ptr<Imp>	ImpUPtr_;
 
 public:
 
-	DummyController(Ogre::RenderWindow* rt);
+	ChartController( Ogre::RenderWindow* rt );
 
-	~DummyController();
+	~ChartController();
 
 private:
 

@@ -1,5 +1,5 @@
 
-// KPI.h : KPI 应用程序的主头文件
+// Chart.h : Chart 应用程序的主头文件
 //
 #pragma once
 
@@ -10,21 +10,21 @@
 #include "resource.h"       // 主符号
 
 
-// CKPIApp:
-// 有关此类的实现，请参阅 KPI.cpp
+// CChartApp:
+// 有关此类的实现，请参阅 Chart.cpp
 //
 
-class CIndicatorApp : public CWinApp
+class CChartApp : public CWinApp
 {
 public:
-	CIndicatorApp();
+	CChartApp();
 
-
-	virtual BOOL OnIdle(LONG lCount) override;
-
-	virtual BOOL IsIdleMessage(MSG* pMsg) override;
 
 	virtual int ExitInstance() override;
+
+	virtual BOOL OnIdle( LONG lCount ) override;
+
+	virtual BOOL IsIdleMessage( MSG* pMsg ) override;
 
 	virtual BOOL PumpMessage() override;
 
@@ -37,4 +37,4 @@ public:
 	DECLARE_MESSAGE_MAP()
 };
 
-extern CIndicatorApp theApp;
+extern CChartApp theApp;

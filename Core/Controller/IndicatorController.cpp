@@ -1,4 +1,4 @@
-#include "DummyController.h"
+#include "IndicatorController.h"
 
 #include "Frame/OgreEnv.h"
 
@@ -33,7 +33,7 @@ enum ERenderGroup
 	ERG_Num
 };
 
-class 	DummyController::Imp
+class 	IndicatorController::Imp
 {
 public:
 
@@ -451,7 +451,7 @@ public:
 	}
 };
 
-DummyController::DummyController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
+IndicatorController::IndicatorController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 {
 	auto& imp_ = *ImpUPtr_;
 	imp_.RT_ = rt;
@@ -974,7 +974,7 @@ DummyController::DummyController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 	imp_.H_->SetMaterial( "Introduction" );
 }
 
-DummyController::~DummyController()
+IndicatorController::~IndicatorController()
 {
 	auto& imp_ = *ImpUPtr_;
 
@@ -985,7 +985,7 @@ DummyController::~DummyController()
 	Ogre::Root::getSingletonPtr()->destroySceneManager( imp_.Smgr_ );
 }
 
-void DummyController::_FrameStart( const Ogre::FrameEvent& fevt )
+void IndicatorController::_FrameStart( const Ogre::FrameEvent& fevt )
 {
 	auto& imp_ = *ImpUPtr_;
 

@@ -11,7 +11,7 @@
 
 #include "Frame/OgreEnv.h"
 #include "Frame/OgreWndWrapper.h"
-#include "Controller/DummyController.h"
+#include "Controller/IndicatorController.h"
 #include "FrameEvent/IndicatorEvt.h"
 
 #include <fstream>
@@ -72,7 +72,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	cf->GetClientRect(&rect);
 	ImpUPtr_->OgreWnd_ = OgreEnv::GetInstance().CreateRenderWindow(curHwnd, rect.right - rect.left, rect.bottom - rect.top);
 
-	auto ctrller = std::make_shared<DummyController>(ImpUPtr_->OgreWnd_->GetRenderWindow());
+	auto ctrller = std::make_shared<IndicatorController>(ImpUPtr_->OgreWnd_->GetRenderWindow());
 	OgreEnv::GetInstance().AddController(ctrller);
 
 	return 0;

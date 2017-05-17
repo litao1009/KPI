@@ -88,7 +88,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Controller\DummyController.cpp" />
+    <ClCompile Include="Controller\ChartController.cpp" />
+    <ClCompile Include="Controller\IndicatorController.cpp" />
     <ClCompile Include="Frame\Extension\ExtensionUtil.cpp" />
     <ClCompile Include="Frame\Extension\RectExt.cpp" />
     <ClCompile Include="Frame\Extension\TexNumber.cpp" />
@@ -99,7 +100,8 @@
     <ClCompile Include="Frame\SysEventRecorder.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Controller\DummyController.h" />
+    <ClInclude Include="Controller\ChartController.h" />
+    <ClInclude Include="Controller\IndicatorController.h" />
     <ClInclude Include="FrameEvent\FrameEvent.h" />
     <ClInclude Include="FrameEvent\FrameEventFwd.h" />
     <ClInclude Include="FrameEvent\IndicatorEvt.h" />

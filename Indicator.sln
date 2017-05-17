@@ -27,6 +27,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Core", "Core\Core.vcxproj",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Indicator", "Indicator\Indicator.vcxproj", "{6D8C70CC-7FEB-4B17-AA2F-12F65CE5D45F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Chart", "Chart\Chart.vcxproj", "{9D686C0F-88E0-4944-A370-9084B5BD75FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -111,6 +113,12 @@ Global
 		{6D8C70CC-7FEB-4B17-AA2F-12F65CE5D45F}.Release|Win32.ActiveCfg = Release|Win32
 		{6D8C70CC-7FEB-4B17-AA2F-12F65CE5D45F}.Release|Win32.Build.0 = Release|Win32
 		{6D8C70CC-7FEB-4B17-AA2F-12F65CE5D45F}.Release|x64.ActiveCfg = Release|Win32
+		{9D686C0F-88E0-4944-A370-9084B5BD75FD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9D686C0F-88E0-4944-A370-9084B5BD75FD}.Debug|Win32.Build.0 = Debug|Win32
+		{9D686C0F-88E0-4944-A370-9084B5BD75FD}.Debug|x64.ActiveCfg = Debug|Win32
+		{9D686C0F-88E0-4944-A370-9084B5BD75FD}.Release|Win32.ActiveCfg = Release|Win32
+		{9D686C0F-88E0-4944-A370-9084B5BD75FD}.Release|Win32.Build.0 = Release|Win32
+		{9D686C0F-88E0-4944-A370-9084B5BD75FD}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

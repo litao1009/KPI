@@ -28,9 +28,6 @@
     <ClCompile Include="Frame\IController.cpp">
       <Filter>Frame</Filter>
     </ClCompile>
-    <ClCompile Include="Controller\DummyController.cpp">
-      <Filter>Controller</Filter>
-    </ClCompile>
     <ClCompile Include="Frame\Extension\ExtensionUtil.cpp">
       <Filter>Frame\Extension</Filter>
     </ClCompile>
@@ -42,6 +39,12 @@
     </ClCompile>
     <ClCompile Include="Frame\Extension\TexNumber.cpp">
       <Filter>Frame\Extension</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\IndicatorController.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\ChartController.cpp">
+      <Filter>Controller</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -69,9 +72,6 @@
     <ClInclude Include="Frame\IController.h">
       <Filter>Frame</Filter>
     </ClInclude>
-    <ClInclude Include="Controller\DummyController.h">
-      <Filter>Controller</Filter>
-    </ClInclude>
     <ClInclude Include="Frame\Extension\ExtensionUtil.h">
       <Filter>Frame\Extension</Filter>
     </ClInclude>
@@ -95,6 +95,12 @@
     </ClInclude>
     <ClInclude Include="FrameEvent\IndicatorEvt.h">
       <Filter>FrameEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\IndicatorController.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\ChartController.h">
+      <Filter>Controller</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

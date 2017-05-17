@@ -1,0 +1,27 @@
+import * from "Base.material"
+
+material Background/Chart
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+			depth_write off
+			
+			texture_unit
+			{
+				texture background_chart.png 2d 0
+			}
+			
+			vertex_program_ref VP/Base
+			{
+			}
+			
+			fragment_program_ref FP/Base/Tex
+			{
+				param_named diffuseTex int 0
+			}
+		}
+	}
+}
