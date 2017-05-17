@@ -9,12 +9,7 @@
 
 #include "Frame/Extension/RectExt.h"
 #include "Frame/Extension/TexNumber.h"
-#include "FrameEvent/IndicatorEvt.h"
-
-#include "OgreOverlayManager.h"
-#include "OgreOverlay.h"
-#include "OgreOverlayContainer.h"
-#include "OgreOverlaySystem.h"
+//#include "FrameEvent/IndicatorEvt.h"
 
 #include <vector>
 
