@@ -182,7 +182,7 @@ material Chart/Line2D
 			
 			vertex_program_ref VP/Base {}
 			
-            fragment_program_ref Mat/Base/LineColor
+            fragment_program_ref FP/Base/Color/WithoutLight
 			{
 				
 			}

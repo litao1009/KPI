@@ -4,7 +4,7 @@
 
 #include "Ogre.h"
 
-static const auto sDefaultWidth = 40.f;
+static const auto sDefaultWidth = 20.f;
 
 Line2D::Line2D(const Ogre::IdType& id, Ogre::ObjectMemoryManager *objectMemoryManager)
 	:MovableObject(id, objectMemoryManager, Ogre::RENDER_QUEUE_MAIN)
@@ -24,21 +24,12 @@ Line2D::Line2D(const Ogre::IdType& id, Ogre::ObjectMemoryManager *objectMemoryMa
 		vList.emplace_back(halfSize, halfSize, 0.f);
 	}
 
-	std::vector<Ogre::Vector2> uvList;
-	{
-		uvList.emplace_back(0.f, 0.f);
-		uvList.emplace_back(0.f, 1.f);
-		uvList.emplace_back(1.f, 1.f);
-		uvList.emplace_back(1.f, 0.f);
-	}
-
 	RO_.vertexData->vertexCount = vList.size();
 	RO_.vertexData->vertexStart = 0;
 
 	auto decl = RO_.vertexData->vertexDeclaration;
 
 	auto posEle = decl->addElement(0, 0, Ogre::VET_FLOAT3, Ogre::VES_POSITION);
-	auto uvEle = decl->addElement(0, Ogre::VertexElement::getTypeSize(Ogre::VET_FLOAT3), Ogre::VET_FLOAT2, Ogre::VES_TEXTURE_COORDINATES);
 
 	auto vbuf = Ogre::HardwareBufferManager::getSingleton().createVertexBuffer(decl->getVertexSize(0), RO_.vertexData->vertexCount, Ogre::HardwareBuffer::HBU_STATIC_WRITE_ONLY);
 	{
@@ -49,10 +40,9 @@ Line2D::Line2D(const Ogre::IdType& id, Ogre::ObjectMemoryManager *objectMemoryMa
 			posEle.baseVertexPointerToElement(pBuf, &pVal);
 			*reinterpret_cast<Ogre::Vector3*>( pVal ) = vList[curIndex];
 
-			uvEle.baseVertexPointerToElement(pBuf, &pVal);
-			*reinterpret_cast<Ogre::Vector2*>( pVal ) = uvList[curIndex];
-
 			pBuf += vbuf->getVertexSize();
+
+			AABB_.merge(vList[curIndex]);
 		}
 
 		vbuf->unlock();

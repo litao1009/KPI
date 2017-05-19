@@ -8,7 +8,7 @@
 #include "Compositor/OgreCompositorChannel.h"
 
 #include "Frame/Extension/RectExt.h"
-#include "Frame/Extension/TexNumber.h"
+#include "Frame/Extension/Line2D.h"
 
 enum ERenderGroup
 {
@@ -74,6 +74,14 @@ ChartController::ChartController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 		auto rect = RectExtFactory::CreateInstance(imp_.Smgr_);
 		rect->SetMaterial("Chart/s/BG");
 		cbNode->attachObject(rect);
+
+		{
+			auto lnode = sRootNode->createChildSceneNode();
+			auto l = Line2DFactory::CreateInstance(imp_.Smgr_);
+			l->SetStartPoint({ -200.f, 0.f, 0.f });
+			l->SetEndPoint({ 200.f, 0.f, 0.f });
+			lnode->attachObject(l);
+		}
 
 		{
 			auto tnode = sRootNode->createChildSceneNode();
