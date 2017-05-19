@@ -91,6 +91,7 @@
     <ClCompile Include="Controller\ChartController.cpp" />
     <ClCompile Include="Controller\IndicatorController.cpp" />
     <ClCompile Include="Frame\Extension\ExtensionUtil.cpp" />
+    <ClCompile Include="Frame\Extension\Line2D.cpp" />
     <ClCompile Include="Frame\Extension\RectExt.cpp" />
     <ClCompile Include="Frame\Extension\TexNumber.cpp" />
     <ClCompile Include="Frame\Extension\TextAreaExt.cpp" />
@@ -106,6 +107,7 @@
     <ClInclude Include="FrameEvent\FrameEventFwd.h" />
     <ClInclude Include="FrameEvent\IndicatorEvt.h" />
     <ClInclude Include="Frame\Extension\ExtensionUtil.h" />
+    <ClInclude Include="Frame\Extension\Line2D.h" />
     <ClInclude Include="Frame\Extension\RectExt.h" />
     <ClInclude Include="Frame\Extension\TexNumber.h" />
     <ClInclude Include="Frame\Extension\TextAreaExt.h" />

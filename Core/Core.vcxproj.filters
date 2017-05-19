@@ -46,6 +46,9 @@
     <ClCompile Include="Controller\ChartController.cpp">
       <Filter>Controller</Filter>
     </ClCompile>
+    <ClCompile Include="Frame\Extension\Line2D.cpp">
+      <Filter>Frame\Extension</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Frame\OgreEnv.h">
@@ -101,6 +104,9 @@
     </ClInclude>
     <ClInclude Include="Controller\ChartController.h">
       <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Frame\Extension\Line2D.h">
+      <Filter>Frame\Extension</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

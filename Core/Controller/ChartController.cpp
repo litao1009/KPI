@@ -9,24 +9,22 @@
 
 #include "Frame/Extension/RectExt.h"
 #include "Frame/Extension/TexNumber.h"
-//#include "FrameEvent/IndicatorEvt.h"
-
-#include <vector>
-
-static const auto panelOffset = 264.f;
-static const auto introductionOffset = 70.f;
-static const auto resultOffset = -200.f;
-static const auto texOffset = -5.f;
-static const auto charWidth = 30.f;
-static const auto charHeight = 60.f;
-static const auto introductionScale = 1.2f;
 
 enum ERenderGroup
 {
-	ERG_Panel = Ogre::RENDER_QUEUE_MAIN,
-	ERG_Pointer,
-	ERG_Num
+	ERG_Node = Ogre::RENDER_QUEUE_MAIN + 1
 };
+
+static const auto nodeSize = 30.f;
+static const auto nodeRange = 100.f;
+static const auto valueBeg = -nodeRange * 4;
+static const auto valueEnd = nodeRange * 3;
+
+static float	CalcuValue(float nr)
+{
+	auto f = nr / 100.f;
+	return valueBeg + ( valueEnd - valueBeg ) * f;
+}
 
 class 	ChartController::Imp
 {
@@ -43,7 +41,7 @@ ChartController::ChartController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 	auto& imp_ = *ImpUPtr_;
 	imp_.RT_ = rt;
 
-	imp_.Smgr_ = Ogre::Root::getSingletonPtr()->createSceneManager( Ogre::ST_GENERIC, 1, Ogre::INSTANCING_CULLING_SINGLETHREAD, "DummyScene" );
+	imp_.Smgr_ = Ogre::Root::getSingletonPtr()->createSceneManager( Ogre::ST_GENERIC, 1, Ogre::INSTANCING_CULLING_SINGLETHREAD, "ChartScene" );
 
 	auto sceneHeight = 1024.f;
 	auto sceneWidth = 2048.f;
@@ -65,7 +63,120 @@ ChartController::ChartController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 
 	auto comMgr = Ogre::Root::getSingletonPtr()->getCompositorManager2();
 
-	imp_.WorkSpce_ = comMgr->addWorkspace( imp_.Smgr_, imp_.RT_, camera, "ChartWorkspace", true );
+	imp_.WorkSpce_ = comMgr->addWorkspace(imp_.Smgr_, imp_.RT_, camera, "ChartWorkspace", true);
+
+	{
+		auto sRootNode = imp_.Smgr_->getRootSceneNode()->createChildSceneNode();
+		sRootNode->setPosition(-sceneHeight, 0.f, 0.f);
+
+		auto cbNode = sRootNode->createChildSceneNode();
+		cbNode->setScale(sceneHeight, sceneHeight, 1.f);
+		auto rect = RectExtFactory::CreateInstance(imp_.Smgr_);
+		rect->SetMaterial("Chart/s/BG");
+		cbNode->attachObject(rect);
+
+		{
+			auto tnode = sRootNode->createChildSceneNode();
+			auto t = RectExtFactory::CreateInstance(imp_.Smgr_);
+			t->SetMaterial("Chart/Node");
+			t->setRenderQueueGroup(ERG_Node);
+			tnode->attachObject(t);
+			tnode->setScale(nodeSize, nodeSize, 1.f);
+			tnode->setPosition(-nodeRange * 4, CalcuValue(0 * 100 / 8.f), 0.f);
+		}
+
+		{
+			auto tnode = sRootNode->createChildSceneNode();
+			auto t = RectExtFactory::CreateInstance(imp_.Smgr_);
+			t->SetMaterial("Chart/Node");
+			t->setRenderQueueGroup(ERG_Node);
+			tnode->attachObject(t);
+			tnode->setScale(nodeSize, nodeSize, 1.f);
+			tnode->setPosition(-nodeRange * 3, CalcuValue(1 * 100 / 8.f), 0.f);
+		}
+
+		{
+			auto tnode = sRootNode->createChildSceneNode();
+			auto t = RectExtFactory::CreateInstance(imp_.Smgr_);
+			t->SetMaterial("Chart/Node");
+			t->setRenderQueueGroup(ERG_Node);
+			tnode->attachObject(t);
+			tnode->setScale(nodeSize, nodeSize, 1.f);
+			tnode->setPosition(-nodeRange * 2, CalcuValue(2 * 100 / 8.f), 0.f);
+		}
+
+		{
+			auto tnode = sRootNode->createChildSceneNode();
+			auto t = RectExtFactory::CreateInstance(imp_.Smgr_);
+			t->SetMaterial("Chart/Node");
+			t->setRenderQueueGroup(ERG_Node);
+			tnode->attachObject(t);
+			tnode->setScale(nodeSize, nodeSize, 1.f);
+			tnode->setPosition(-nodeRange * 1, CalcuValue(3 * 100 / 8.f), 0.f);
+		}
+
+		{
+			auto tnode = sRootNode->createChildSceneNode();
+			auto t = RectExtFactory::CreateInstance(imp_.Smgr_);
+			t->SetMaterial("Chart/Node");
+			t->setRenderQueueGroup(ERG_Node);
+			tnode->attachObject(t);
+			tnode->setScale(nodeSize, nodeSize, 1.f);
+			tnode->setPosition(nodeRange * 0, CalcuValue(4 * 100 / 8.f), 0.f);
+		}
+
+		{
+			auto tnode = sRootNode->createChildSceneNode();
+			auto t = RectExtFactory::CreateInstance(imp_.Smgr_);
+			t->SetMaterial("Chart/Node");
+			t->setRenderQueueGroup(ERG_Node);
+			tnode->attachObject(t);
+			tnode->setScale(nodeSize, nodeSize, 1.f);
+			tnode->setPosition(nodeRange * 1, CalcuValue(5 * 100 / 8.f), 0.f);
+		}
+
+		{
+			auto tnode = sRootNode->createChildSceneNode();
+			auto t = RectExtFactory::CreateInstance(imp_.Smgr_);
+			t->SetMaterial("Chart/Node");
+			t->setRenderQueueGroup(ERG_Node);
+			tnode->attachObject(t);
+			tnode->setScale(nodeSize, nodeSize, 1.f);
+			tnode->setPosition(nodeRange * 2, CalcuValue(6 * 100 / 8.f), 0.f);
+		}
+
+		{
+			auto tnode = sRootNode->createChildSceneNode();
+			auto t = RectExtFactory::CreateInstance(imp_.Smgr_);
+			t->SetMaterial("Chart/Node");
+			t->setRenderQueueGroup(ERG_Node);
+			tnode->attachObject(t);
+			tnode->setScale(nodeSize, nodeSize, 1.f);
+			tnode->setPosition(nodeRange * 3, CalcuValue(7 * 100 / 8.f), 0.f);
+		}
+	}
+
+	{
+		auto yRootNode = imp_.Smgr_->getRootSceneNode()->createChildSceneNode();
+		yRootNode->setPosition(-0.f, 0.f, 0.f);
+
+		auto cbNode = yRootNode->createChildSceneNode();
+		cbNode->setScale(sceneHeight, sceneHeight, 1.f);
+		auto rect = RectExtFactory::CreateInstance(imp_.Smgr_);
+		rect->SetMaterial("Chart/y/BG");
+		cbNode->attachObject(rect);
+	}
+
+	{
+		auto hRootNode = imp_.Smgr_->getRootSceneNode()->createChildSceneNode();
+		hRootNode->setPosition(sceneHeight, 0.f, 0.f);
+
+		auto cbNode = hRootNode->createChildSceneNode();
+		cbNode->setScale(sceneHeight, sceneHeight, 1.f);
+		auto rect = RectExtFactory::CreateInstance(imp_.Smgr_);
+		rect->SetMaterial("Chart/h/BG");
+		cbNode->attachObject(rect);
+	}
 }
 
 ChartController::~ChartController()

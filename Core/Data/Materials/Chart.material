@@ -25,3 +25,167 @@ material Background/Chart
 		}
 	}
 }
+
+
+material Chart/sBG
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+			depth_write off
+			
+			scene_blend alpha_blend
+			
+			texture_unit
+			{
+				texture sBG.png 2d 0
+			}
+			
+			vertex_program_ref VP/Base
+			{
+			}
+			
+			fragment_program_ref FP/Base/Tex
+			{
+				param_named diffuseTex int 0
+			}
+		}
+	}
+}
+
+material Chart/s/BG
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+			depth_write off
+			
+			scene_blend alpha_blend
+			
+			texture_unit
+			{
+				texture sBG.png 2d 0
+			}
+			
+			vertex_program_ref VP/Base
+			{
+			}
+			
+			fragment_program_ref FP/Base/Tex
+			{
+				param_named diffuseTex int 0
+			}
+		}
+	}
+}
+
+material Chart/y/BG
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+			depth_write off
+			
+			scene_blend alpha_blend
+			
+			texture_unit
+			{
+				texture yBG.png 2d 0
+			}
+			
+			vertex_program_ref VP/Base
+			{
+			}
+			
+			fragment_program_ref FP/Base/Tex
+			{
+				param_named diffuseTex int 0
+			}
+		}
+	}
+}
+
+material Chart/h/BG
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+			depth_write off
+			
+			scene_blend alpha_blend
+			
+			texture_unit
+			{
+				texture hBG.png 2d 0
+			}
+			
+			vertex_program_ref VP/Base
+			{
+			}
+			
+			fragment_program_ref FP/Base/Tex
+			{
+				param_named diffuseTex int 0
+			}
+		}
+	}
+}
+
+
+material Chart/Node
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+			depth_write off
+			
+			scene_blend alpha_blend
+			
+			texture_unit
+			{
+				texture node.png 2d 0
+			}
+			
+			vertex_program_ref VP/Base
+			{
+			}
+			
+			fragment_program_ref FP/Base/Tex
+			{
+				param_named diffuseTex int 0
+			}
+		}
+	}
+}
+
+
+material Chart/Line2D
+{
+	technique t
+	{
+		pass p
+		{
+			cull_hardware none
+			
+			depth_check	off
+			depth_write	off
+			
+			vertex_program_ref VP/Base {}
+			
+            fragment_program_ref Mat/Base/LineColor
+			{
+				
+			}
+		}
+	}
+}

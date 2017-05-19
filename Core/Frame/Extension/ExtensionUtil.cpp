@@ -3,6 +3,7 @@
 
 #include "RectExt.h"
 #include "TexNumber.h"
+#include "Line2D.h"
 
 #include "Ogre.h"
 
@@ -44,6 +45,7 @@ void ExtensionUtil::Init()
 	{
 		list.emplace_back(std::make_unique<RectExtFactory>());
 		list.emplace_back( std::make_unique<TexNumberFactory>() );
+		list.emplace_back(std::make_unique<Line2DFactory>());
 	}
 
 	for ( auto& cur : list)
