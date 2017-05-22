@@ -7,8 +7,8 @@
 #include "afxdialogex.h"
 
 #include <string>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/ini_parser.hpp>
+#include <boost/format.hpp>
+#include <boost/filesystem/fstream.hpp>
 
 // CDlgParam 对话框
 
@@ -234,14 +234,37 @@ void CDlgParam::OnBnClickedBtnImport()
 
 		try
 		{
-			std::ifstream ifs( wstr );
+			boost::filesystem::ifstream ifs( wstr );
 
-			boost::property_tree::ptree pt;
-			boost::property_tree::ini_parser::read_ini( ifs, pt );
+			std::string line;
 
-			auto sf = pt.get<int>( "水分" );
-			auto yz = pt.get<int>( "油脂" );
-			auto hss = pt.get<int>( "黑色素" );
+			static std::string tagStr = "黑色素----------油脂----------水分";
+
+			auto foundTag = false;
+			while ( true )
+			{
+				line.clear();
+				std::getline(ifs, line);
+
+				if ( line == tagStr )
+				{
+					foundTag = true;
+					break;
+				}
+			}
+
+			if ( !foundTag )
+			{
+				throw "";
+			}
+
+			float sf{}, yz{}, hss{};
+
+			ifs >> hss >> yz >> sf;
+
+			sf = std::fabs(sf);
+			yz = std::fabs(yz);
+			sf = std::fabs(sf);
 
 			SF_ = sf;
 			YF_ = yz;
@@ -255,7 +278,7 @@ void CDlgParam::OnBnClickedBtnImport()
 		}
 		catch ( ... )
 		{
-			MessageBox( _T( "ini格式错误！" ) );
+			MessageBox( _T( "格式错误！" ) );
 		}
 		
 	}
