@@ -402,11 +402,11 @@ public:
 			qua.FromAngleAxis( Ogre::Degree( melanin * 1.8f ), Ogre::Vector3::NEGATIVE_UNIT_Z );
 			Pointer3Node_->setOrientation( qua );
 
-			if ( melanin < 30 )
+			if ( melanin < 14 )
 			{
 				H_->SetMaterial( "H1" );
 			}
-			else if ( melanin <= 65 )
+			else if ( melanin <= 22 )
 			{
 				H_->SetMaterial( "H2" );
 			}
