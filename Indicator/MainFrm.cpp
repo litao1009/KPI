@@ -8,6 +8,7 @@
 #include "MainFrm.h"
 
 #include "DlgParam.h"
+#include "DlgSwitchItem.h"
 
 #include "Frame/OgreEnv.h"
 #include "Frame/OgreWndWrapper.h"
@@ -16,6 +17,9 @@
 
 #include <fstream>
 #include <regex>
+#include <vector>
+#include <tuple>
+#include <string>
 
 //#ifdef _DEBUG
 //#define new DEBUG_NEW
@@ -28,6 +32,9 @@ class	CMainFrame::Imp
 public:
 
 	OgreWndWrapperUPtr	OgreWnd_;
+	std::vector<std::tuple<int, int, int>> itemList;
+	int						CurIndex{};
+	IndicatorEvt::SPtr		Evt = std::make_shared<IndicatorEvt>();
 };
 
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
@@ -38,6 +45,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_SIZE()
 	ON_COMMAND( ID_IMPORT, &CMainFrame::OnImport )
 	ON_COMMAND( ID_MODIFY_PARAM, &CMainFrame::OnModifyParam )
+	ON_COMMAND(ID_SWITCH_ITEM, &CMainFrame::OnSwitchItem)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -80,7 +88,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
-	auto height = 800;
+	auto height = 730;
 	cs.cx = height * 2 + 20;
 	cs.cy = height + 62;
 	cs.style &= ~WS_MAXIMIZEBOX;
@@ -193,13 +201,36 @@ void CMainFrame::OnModifyParam()
 	auto ret = dlg.DoModal();
 	if ( ret == 1 )
 	{
-		auto evt = std::make_shared<IndicatorEvt>();
-		evt->Fat = dlg.GetYF();
-		evt->Moisture = dlg.GetSF();
-		evt->Melanin = dlg.GetHSS();
-		evt->Male = dlg.IsMale();
-		evt->Age_ = dlg.GetAge();
+		ImpUPtr_->itemList = dlg.GetItemList();
+		ImpUPtr_->CurIndex = dlg.GetCursel();
+		ImpUPtr_->Evt->Fat = dlg.GetYF();
+		ImpUPtr_->Evt->Moisture = dlg.GetSF();
+		ImpUPtr_->Evt->Melanin = dlg.GetHSS();
+		ImpUPtr_->Evt->Male = dlg.IsMale();
+		ImpUPtr_->Evt->Age_ = dlg.GetAge();
 
-		OgreEnv::GetInstance().PostFrameEventTo3D( evt->ConvertToFrameEvent() );
+		OgreEnv::GetInstance().PostFrameEventTo3D(ImpUPtr_->Evt->ConvertToFrameEvent());
 	}
+}
+
+
+void CMainFrame::OnSwitchItem()
+{
+	DlgSwitchItem dlg;
+
+	dlg.SetInfo(ImpUPtr_->itemList.size(), ImpUPtr_->CurIndex);
+	auto ret = dlg.DoModal();
+	if ( ret == 1 )
+	{
+		ImpUPtr_->CurIndex = dlg.GetCursel();
+		auto curVal = ImpUPtr_->itemList[ImpUPtr_->CurIndex];
+
+		ImpUPtr_->Evt->Moisture = std::get<0>(curVal);
+		ImpUPtr_->Evt->Fat = std::get<1>(curVal);
+		ImpUPtr_->Evt->Melanin = std::get<2>(curVal);
+
+		OgreEnv::GetInstance().PostFrameEventTo3D(ImpUPtr_->Evt->ConvertToFrameEvent());
+	}
+
+	// TODO:  在此添加命令处理程序代码
 }

@@ -1,11 +1,18 @@
 #pragma once
 #include "afxwin.h"
 
+#include <memory>
+#include <vector>
+#include <tuple>
+#include <string>
 
 // CDlgParam ¶Ô»°¿ò
 
 class CDlgParam : public CDialogEx
 {
+	class	Imp;
+	std::unique_ptr<Imp>	ImpUPtr_;
+
 	DECLARE_DYNAMIC(CDlgParam)
 
 	int		SF_{};
@@ -20,6 +27,7 @@ class CDlgParam : public CDialogEx
 	CButton BtnOK_;
 	CComboBox CBSex_;
 	CEdit TxtAge_;
+	CComboBox CBItem_;
 
 public:
 
@@ -50,6 +58,10 @@ public:
 
 	bool	IsMale() const;
 
+	std::vector<std::tuple<int, int, int>>	GetItemList() const;
+
+	int		GetCursel() const;
+
 public:
 	
 	afx_msg void OnEnChangeTxtSf();
@@ -59,4 +71,5 @@ public:
 	afx_msg void OnCbnSelchangeCbSex();
 	
 	afx_msg void OnBnClickedBtnImport();
+	afx_msg void OnCbnSelchangeCbImportItem();
 };

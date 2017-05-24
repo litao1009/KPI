@@ -6,18 +6,40 @@
 #include "DlgParam.h"
 #include "afxdialogex.h"
 
-#include <string>
+
 #include <boost/format.hpp>
 #include <boost/filesystem/fstream.hpp>
 
 // CDlgParam 对话框
 
+class	CDlgParam::Imp
+{
+public:
+
+	std::vector<std::tuple<int, int, int>>	itemList;
+	CDlgParam*								ThisPtr_{};
+	int										Cursel{};
+
+public:
+
+	void	UpdateValue(int s, int y, int h)
+	{
+		ThisPtr_->SF_ = s;
+		ThisPtr_->YF_ = y;
+		ThisPtr_->HSS_ = h;
+
+		ThisPtr_->TxtSF_.SetWindowText(std::to_wstring(ThisPtr_->SF_).c_str());
+		ThisPtr_->TxtYF_.SetWindowText(std::to_wstring(ThisPtr_->YF_).c_str());
+		ThisPtr_->TxtHss_.SetWindowText(std::to_wstring(ThisPtr_->HSS_).c_str());
+	}
+};
+
 IMPLEMENT_DYNAMIC(CDlgParam, CDialogEx)
 
 CDlgParam::CDlgParam(CWnd* pParent /*=NULL*/)
-	: CDialogEx(CDlgParam::IDD, pParent)
+: CDialogEx(CDlgParam::IDD, pParent), ImpUPtr_(std::make_unique<Imp>())
 {
-
+	ImpUPtr_->ThisPtr_ = this;
 }
 
 CDlgParam::~CDlgParam()
@@ -26,13 +48,14 @@ CDlgParam::~CDlgParam()
 
 void CDlgParam::DoDataExchange(CDataExchange* pDX)
 {
-	CDialogEx::DoDataExchange( pDX );
-	DDX_Control( pDX, IDC_TXT_HSS, TxtHss_ );
-	DDX_Control( pDX, IDC_TXT_SF, TxtSF_ );
-	DDX_Control( pDX, IDC_TXT_YF, TxtYF_ );
-	DDX_Control( pDX, IDOK, BtnOK_ );
-	DDX_Control( pDX, IDC_CB_SEX, CBSex_ );
-	DDX_Control( pDX, IDC_TXT_AGE, TxtAge_ );
+	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_TXT_HSS, TxtHss_);
+	DDX_Control(pDX, IDC_TXT_SF, TxtSF_);
+	DDX_Control(pDX, IDC_TXT_YF, TxtYF_);
+	DDX_Control(pDX, IDOK, BtnOK_);
+	DDX_Control(pDX, IDC_CB_SEX, CBSex_);
+	DDX_Control(pDX, IDC_TXT_AGE, TxtAge_);
+	DDX_Control(pDX, IDC_CB_IMPORT_ITEM, CBItem_);
 }
 
 
@@ -43,12 +66,15 @@ BEGIN_MESSAGE_MAP(CDlgParam, CDialogEx)
 	ON_EN_CHANGE( IDC_TXT_AGE, &CDlgParam::OnEnChangeTxtAge )
 	ON_CBN_SELCHANGE( IDC_CB_SEX, &CDlgParam::OnCbnSelchangeCbSex )
 	ON_BN_CLICKED( IDC_BTN_IMPORT, &CDlgParam::OnBnClickedBtnImport )
+	ON_CBN_SELCHANGE(IDC_CB_IMPORT_ITEM, &CDlgParam::OnCbnSelchangeCbImportItem)
 END_MESSAGE_MAP()
 
 
 BOOL CDlgParam::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
+
+	CBItem_.EnableWindow(FALSE);
 
 	// TODO:  在此添加额外的初始化
 	TxtSF_.SetWindowTextW( _T( "50" ) );
@@ -94,6 +120,16 @@ int CDlgParam::GetAge() const
 bool CDlgParam::IsMale() const
 {
 	return Male_;
+}
+
+std::vector<std::tuple<int, int, int>> CDlgParam::GetItemList() const
+{
+	return ImpUPtr_->itemList;
+}
+
+int CDlgParam::GetCursel() const
+{
+	return ImpUPtr_->Cursel;
 }
 
 void CDlgParam::OnEnChangeTxtSf()
@@ -260,19 +296,36 @@ void CDlgParam::OnBnClickedBtnImport()
 
 			float sf{}, yz{}, hss{};
 
-			ifs >> hss >> yz >> sf;
+			ImpUPtr_->itemList.clear();
 
-			sf = std::fabs(sf);
-			yz = std::fabs(yz);
-			hss = std::fabs(hss);
+			while ( ifs )
+			{
+				ifs >> hss >> yz >> sf;
 
-			SF_ = sf;
-			YF_ = yz;
-			HSS_ = hss;
+				sf = std::fabs(sf);
+				yz = std::fabs(yz);
+				hss = std::fabs(hss);
 
-			TxtSF_.SetWindowText( std::to_wstring( SF_ ).c_str() );
-			TxtYF_.SetWindowText( std::to_wstring( YF_ ).c_str() );
-			TxtHss_.SetWindowText( std::to_wstring( HSS_ ).c_str() );
+				ImpUPtr_->itemList.emplace_back((int)sf, (int)yz, (int)hss);
+			}
+
+			if ( ImpUPtr_->itemList.empty() )
+			{
+				throw "";
+			}
+
+			auto firstVal = ImpUPtr_->itemList.front();
+			ImpUPtr_->UpdateValue(std::get<0>(firstVal), std::get<1>(firstVal), std::get<2>(firstVal));
+
+			CBItem_.ResetContent();
+			for ( auto index = 0; index < ImpUPtr_->itemList.size(); ++index )
+			{
+				auto str = L"第" + std::to_wstring(index + 1) + L"号样本";
+				CBItem_.AddString(str.c_str());
+			}
+
+			CBItem_.EnableWindow(TRUE);
+			CBItem_.SetCurSel(0);
 
 			GetDlgItem( IDOK )->SetFocus();
 		}
@@ -282,4 +335,14 @@ void CDlgParam::OnBnClickedBtnImport()
 		}
 		
 	}
+}
+
+
+void CDlgParam::OnCbnSelchangeCbImportItem()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	auto curIndex = CBItem_.GetCurSel();
+	auto curVal = ImpUPtr_->itemList[curIndex];
+	ImpUPtr_->Cursel = curIndex;
+	ImpUPtr_->UpdateValue(std::get<0>(curVal), std::get<1>(curVal), std::get<2>(curVal));
 }

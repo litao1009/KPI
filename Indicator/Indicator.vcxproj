@@ -110,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DlgParam.h" />
+    <ClInclude Include="DlgSwitchItem.h" />
     <ClInclude Include="Indicator.h" />
     <ClInclude Include="IndicatorDoc.h" />
     <ClInclude Include="IndicatorView.h" />
@@ -120,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DlgParam.cpp" />
+    <ClCompile Include="DlgSwitchItem.cpp" />
     <ClCompile Include="Indicator.cpp" />
     <ClCompile Include="IndicatorIDoc.cpp" />
     <ClCompile Include="IndicatorView.cpp" />
