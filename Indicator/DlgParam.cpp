@@ -264,7 +264,7 @@ void CDlgParam::OnBnClickedBtnImport()
 
 			sf = std::fabs(sf);
 			yz = std::fabs(yz);
-			sf = std::fabs(sf);
+			hss = std::fabs(hss);
 
 			SF_ = sf;
 			YF_ = yz;

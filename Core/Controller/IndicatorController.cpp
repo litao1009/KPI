@@ -659,7 +659,7 @@ IndicatorController::IndicatorController( Ogre::RenderWindow *rt ):ImpUPtr_( new
 		auto introdMat = Ogre::MaterialManager::getSingleton().getByName( "Introduction" );
 		introdMat->load();
 		auto introdTex = introdMat->getTechnique( 0 )->getPass( 0 )->getTextureUnitState( 0 )->_getTexturePtr();
-
+		
 		{//indicator1
 			auto ind = indicatorRootNode->createChildSceneNode();
 			ind->setPosition( -singleIndicatorArea, 0.f, 0.f );
