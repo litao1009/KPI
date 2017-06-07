@@ -88,7 +88,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
-	auto height = 730;
+	auto height = 740;
 	cs.cx = height * 2 + 20;
 	cs.cy = height + 62;
 	cs.style &= ~WS_MAXIMIZEBOX;
