@@ -10,15 +10,18 @@
 #include "Frame/Extension/RectExt.h"
 #include "Frame/Extension/Line2D.h"
 
+#include <random>
+
 enum ERenderGroup
 {
 	ERG_Node = Ogre::RENDER_QUEUE_MAIN + 1
 };
 
-static const auto nodeSize = 30.f;
-static const auto nodeRange = 100.f;
-static const auto valueBeg = -nodeRange * 4;
-static const auto valueEnd = nodeRange * 3;
+static const auto CircleSize = 30.f;
+static const auto CircleStepRange = 100.f;
+static const auto valueBeg = -CircleStepRange * 4;
+static const auto valueEnd = CircleStepRange * 3;
+static const auto circleCount = 8;
 
 static float	CalcuValue(float nr)
 {
@@ -34,6 +37,42 @@ public:
 	Ogre::SceneManager*			Smgr_{};
 	Ogre::CompositorWorkspace*	WorkSpce_{};
 	Ogre::Camera*				Camera_{};
+
+	Ogre::SceneNode*			SNode_{};
+	Ogre::SceneNode*			YNode_{};
+	Ogre::SceneNode*			HNode_{};
+
+	std::vector<Line2D*>		SLineList_;
+	std::vector<RectExt*>		SCircleList_;
+	std::vector<Line2D*>		YLineList_;
+	std::vector<RectExt*>		YCircleList_;
+	std::vector<Line2D*>		HLineList_;
+	std::vector<RectExt*>		HCircleList_;
+
+	void	SetValue( int syh, int index, int value )
+	{
+		auto& lineList = ( syh == 0 ) ? SLineList_ : ( ( syh == 1 ) ? YLineList_ : HLineList_ );
+		auto& circleList = ( syh == 0 ) ? SCircleList_ : ( ( syh == 1 ) ? YCircleList_ : HCircleList_ );
+
+		auto circleNode = circleList[index]->getParentSceneNode();
+		circleNode->setVisible( true );
+		auto curPos = circleNode->getPosition();
+		circleNode->setPosition( curPos.x, CalcuValue( value ), 0.f );
+
+		auto line = lineList[index];
+		line->getParentSceneNode()->setVisible( true );
+		if ( index == 0 )
+		{
+			line->SetStartPoint( { valueBeg - CircleStepRange / 2.2f, CalcuValue( 0 ), 0.f } );
+		}
+		else
+		{
+			auto preNode = circleList[index - 1]->getParentSceneNode();
+			line->SetStartPoint( preNode->getPosition() );
+		}
+
+		line->SetEndPoint( circleNode->getPosition() );
+	}
 };
 
 ChartController::ChartController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
@@ -66,125 +105,138 @@ ChartController::ChartController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 	imp_.WorkSpce_ = comMgr->addWorkspace(imp_.Smgr_, imp_.RT_, camera, "ChartWorkspace", true);
 
 	{
-		auto sRootNode = imp_.Smgr_->getRootSceneNode()->createChildSceneNode();
-		sRootNode->setPosition(-sceneHeight, 0.f, 0.f);
+		imp_.SNode_ = imp_.Smgr_->getRootSceneNode()->createChildSceneNode();
+		imp_.SNode_->setPosition( -sceneHeight, 0.f, 0.f );
 
-		auto cbNode = sRootNode->createChildSceneNode();
+		auto cbNode = imp_.SNode_->createChildSceneNode();
 		cbNode->setScale(sceneHeight, sceneHeight, 1.f);
 		auto rect = RectExtFactory::CreateInstance(imp_.Smgr_);
 		rect->SetMaterial("Chart/s/BG");
 		cbNode->attachObject(rect);
 
+		for ( auto index = 0; index < circleCount; ++index )
 		{
-			auto lnode = sRootNode->createChildSceneNode();
-			auto l = Line2DFactory::CreateInstance(imp_.Smgr_);
-			l->SetStartPoint({ -200.f, 0.f, 0.f });
-			l->SetEndPoint({ 200.f, 0.f, 0.f });
-			lnode->attachObject(l);
+			auto lnode = imp_.SNode_->createChildSceneNode();
+			auto l = Line2DFactory::CreateInstance( imp_.Smgr_ );
+			lnode->attachObject( l );
+			lnode->setVisible( false );
+			imp_.SLineList_.push_back( l );
 		}
 
+		for ( auto index = 0; index < circleCount; ++index )
 		{
-			auto tnode = sRootNode->createChildSceneNode();
-			auto t = RectExtFactory::CreateInstance(imp_.Smgr_);
-			t->SetMaterial("Chart/Node");
-			t->setRenderQueueGroup(ERG_Node);
-			tnode->attachObject(t);
-			tnode->setScale(nodeSize, nodeSize, 1.f);
-			tnode->setPosition(-nodeRange * 4, CalcuValue(0 * 100 / 8.f), 0.f);
-		}
-
-		{
-			auto tnode = sRootNode->createChildSceneNode();
-			auto t = RectExtFactory::CreateInstance(imp_.Smgr_);
-			t->SetMaterial("Chart/Node");
-			t->setRenderQueueGroup(ERG_Node);
-			tnode->attachObject(t);
-			tnode->setScale(nodeSize, nodeSize, 1.f);
-			tnode->setPosition(-nodeRange * 3, CalcuValue(1 * 100 / 8.f), 0.f);
-		}
-
-		{
-			auto tnode = sRootNode->createChildSceneNode();
-			auto t = RectExtFactory::CreateInstance(imp_.Smgr_);
-			t->SetMaterial("Chart/Node");
-			t->setRenderQueueGroup(ERG_Node);
-			tnode->attachObject(t);
-			tnode->setScale(nodeSize, nodeSize, 1.f);
-			tnode->setPosition(-nodeRange * 2, CalcuValue(2 * 100 / 8.f), 0.f);
-		}
-
-		{
-			auto tnode = sRootNode->createChildSceneNode();
-			auto t = RectExtFactory::CreateInstance(imp_.Smgr_);
-			t->SetMaterial("Chart/Node");
-			t->setRenderQueueGroup(ERG_Node);
-			tnode->attachObject(t);
-			tnode->setScale(nodeSize, nodeSize, 1.f);
-			tnode->setPosition(-nodeRange * 1, CalcuValue(3 * 100 / 8.f), 0.f);
-		}
-
-		{
-			auto tnode = sRootNode->createChildSceneNode();
-			auto t = RectExtFactory::CreateInstance(imp_.Smgr_);
-			t->SetMaterial("Chart/Node");
-			t->setRenderQueueGroup(ERG_Node);
-			tnode->attachObject(t);
-			tnode->setScale(nodeSize, nodeSize, 1.f);
-			tnode->setPosition(nodeRange * 0, CalcuValue(4 * 100 / 8.f), 0.f);
-		}
-
-		{
-			auto tnode = sRootNode->createChildSceneNode();
-			auto t = RectExtFactory::CreateInstance(imp_.Smgr_);
-			t->SetMaterial("Chart/Node");
-			t->setRenderQueueGroup(ERG_Node);
-			tnode->attachObject(t);
-			tnode->setScale(nodeSize, nodeSize, 1.f);
-			tnode->setPosition(nodeRange * 1, CalcuValue(5 * 100 / 8.f), 0.f);
-		}
-
-		{
-			auto tnode = sRootNode->createChildSceneNode();
-			auto t = RectExtFactory::CreateInstance(imp_.Smgr_);
-			t->SetMaterial("Chart/Node");
-			t->setRenderQueueGroup(ERG_Node);
-			tnode->attachObject(t);
-			tnode->setScale(nodeSize, nodeSize, 1.f);
-			tnode->setPosition(nodeRange * 2, CalcuValue(6 * 100 / 8.f), 0.f);
-		}
-
-		{
-			auto tnode = sRootNode->createChildSceneNode();
-			auto t = RectExtFactory::CreateInstance(imp_.Smgr_);
-			t->SetMaterial("Chart/Node");
-			t->setRenderQueueGroup(ERG_Node);
-			tnode->attachObject(t);
-			tnode->setScale(nodeSize, nodeSize, 1.f);
-			tnode->setPosition(nodeRange * 3, CalcuValue(7 * 100 / 8.f), 0.f);
+			auto tnode = imp_.SNode_->createChildSceneNode();
+			auto t = RectExtFactory::CreateInstance( imp_.Smgr_ );
+			t->SetMaterial( "Chart/Node" );
+			t->setRenderQueueGroup( ERG_Node );
+			tnode->attachObject( t );
+			tnode->setScale( CircleSize, CircleSize, 1.f );
+			tnode->setPosition( valueBeg + index * CircleStepRange, CalcuValue( index * 100 / 8.f ), 0.f );
+			tnode->setVisible( false );
+			imp_.SCircleList_.push_back( t );
 		}
 	}
 
 	{
-		auto yRootNode = imp_.Smgr_->getRootSceneNode()->createChildSceneNode();
-		yRootNode->setPosition(-0.f, 0.f, 0.f);
+		imp_.YNode_ = imp_.Smgr_->getRootSceneNode()->createChildSceneNode();
+		imp_.YNode_->setPosition( -0.f, 0.f, 0.f );
 
-		auto cbNode = yRootNode->createChildSceneNode();
+		auto cbNode = imp_.YNode_->createChildSceneNode();
 		cbNode->setScale(sceneHeight, sceneHeight, 1.f);
 		auto rect = RectExtFactory::CreateInstance(imp_.Smgr_);
 		rect->SetMaterial("Chart/y/BG");
 		cbNode->attachObject(rect);
+
+		for ( auto index = 0; index < circleCount; ++index )
+		{
+			auto lnode = imp_.YNode_->createChildSceneNode();
+			auto l = Line2DFactory::CreateInstance( imp_.Smgr_ );
+			lnode->attachObject( l );
+			lnode->setVisible( false );
+			imp_.YLineList_.push_back( l );
+		}
+
+		for ( auto index = 0; index < circleCount; ++index )
+		{
+			auto tnode = imp_.YNode_->createChildSceneNode();
+			auto t = RectExtFactory::CreateInstance( imp_.Smgr_ );
+			t->SetMaterial( "Chart/Node" );
+			t->setRenderQueueGroup( ERG_Node );
+			tnode->attachObject( t );
+			tnode->setScale( CircleSize, CircleSize, 1.f );
+			tnode->setPosition( valueBeg + index * CircleStepRange, CalcuValue( index * 100 / 8.f ), 0.f );
+			tnode->setVisible( false );
+			imp_.YCircleList_.push_back( t );
+		}
 	}
 
 	{
-		auto hRootNode = imp_.Smgr_->getRootSceneNode()->createChildSceneNode();
-		hRootNode->setPosition(sceneHeight, 0.f, 0.f);
+		imp_.HNode_ = imp_.Smgr_->getRootSceneNode()->createChildSceneNode();
+		imp_.HNode_->setPosition( sceneHeight, 0.f, 0.f );
 
-		auto cbNode = hRootNode->createChildSceneNode();
+		auto cbNode = imp_.HNode_->createChildSceneNode();
 		cbNode->setScale(sceneHeight, sceneHeight, 1.f);
 		auto rect = RectExtFactory::CreateInstance(imp_.Smgr_);
 		rect->SetMaterial("Chart/h/BG");
 		cbNode->attachObject(rect);
+
+		for ( auto index = 0; index < circleCount; ++index )
+		{
+			auto lnode = imp_.HNode_->createChildSceneNode();
+			auto l = Line2DFactory::CreateInstance( imp_.Smgr_ );
+			lnode->attachObject( l );
+			lnode->setVisible( false );
+			imp_.HLineList_.push_back( l );
+		}
+
+		for ( auto index = 0; index < circleCount; ++index )
+		{
+			auto tnode = imp_.HNode_->createChildSceneNode();
+			auto t = RectExtFactory::CreateInstance( imp_.Smgr_ );
+			t->SetMaterial( "Chart/Node" );
+			t->setRenderQueueGroup( ERG_Node );
+			tnode->attachObject( t );
+			tnode->setScale( CircleSize, CircleSize, 1.f );
+			tnode->setPosition( valueBeg + index * CircleStepRange, CalcuValue( index * 100 / 8.f ), 0.f );
+			tnode->setVisible( false );
+			imp_.HCircleList_.push_back( t );
+		}
 	}
+
+	std::default_random_engine dre;
+	std::uniform_int_distribution<int> uid( 0, 100 );
+
+	imp_.SetValue( 0, 0, uid(dre) );
+	imp_.SetValue( 1, 0, uid( dre ) );
+	imp_.SetValue( 2, 0, uid( dre ) );
+
+	imp_.SetValue( 0, 1, uid( dre ) );
+	imp_.SetValue( 1, 1, uid( dre ) );
+	imp_.SetValue( 2, 1, uid( dre ) );
+
+	imp_.SetValue( 0, 2, uid( dre ) );
+	imp_.SetValue( 1, 2, uid( dre ) );
+	imp_.SetValue( 2, 2, uid( dre ) );
+
+	imp_.SetValue( 0, 3, uid( dre ) );
+	imp_.SetValue( 1, 3, uid( dre ) );
+	imp_.SetValue( 2, 3, uid( dre ) );
+
+	imp_.SetValue( 0, 4, uid( dre ) );
+	imp_.SetValue( 1, 4, uid( dre ) );
+	imp_.SetValue( 2, 4, uid( dre ) );
+
+	imp_.SetValue( 0, 5, uid( dre ) );
+	imp_.SetValue( 1, 5, uid(dre) );
+	imp_.SetValue( 2, 5, uid( dre ) );
+
+	imp_.SetValue( 0, 6, uid( dre ) );
+	imp_.SetValue( 1, 6, uid( dre ) );
+	imp_.SetValue( 2, 6, uid( dre ) );
+
+	imp_.SetValue( 0, 7, uid( dre ) );
+	imp_.SetValue( 1, 7, uid( dre ) );
+	imp_.SetValue( 2, 7, uid( dre ) );
 }
 
 ChartController::~ChartController()

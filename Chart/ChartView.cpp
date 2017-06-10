@@ -75,6 +75,7 @@ CChartDoc* CChartView::GetDocument() const // 非调试版本是内联的
 	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CChartDoc)));
 	return (CChartDoc*)m_pDocument;
 }
+#endif //_DEBUG
 
 BOOL CChartView::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext /*= NULL */ )
 {
@@ -84,8 +85,6 @@ BOOL CChartView::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dw
 
 	return ret;
 }
-
-#endif //_DEBUG
 
 
 // CChartView 消息处理程序
