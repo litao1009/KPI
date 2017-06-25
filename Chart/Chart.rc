@@ -78,7 +78,10 @@ IDR_ChartTYPE           ICON                    "res\\ChartDoc.ico"
 
 IDR_MAINFRAME MENU
 BEGIN
-    MENUITEM "文件(&F)",                      65535
+    POPUP "文件(&F)"
+    BEGIN
+        MENUITEM "编辑数据\tO",                     ID_EDIT_DATA
+    END
     POPUP "帮助(&H)"
     BEGIN
         MENUITEM "关于 Chart(&A)...",             ID_APP_ABOUT
@@ -93,19 +96,20 @@ END
 
 IDR_MAINFRAME ACCELERATORS
 BEGIN
-    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL
-    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL
-    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL
-    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL
-    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL
-    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL
-    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL
-    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT
-    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT
-    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL
-    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT
-    VK_F6,          ID_NEXT_PANE,           VIRTKEY 
-    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
+    "O",            ID_EDIT_DATA,           VIRTKEY, NOINVERT
 END
 
 
@@ -123,6 +127,24 @@ BEGIN
     LTEXT           "Chart，1.0 版",IDC_STATIC,42,14,114,8,SS_NOPREFIX
     LTEXT           "Copyright (C) 2017",IDC_STATIC,42,26,114,8
     DEFPUSHBUTTON   "确定",IDOK,113,41,50,14,WS_GROUP
+END
+
+IDD_DLG_EDITDATA DIALOGEX 0, 0, 169, 119
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "调整参数"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,7,98,50,14
+    PUSHBUTTON      "取消",IDCANCEL,59,98,50,14
+    PUSHBUTTON      "导入数据",IDC_BTN_IMPORT,63,7,50,14
+    PUSHBUTTON      "全部清空",IDC_BTN_CLEAR,112,98,50,14
+    EDITTEXT        IDC_TXT_SF,89,46,40,14,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_TXT_YF,89,62,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TXT_HSS,89,78,40,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "水分",IDC_STATIC,48,48,17,8
+    LTEXT           "油脂",IDC_STATIC,48,65,17,8
+    LTEXT           "黑色素",IDC_STATIC,48,80,25,8
+    LTEXT           "第一天",IDC_LABEL_DAY,71,29,25,8
 END
 
 
@@ -179,6 +201,14 @@ BEGIN
         RIGHTMARGIN, 163
         TOPMARGIN, 7
         BOTTOMMARGIN, 55
+    END
+
+    IDD_DLG_EDITDATA, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 162
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 112
     END
 END
 #endif    // APSTUDIO_INVOKED

@@ -10,6 +10,8 @@
 #include "Frame/Extension/RectExt.h"
 #include "Frame/Extension/Line2D.h"
 
+#include "FrameEvent/ChartEvt.h"
+
 #include <random>
 
 enum ERenderGroup
@@ -72,6 +74,39 @@ public:
 		}
 
 		line->SetEndPoint( circleNode->getPosition() );
+	}
+
+	void	Reset()
+	{
+		for ( auto cur : SCircleList_ )
+		{
+			cur->getParentSceneNode()->setVisible( false );
+		}
+
+		for ( auto cur : YCircleList_ )
+		{
+			cur->getParentSceneNode()->setVisible( false );
+		}
+
+		for ( auto cur : HCircleList_ )
+		{
+			cur->getParentSceneNode()->setVisible( false );
+		}
+
+		for ( auto cur : SLineList_ )
+		{
+			cur->getParentSceneNode()->setVisible( false );
+		}
+
+		for ( auto cur : YLineList_ )
+		{
+			cur->getParentSceneNode()->setVisible( false );
+		}
+
+		for ( auto cur : HLineList_ )
+		{
+			cur->getParentSceneNode()->setVisible( false );
+		}
 	}
 };
 
@@ -202,7 +237,7 @@ ChartController::ChartController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 			imp_.HCircleList_.push_back( t );
 		}
 	}
-
+	/*
 	std::default_random_engine dre;
 	std::uniform_int_distribution<int> uid( 0, 100 );
 
@@ -237,6 +272,7 @@ ChartController::ChartController( Ogre::RenderWindow *rt ):ImpUPtr_( new Imp )
 	imp_.SetValue( 0, 7, uid( dre ) );
 	imp_.SetValue( 1, 7, uid( dre ) );
 	imp_.SetValue( 2, 7, uid( dre ) );
+	*/
 }
 
 ChartController::~ChartController()
@@ -255,4 +291,20 @@ void ChartController::_FrameStart( const Ogre::FrameEvent& fevt )
 	auto& imp_ = *ImpUPtr_;
 
 	auto& evtRecorder = GetSysEventRecorder();
+
+	auto evt = PopFrameEvent<ChartEvt>();
+	if ( evt )
+	{
+		if ( evt->Clear_ )
+		{
+			imp_.Reset();
+		}
+		
+		if ( evt->Day_ > 0 )
+		{
+			imp_.SetValue( 0, evt->Day_ - 1, evt->Moisture );
+			imp_.SetValue( 1, evt->Day_ - 1, evt->Fat );
+			imp_.SetValue( 2, evt->Day_ - 1, evt->Melanin );
+		}
+	}
 }

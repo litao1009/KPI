@@ -10,7 +10,9 @@
 #include "Frame/OgreEnv.h"
 #include "Frame/OgreWndWrapper.h"
 #include "Controller/ChartController.h"
-//#include "FrameEvent/IndicatorEvt.h"
+
+#include "DlgEditData.h"
+#include "FrameEvent/ChartEvt.h"
 
 //#ifdef _DEBUG
 //#define new DEBUG_NEW
@@ -23,12 +25,14 @@ class	CMainFrame::Imp
 public:
 
 	OgreWndWrapperUPtr	OgreWnd_;
+	int					Day_{ 1 };
 };
 
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_CREATE()
+	ON_COMMAND( ID_EDIT_DATA, &CMainFrame::OnLoad )
 END_MESSAGE_MAP()
 
 // CMainFrame 构造/析构
@@ -94,4 +98,42 @@ int CMainFrame::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	OgreEnv::GetInstance().AddController( ctrller );
 
 	return 0;
+}
+
+
+void CMainFrame::OnLoad()
+{
+	// TODO:  在此添加命令处理程序代码
+	DlgEditData dlg;
+	dlg.SetDay( ImpUPtr_->Day_ );
+
+	if ( dlg.DoModal() )
+	{
+		ChartEvt evt;
+		if ( dlg.Clear() )
+		{
+			evt.Clear_ = true;
+			ImpUPtr_->Day_ = 1;
+		}
+		else
+		{
+			evt.Melanin = dlg.GetHSS();
+			evt.Fat = dlg.GetYF();
+			evt.Moisture = dlg.GetSF();
+			evt.Day_ = ImpUPtr_->Day_;
+			if ( evt.Day_ == 1 )
+			{
+				evt.Clear_ = true;
+			}
+
+			auto curDay = ++ImpUPtr_->Day_;
+			if ( curDay > 8 )
+			{
+				curDay = 1;
+			}
+			ImpUPtr_->Day_ = curDay;
+		}
+
+		OgreEnv::GetInstance().PostFrameEventTo3D( evt.ConvertToFrameEvent() );
+	}
 }
