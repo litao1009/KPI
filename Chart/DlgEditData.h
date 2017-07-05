@@ -2,6 +2,7 @@
 #include "afxwin.h"
 
 #include <memory>
+#include <vector>
 // DlgEditData 对话框
 
 class DlgEditData : public CDialogEx
@@ -18,17 +19,13 @@ public:
 // 对话框数据
 	enum { IDD = IDD_DLG_EDITDATA };
 
-	int	GetSF() const;
-
-	int	GetYF() const;
-
-	int GetHSS() const;
+	std::vector<std::tuple<int, int, int>>	GetData() const;
 
 	bool Clear() const;
 
 	void	SetDay( int d );
 
-	int	GetDay() const;
+	std::tuple<int,int>	GetDay() const;
 
 
 	virtual BOOL OnInitDialog() override;
@@ -47,12 +44,16 @@ public:
 	int		SF_{};
 	int		YF_{};
 	int		HSS_{};
-	int		Day_{1};
+	int		DayBegin_{1};
+	int		DayEnd_{ 1 };
 	bool	Clear_{};
+	std::vector<std::tuple<int, int, int>>	DataList_;
 
 	afx_msg void OnEnChangeTxtSf();
 	afx_msg void OnEnChangeTxtYf();
 	afx_msg void OnEnChangeTxtHss();
 	afx_msg void OnBnClickedBtnClear();
 	afx_msg void OnBnClickedBtnImport();
+	CComboBox CbDataList_;
+	afx_msg void OnCbnSelchangeCbDatalist();
 };

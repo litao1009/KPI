@@ -300,11 +300,21 @@ void ChartController::_FrameStart( const Ogre::FrameEvent& fevt )
 			imp_.Reset();
 		}
 		
-		if ( evt->Day_ > 0 )
+		if ( evt->DayBegin_ > 0 )
 		{
-			imp_.SetValue( 0, evt->Day_ - 1, evt->Moisture );
-			imp_.SetValue( 1, evt->Day_ - 1, evt->Fat );
-			imp_.SetValue( 2, evt->Day_ - 1, evt->Melanin );
+			auto index = 0;
+			for ( auto& cur : evt->DataList_ )
+			{
+				auto hss = std::get<0>( cur );
+				auto yz = std::get<1>( cur );
+				auto sf = std::get<2>( cur );
+
+				imp_.SetValue( 0, evt->DayBegin_ - 1 + index, sf );
+				imp_.SetValue( 1, evt->DayBegin_ - 1 + index, yz );
+				imp_.SetValue( 2, evt->DayBegin_ - 1 + index, hss );
+
+				++index;
+			}
 		}
 	}
 }

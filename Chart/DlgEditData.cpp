@@ -7,6 +7,7 @@
 #include "afxdialogex.h"
 
 #include <string>
+#include <regex>
 #include <boost/filesystem.hpp>
 
 class	DlgEditData::Imp
@@ -14,6 +15,7 @@ class	DlgEditData::Imp
 public:
 
 	DlgEditData*				ThisPtr_{};
+	int							CurSel_{};
 
 public:
 
@@ -51,6 +53,7 @@ void DlgEditData::DoDataExchange(CDataExchange* pDX)
 	DDX_Control( pDX, IDC_TXT_YF, TxtYF_ );
 	DDX_Control( pDX, IDOK, BtnOK_ );
 	DDX_Control( pDX, IDC_LABEL_DAY, Label_ );
+	DDX_Control( pDX, IDC_CB_DATALIST, CbDataList_ );
 }
 
 
@@ -60,6 +63,7 @@ BEGIN_MESSAGE_MAP(DlgEditData, CDialogEx)
 	ON_EN_CHANGE( IDC_TXT_HSS, &DlgEditData::OnEnChangeTxtHss )
 	ON_BN_CLICKED( IDC_BTN_CLEAR, &DlgEditData::OnBnClickedBtnClear )
 	ON_BN_CLICKED( IDC_BTN_IMPORT, &DlgEditData::OnBnClickedBtnImport )
+	ON_CBN_SELCHANGE( IDC_CB_DATALIST, &DlgEditData::OnCbnSelchangeCbDatalist )
 END_MESSAGE_MAP()
 
 
@@ -146,19 +150,18 @@ void DlgEditData::OnBnClickedBtnClear()
 	CDialogEx::OnOK();
 }
 
-int DlgEditData::GetSF() const
+std::vector<std::tuple<int, int, int>> DlgEditData::GetData() const
 {
-	return SF_;
-}
-
-int DlgEditData::GetYF() const
-{
-	return YF_;
-}
-
-int DlgEditData::GetHSS() const
-{
-	return HSS_;
+	if ( !DataList_.empty() )
+	{
+		return DataList_;
+	}
+	else
+	{
+		decltype( DataList_ ) tmp;
+		tmp.emplace_back( std::make_tuple( HSS_, YF_, SF_ ) );
+		return tmp;
+	}
 }
 
 bool DlgEditData::Clear() const
@@ -178,19 +181,21 @@ void DlgEditData::SetDay( int d )
 		d = 8;
 	}
 
-	Day_ = d;
+	DayBegin_ = d;
+	DayEnd_ = d;
 }
 
-int DlgEditData::GetDay() const
+std::tuple<int,int> DlgEditData::GetDay() const
 {
-	return Day_;
+	return std::make_tuple( DayBegin_, DayEnd_ );
 }
 
 BOOL DlgEditData::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
-	Label_.SetWindowTextW( ( L"第" + std::to_wstring( Day_ ) + L"天" ).c_str() );
+	CbDataList_.EnableWindow( FALSE );
+	Label_.SetWindowTextW( ( L"第" + std::to_wstring( DayBegin_ ) + L"天" ).c_str() );
 	ImpUPtr_->UpdateValue( 50, 50, 50 );
 
 	return TRUE;
@@ -207,13 +212,72 @@ void DlgEditData::OnBnClickedBtnImport()
 		std::wstring wstr = fp.GetBuffer();
 		fp.ReleaseBuffer();
 
+		std::string line;
 		try
 		{
 			boost::filesystem::ifstream ifs( wstr );
 
-			float sf{}, yz{}, hss{};
-			ifs >> hss >> yz >> sf;
+			std::getline( ifs, line );
+			std::getline( ifs, line );
 
+			std::regex rg( R"(\s*(\d+)\s+(\d+)\s+(\d+)\s*)" );
+			std::smatch what;
+
+			decltype( DataList_ ) importList;
+
+			while ( ifs )
+			{
+				line.clear();
+				std::getline( ifs, line );
+
+				if ( !std::regex_match( line, what, rg ) )
+				{
+					continue;
+				}
+
+				auto hss = std::stoi( what[1].str() );
+				auto yz = std::stoi( what[2].str() );
+				auto sf = std::stoi( what[3].str() );
+
+				importList.emplace_back( hss, yz, sf );
+
+				if ( DayBegin_ + importList.size() - 1 >= 8 )
+				{
+					break;
+				}
+			}
+
+			if ( importList.empty() )
+			{
+				throw "empty";
+			}
+
+			DataList_ = importList;
+
+			DayEnd_ = DayBegin_ + DataList_.size() - 1;
+			ImpUPtr_->CurSel_ = 0;
+			CbDataList_.ResetContent();
+
+			if ( DataList_.size() > 1 )
+			{
+				for ( auto index = 0; index < DataList_.size(); ++index )
+				{
+					auto str = L"第" + std::to_wstring( DayBegin_ + index ) + L"天";
+					CbDataList_.AddString( str.c_str() );
+				}
+
+				CbDataList_.EnableWindow( TRUE );
+				CbDataList_.SetCurSel( ImpUPtr_->CurSel_ );
+				Label_.SetWindowTextW( ( L"第" + std::to_wstring( DayBegin_ ) + L"~" + std::to_wstring(DayEnd_) + L"天" ).c_str() );
+			}
+			else
+			{
+				CbDataList_.EnableWindow( FALSE );
+				Label_.SetWindowTextW( ( L"第" + std::to_wstring( DayBegin_ ) + L"天" ).c_str() );
+			}
+
+			int sf{}, yz{}, hss{};
+			std::tie( hss, yz, sf ) = DataList_[ImpUPtr_->CurSel_];
 			ImpUPtr_->UpdateValue( sf, yz, hss );
 
 			GetDlgItem( IDOK )->SetFocus();
@@ -224,4 +288,14 @@ void DlgEditData::OnBnClickedBtnImport()
 		}
 
 	}
+}
+
+
+void DlgEditData::OnCbnSelchangeCbDatalist()
+{
+	ImpUPtr_->CurSel_ = CbDataList_.GetCurSel();
+
+	int sf{}, yz{}, hss{};
+	std::tie( hss, yz, sf ) = DataList_[ImpUPtr_->CurSel_];
+	ImpUPtr_->UpdateValue( sf, yz, hss );
 }

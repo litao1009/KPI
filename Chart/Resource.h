@@ -13,6 +13,8 @@
 #define IDC_TXT_HSS                     1004
 #define IDC_EDIT1                       1005
 #define IDC_LABEL_DAY                   1006
+#define IDC_COMBO1                      1009
+#define IDC_CB_DATALIST                 1009
 #define ID_EDIT_DATA                    32774
 
 // Next default values for new objects
@@ -21,7 +23,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        312
 #define _APS_NEXT_COMMAND_VALUE         32777
-#define _APS_NEXT_CONTROL_VALUE         1007
+#define _APS_NEXT_CONTROL_VALUE         1010
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

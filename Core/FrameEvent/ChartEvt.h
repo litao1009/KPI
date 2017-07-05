@@ -6,9 +6,7 @@ class	ChartEvt : public TFrameEvent<ChartEvt>
 {
 public:
 
-	float	Moisture{};
-	float	Fat{};
-	float	Melanin{};
-	int		Day_{};
+	std::vector<std::tuple<int, int, int>>	DataList_;
+	int		DayBegin_{};
 	bool	Clear_{};
 };

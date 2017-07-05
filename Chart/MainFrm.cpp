@@ -48,7 +48,7 @@ CMainFrame::~CMainFrame()
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
-	auto height = 500;
+	auto height = 400;
 	cs.cx = height * 3 + 20;
 	cs.cy = height + 62;
 	cs.style &= ~WS_MAXIMIZEBOX;
@@ -117,20 +117,22 @@ void CMainFrame::OnLoad()
 		}
 		else
 		{
-			evt.Melanin = dlg.GetHSS();
-			evt.Fat = dlg.GetYF();
-			evt.Moisture = dlg.GetSF();
-			evt.Day_ = ImpUPtr_->Day_;
-			if ( evt.Day_ == 1 )
+			evt.DataList_ = dlg.GetData();
+			auto beginDay = 0, endDay = 0;
+			std::tie( beginDay, endDay ) = dlg.GetDay();
+
+			evt.DayBegin_ = beginDay;
+			if ( evt.DayBegin_ == 1 )
 			{
 				evt.Clear_ = true;
 			}
-
-			auto curDay = ++ImpUPtr_->Day_;
-			if ( curDay > 8 )
+	
+			auto curDay = ++endDay;
+			if ( endDay >= 8 )
 			{
 				curDay = 1;
 			}
+
 			ImpUPtr_->Day_ = curDay;
 		}
 
