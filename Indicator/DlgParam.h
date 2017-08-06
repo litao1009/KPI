@@ -28,6 +28,7 @@ class CDlgParam : public CDialogEx
 	CComboBox CBSex_;
 	CEdit TxtAge_;
 	CComboBox CBItem_;
+	CComboBox CBDisplayType_;
 
 public:
 
@@ -56,6 +57,8 @@ public:
 
 	int	GetAge() const;
 
+	int	GetDisplayType() const;
+
 	bool	IsMale() const;
 
 	std::vector<std::tuple<int, int, int>>	GetItemList() const;
@@ -72,4 +75,5 @@ public:
 	
 	afx_msg void OnBnClickedBtnImport();
 	afx_msg void OnCbnSelchangeCbImportItem();
+	afx_msg void OnCbnSelchangeCbDisplayType();
 };

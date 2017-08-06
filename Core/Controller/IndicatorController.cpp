@@ -42,6 +42,10 @@ public:
 	Ogre::CompositorWorkspace*	WorkSpce_{};
 	Ogre::Camera*				Camera_{};
 
+	Ogre::SceneNode*			Ind1Node_{};
+	Ogre::SceneNode*			Ind2Node_{};
+	Ogre::SceneNode*			Ind3Node_{};
+
 	Ogre::SceneNode*			Pointer1Node_{};
 	Ogre::SceneNode*			Pointer2Node_{};
 	Ogre::SceneNode*			Pointer3Node_{};
@@ -661,11 +665,11 @@ IndicatorController::IndicatorController( Ogre::RenderWindow *rt ):ImpUPtr_( new
 		auto introdTex = introdMat->getTechnique( 0 )->getPass( 0 )->getTextureUnitState( 0 )->_getTexturePtr();
 		
 		{//indicator1
-			auto ind = indicatorRootNode->createChildSceneNode();
-			ind->setPosition( -singleIndicatorArea, 0.f, 0.f );
+			imp_.Ind1Node_ = indicatorRootNode->createChildSceneNode();
+			imp_.Ind1Node_->setPosition( -singleIndicatorArea, 0.f, 0.f );
 
 			{//panel
-				auto panelPosNode = ind->createChildSceneNode();
+				auto panelPosNode = imp_.Ind1Node_->createChildSceneNode();
 				panelPosNode->setPosition( 0.f, panelOffset, 0.f );
 
 				{
@@ -736,7 +740,7 @@ IndicatorController::IndicatorController( Ogre::RenderWindow *rt ):ImpUPtr_( new
 			}
 
 			{//introduction
-				auto introdNode = ind->createChildSceneNode();
+				auto introdNode = imp_.Ind1Node_->createChildSceneNode();
 				introdNode->setPosition( 0.f, introductionOffset, 0.f );
 
 				auto tex = Ogre::TextureManager::getSingleton().load( "s.png", "General" );
@@ -748,9 +752,7 @@ IndicatorController::IndicatorController( Ogre::RenderWindow *rt ):ImpUPtr_( new
 				introd->SetMaterial( "S" );
 				introidScaleNode->attachObject( introd );
 
-
-
-				auto resultNode = ind->createChildSceneNode();
+				auto resultNode = imp_.Ind1Node_->createChildSceneNode();
 				resultNode->setPosition( 0.f, resultOffset, 0.f );
 
 				auto reslutScaleNode = resultNode->createChildSceneNode();
@@ -763,11 +765,11 @@ IndicatorController::IndicatorController( Ogre::RenderWindow *rt ):ImpUPtr_( new
 		}
 
 		{//indicator2
-			auto ind = indicatorRootNode->createChildSceneNode();
-			ind->setPosition( 0, 0.f, 0.f );
+			imp_.Ind2Node_ = indicatorRootNode->createChildSceneNode();
+			imp_.Ind2Node_->setPosition( 0, 0.f, 0.f );
 
 			{//panel
-				auto panelPosNode = ind->createChildSceneNode();
+				auto panelPosNode = imp_.Ind2Node_->createChildSceneNode();
 				panelPosNode->setPosition( 0.f, panelOffset, 0.f );
 
 				{
@@ -838,7 +840,7 @@ IndicatorController::IndicatorController( Ogre::RenderWindow *rt ):ImpUPtr_( new
 			}
 
 			{//introduction
-				auto introdNode = ind->createChildSceneNode();
+				auto introdNode = imp_.Ind2Node_->createChildSceneNode();
 				introdNode->setPosition( 0.f, introductionOffset, 0.f );
 
 				auto tex = Ogre::TextureManager::getSingleton().load( "y.png", "General" );
@@ -851,7 +853,7 @@ IndicatorController::IndicatorController( Ogre::RenderWindow *rt ):ImpUPtr_( new
 				introidScaleNode->attachObject( introd );
 
 
-				auto resultNode = ind->createChildSceneNode();
+				auto resultNode = imp_.Ind2Node_->createChildSceneNode();
 				resultNode->setPosition( 0.f, resultOffset, 0.f );
 
 				auto reslutScaleNode = resultNode->createChildSceneNode();
@@ -865,11 +867,11 @@ IndicatorController::IndicatorController( Ogre::RenderWindow *rt ):ImpUPtr_( new
 
 
 		{//indicator3
-			auto ind = indicatorRootNode->createChildSceneNode();
-			ind->setPosition( singleIndicatorArea, 0.f, 0.f );
+			imp_.Ind3Node_ = indicatorRootNode->createChildSceneNode();
+			imp_.Ind3Node_->setPosition( singleIndicatorArea, 0.f, 0.f );
 
 			{//panel
-				auto panelPosNode = ind->createChildSceneNode();
+				auto panelPosNode = imp_.Ind3Node_->createChildSceneNode();
 				panelPosNode->setPosition( 0.f, panelOffset, 0.f );
 
 				{
@@ -940,7 +942,7 @@ IndicatorController::IndicatorController( Ogre::RenderWindow *rt ):ImpUPtr_( new
 			}
 
 			{//introduction
-				auto introdNode = ind->createChildSceneNode();
+				auto introdNode = imp_.Ind3Node_->createChildSceneNode();
 				introdNode->setPosition( 0.f, introductionOffset, 0.f );
 
 				auto tex = Ogre::TextureManager::getSingleton().load( "h.png", "General" );
@@ -953,7 +955,7 @@ IndicatorController::IndicatorController( Ogre::RenderWindow *rt ):ImpUPtr_( new
 				introidScaleNode->attachObject( introd );
 
 
-				auto resultNode = ind->createChildSceneNode();
+				auto resultNode = imp_.Ind3Node_->createChildSceneNode();
 				resultNode->setPosition( 0.f, resultOffset, 0.f );
 
 				auto reslutScaleNode = resultNode->createChildSceneNode();
@@ -995,9 +997,77 @@ void IndicatorController::_FrameStart( const Ogre::FrameEvent& fevt )
 		auto evt = PopFrameEvent<IndicatorEvt>();
 		if ( evt )
 		{
+			switch ( evt->DisplayType )
+			{
+			case 0:
+			{
+				imp_.Ind1Node_->setVisible( true );
+				imp_.Ind2Node_->setVisible( true );
+				imp_.Ind3Node_->setVisible( true );
+			}
+			break;
+			case 1:
+			{
+				imp_.Ind1Node_->setVisible( true );
+				imp_.Ind2Node_->setVisible( false );
+				imp_.Ind3Node_->setVisible( false );
+			}
+			break;
+			case 2:
+			{
+				imp_.Ind1Node_->setVisible( false );
+				imp_.Ind2Node_->setVisible( true );
+				imp_.Ind3Node_->setVisible( false );
+			}
+			break;
+			case 3:
+			{
+				imp_.Ind1Node_->setVisible( false );
+				imp_.Ind2Node_->setVisible( false );
+				imp_.Ind3Node_->setVisible( true );
+			}
+			break;
+			default:
+			break;
+			}
+
 			imp_.UpdateValue( evt->Moisture, evt->Fat, evt->Melanin );
 			imp_.SetSex( evt->Male );
-			imp_.SetAge( evt->Age_ );
+			imp_.SetAge( evt->Age );
+			
+			switch ( evt->DisplayType )
+			{
+			case 0:
+			{
+				//imp_.Ind1Node_->setVisible( true );
+				//imp_.Ind2Node_->setVisible( true );
+				//imp_.Ind3Node_->setVisible( true );
+			}
+			break;
+			case 1:
+			{
+				//imp_.Ind1Node_->setVisible( true );
+				imp_.Ind2Node_->setVisible( false );
+				imp_.Ind3Node_->setVisible( false );
+			}
+			break;
+			case 2:
+			{
+				imp_.Ind1Node_->setVisible( false );
+				//imp_.Ind2Node_->setVisible( true );
+				imp_.Ind3Node_->setVisible( false );
+			}
+			break;
+			case 3:
+			{
+				imp_.Ind1Node_->setVisible( false );
+				imp_.Ind2Node_->setVisible( false );
+				//imp_.Ind3Node_->setVisible( true );
+			}
+			break;
+			default:
+			break;
+			}
 		}
 	}
 

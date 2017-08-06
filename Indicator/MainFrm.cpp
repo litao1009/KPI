@@ -207,7 +207,8 @@ void CMainFrame::OnModifyParam()
 		ImpUPtr_->Evt->Moisture = dlg.GetSF();
 		ImpUPtr_->Evt->Melanin = dlg.GetHSS();
 		ImpUPtr_->Evt->Male = dlg.IsMale();
-		ImpUPtr_->Evt->Age_ = dlg.GetAge();
+		ImpUPtr_->Evt->Age = dlg.GetAge();
+		ImpUPtr_->Evt->DisplayType = dlg.GetDisplayType();
 
 		OgreEnv::GetInstance().PostFrameEventTo3D(ImpUPtr_->Evt->ConvertToFrameEvent());
 	}

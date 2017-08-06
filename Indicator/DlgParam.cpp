@@ -9,6 +9,7 @@
 
 #include <boost/format.hpp>
 #include <boost/filesystem/fstream.hpp>
+#include <boost/algorithm/string.hpp>
 
 // CDlgParam 对话框
 
@@ -18,6 +19,7 @@ public:
 
 	std::vector<std::tuple<int, int, int>>	itemList;
 	CDlgParam*								ThisPtr_{};
+	int										DisplayIndex_{};
 	int										Cursel{};
 
 public:
@@ -48,14 +50,15 @@ CDlgParam::~CDlgParam()
 
 void CDlgParam::DoDataExchange(CDataExchange* pDX)
 {
-	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_TXT_HSS, TxtHss_);
-	DDX_Control(pDX, IDC_TXT_SF, TxtSF_);
-	DDX_Control(pDX, IDC_TXT_YF, TxtYF_);
-	DDX_Control(pDX, IDOK, BtnOK_);
-	DDX_Control(pDX, IDC_CB_SEX, CBSex_);
-	DDX_Control(pDX, IDC_TXT_AGE, TxtAge_);
-	DDX_Control(pDX, IDC_CB_IMPORT_ITEM, CBItem_);
+	CDialogEx::DoDataExchange( pDX );
+	DDX_Control( pDX, IDC_TXT_HSS, TxtHss_ );
+	DDX_Control( pDX, IDC_TXT_SF, TxtSF_ );
+	DDX_Control( pDX, IDC_TXT_YF, TxtYF_ );
+	DDX_Control( pDX, IDOK, BtnOK_ );
+	DDX_Control( pDX, IDC_CB_SEX, CBSex_ );
+	DDX_Control( pDX, IDC_TXT_AGE, TxtAge_ );
+	DDX_Control( pDX, IDC_CB_IMPORT_ITEM, CBItem_ );
+	DDX_Control( pDX, IDC_CB_DISPLAY_TYPE, CBDisplayType_ );
 }
 
 
@@ -67,6 +70,7 @@ BEGIN_MESSAGE_MAP(CDlgParam, CDialogEx)
 	ON_CBN_SELCHANGE( IDC_CB_SEX, &CDlgParam::OnCbnSelchangeCbSex )
 	ON_BN_CLICKED( IDC_BTN_IMPORT, &CDlgParam::OnBnClickedBtnImport )
 	ON_CBN_SELCHANGE(IDC_CB_IMPORT_ITEM, &CDlgParam::OnCbnSelchangeCbImportItem)
+	ON_CBN_SELCHANGE( IDC_CB_DISPLAY_TYPE, &CDlgParam::OnCbnSelchangeCbDisplayType )
 END_MESSAGE_MAP()
 
 
@@ -81,7 +85,15 @@ BOOL CDlgParam::OnInitDialog()
 	TxtYF_.SetWindowTextW( _T( "50" ) );
 	TxtHss_.SetWindowTextW( _T( "50" ) );
 	TxtAge_.SetWindowTextW( _T( "20" ) );
+	
 	CBSex_.SetCurSel( 0 );
+
+	CBDisplayType_.ResetContent();
+	CBDisplayType_.AddString( _T( "显示全部" ) );
+	CBDisplayType_.AddString( _T( "仅水分" ) );
+	CBDisplayType_.AddString( _T( "仅油脂" ) );
+	CBDisplayType_.AddString( _T( "仅黑色素" ) );
+	CBDisplayType_.SetCurSel( 0 );
 	
 	OnEnChangeTxtSf();
 	OnEnChangeTxtYf();
@@ -115,6 +127,11 @@ int CDlgParam::GetHSS() const
 int CDlgParam::GetAge() const
 {
 	return Age_;
+}
+
+int CDlgParam::GetDisplayType() const
+{
+	return ImpUPtr_->DisplayIndex_;
 }
 
 bool CDlgParam::IsMale() const
@@ -268,72 +285,149 @@ void CDlgParam::OnBnClickedBtnImport()
 		std::wstring wstr = fp.GetBuffer();
 		fp.ReleaseBuffer();
 
-		try
+		if ( ImpUPtr_->DisplayIndex_ == 0 )
 		{
-			boost::filesystem::ifstream ifs( wstr );
-
-			std::string line;
-
-			static std::string tagStr = "黑色素----------油脂----------水分";
-
-			auto foundTag = false;
-			while ( true )
+			try
 			{
-				line.clear();
-				std::getline(ifs, line);
+				boost::filesystem::ifstream ifs( wstr );
 
-				if ( line == tagStr )
+				std::string line;
+
+				static std::string tagStr = "黑色素----------油脂----------水分";
+
+				auto foundTag = false;
+				while ( true )
 				{
-					foundTag = true;
-					break;
+					line.clear();
+					std::getline( ifs, line );
+
+					if ( line == tagStr )
+					{
+						foundTag = true;
+						break;
+					}
 				}
-			}
 
-			if ( !foundTag )
+				if ( !foundTag )
+				{
+					throw "";
+				}
+
+				float sf{}, yz{}, hss{};
+
+				ImpUPtr_->itemList.clear();
+
+				while ( ifs )
+				{
+					ifs >> hss >> yz >> sf;
+
+					sf = std::fabs( sf );
+					yz = std::fabs( yz );
+					hss = std::fabs( hss );
+
+					ImpUPtr_->itemList.emplace_back( (int)sf, (int)yz, (int)hss );
+				}
+
+				if ( ImpUPtr_->itemList.empty() )
+				{
+					throw "";
+				}
+
+				auto firstVal = ImpUPtr_->itemList.front();
+				ImpUPtr_->UpdateValue( std::get<0>( firstVal ), std::get<1>( firstVal ), std::get<2>( firstVal ) );
+
+				CBItem_.ResetContent();
+				for ( auto index = 0; index < ImpUPtr_->itemList.size(); ++index )
+				{
+					auto str = L"第" + std::to_wstring( index + 1 ) + L"号样本";
+					CBItem_.AddString( str.c_str() );
+				}
+
+				CBItem_.EnableWindow( TRUE );
+				CBItem_.SetCurSel( 0 );
+
+				GetDlgItem( IDOK )->SetFocus();
+			}
+			catch ( ... )
 			{
-				throw "";
+				MessageBox( _T( "格式错误！" ) );
 			}
-
-			float sf{}, yz{}, hss{};
-
-			ImpUPtr_->itemList.clear();
-
-			while ( ifs )
-			{
-				ifs >> hss >> yz >> sf;
-
-				sf = std::fabs(sf);
-				yz = std::fabs(yz);
-				hss = std::fabs(hss);
-
-				ImpUPtr_->itemList.emplace_back((int)sf, (int)yz, (int)hss);
-			}
-
-			if ( ImpUPtr_->itemList.empty() )
-			{
-				throw "";
-			}
-
-			auto firstVal = ImpUPtr_->itemList.front();
-			ImpUPtr_->UpdateValue(std::get<0>(firstVal), std::get<1>(firstVal), std::get<2>(firstVal));
-
-			CBItem_.ResetContent();
-			for ( auto index = 0; index < ImpUPtr_->itemList.size(); ++index )
-			{
-				auto str = L"第" + std::to_wstring(index + 1) + L"号样本";
-				CBItem_.AddString(str.c_str());
-			}
-
-			CBItem_.EnableWindow(TRUE);
-			CBItem_.SetCurSel(0);
-
-			GetDlgItem( IDOK )->SetFocus();
 		}
-		catch ( ... )
+		else
 		{
-			MessageBox( _T( "格式错误！" ) );
+			try
+			{
+				boost::filesystem::ifstream ifs( wstr );
+
+				std::string line;
+
+				float val{};
+
+				ImpUPtr_->itemList.clear();
+
+				while ( ifs )
+				{
+					line.clear();
+					std::getline( ifs, line );
+					boost::algorithm::trim( line );
+					if ( line.empty() )
+					{
+						continue;
+					}
+
+					auto val = std::stoi( line );
+
+					int sf{}, yz{}, hss{};
+
+					switch ( ImpUPtr_->DisplayIndex_ )
+					{
+					case 1:
+					{
+						sf = static_cast<decltype( sf )>( val );
+					}
+					break;
+					case 2:
+					{
+						yz = static_cast<decltype( yz )>( val );
+					}
+					break;
+					case 3:
+					{
+						hss = static_cast<decltype( hss )>( val );
+					}
+					break;
+					default:
+					break;
+					}
+
+					ImpUPtr_->itemList.emplace_back( sf, yz, hss );
+				}
+
+				if ( ImpUPtr_->itemList.empty() )
+				{
+					throw "";
+				}
+
+				auto firstVal = ImpUPtr_->itemList.front();
+				ImpUPtr_->UpdateValue( std::get<0>( firstVal ), std::get<1>( firstVal ), std::get<2>( firstVal ) );
+
+				CBItem_.ResetContent();
+				for ( auto index = 0; index < ImpUPtr_->itemList.size(); ++index )
+				{
+					auto str = L"第" + std::to_wstring( index + 1 ) + L"号样本";
+					CBItem_.AddString( str.c_str() );
+				}
+
+				CBItem_.EnableWindow( TRUE );
+				CBItem_.SetCurSel( 0 );
+
+				GetDlgItem( IDOK )->SetFocus();
+			}
+			catch ( ... )
+			{
+				MessageBox( _T( "格式错误！" ) );
+			}
 		}
-		
 	}
 }
 
@@ -345,4 +439,46 @@ void CDlgParam::OnCbnSelchangeCbImportItem()
 	auto curVal = ImpUPtr_->itemList[curIndex];
 	ImpUPtr_->Cursel = curIndex;
 	ImpUPtr_->UpdateValue(std::get<0>(curVal), std::get<1>(curVal), std::get<2>(curVal));
+}
+
+void CDlgParam::OnCbnSelchangeCbDisplayType()
+{
+	auto& imp_ = *ImpUPtr_;
+
+	auto curIndex = CBDisplayType_.GetCurSel();
+	imp_.DisplayIndex_ = curIndex;
+
+	switch ( curIndex )
+	{
+	case 0://显示全部
+	{
+		imp_.ThisPtr_->TxtSF_.EnableWindow( TRUE );
+		imp_.ThisPtr_->TxtYF_.EnableWindow( TRUE );
+		imp_.ThisPtr_->TxtHss_.EnableWindow( TRUE );
+	}
+	break;
+	case 1://仅水分
+	{
+		imp_.ThisPtr_->TxtSF_.EnableWindow( TRUE );
+		imp_.ThisPtr_->TxtYF_.EnableWindow( FALSE );
+		imp_.ThisPtr_->TxtHss_.EnableWindow( FALSE );
+	}
+	break;
+	case 2://仅油脂
+	{
+		imp_.ThisPtr_->TxtSF_.EnableWindow( FALSE );
+		imp_.ThisPtr_->TxtYF_.EnableWindow( TRUE );
+		imp_.ThisPtr_->TxtHss_.EnableWindow( FALSE );
+	}
+	break;
+	case 3://仅黑色素
+	{
+		imp_.ThisPtr_->TxtSF_.EnableWindow( FALSE );
+		imp_.ThisPtr_->TxtYF_.EnableWindow( FALSE );
+		imp_.ThisPtr_->TxtHss_.EnableWindow( TRUE );
+	}
+	break;
+	default:
+	break;
+	}
 }

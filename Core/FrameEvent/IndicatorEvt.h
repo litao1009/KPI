@@ -23,5 +23,6 @@ public:
 	float	Fat{};
 	float	Melanin{};
 	bool	Male{};
-	int		Age_{};
+	int		Age{};
+	int		DisplayType{};
 };
