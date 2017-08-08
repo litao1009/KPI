@@ -47,6 +47,7 @@ public:
 	afx_msg void OnImport();
 	afx_msg void OnModifyParam();
 	afx_msg void OnSwitchItem();
+	afx_msg void OnSkinGuide();
 };
 
 

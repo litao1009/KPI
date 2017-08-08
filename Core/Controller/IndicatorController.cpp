@@ -95,6 +95,9 @@ public:
 	TexNumber*					ComN2_{};
 	TexNumber*					ComN3_{};
 
+	Ogre::SceneNode*			SexNode_{};
+	Ogre::SceneNode*			AgeNode_{};
+
 public:
 
 	void	SetSex(bool male)
@@ -339,11 +342,7 @@ public:
 			qua.FromAngleAxis( Ogre::Degree( fat * 1.8f ), Ogre::Vector3::NEGATIVE_UNIT_Z );
 			Pointer2Node_->setOrientation( qua );
 
-			if ( fat < 30 )
-			{
-				Y_->SetMaterial( "Y1" );
-			}
-			else if ( fat <= 65 )
+			if ( fat < 50 )
 			{
 				Y_->SetMaterial( "Y2" );
 			}
@@ -406,20 +405,32 @@ public:
 			qua.FromAngleAxis( Ogre::Degree( melanin * 1.8f ), Ogre::Vector3::NEGATIVE_UNIT_Z );
 			Pointer3Node_->setOrientation( qua );
 
-			if ( melanin < 14 )
+			if ( melanin <= 9 )
 			{
 				H_->SetMaterial( "H1" );
 			}
-			else if ( melanin <= 22 )
+			else if ( melanin <= 14 )
 			{
 				H_->SetMaterial( "H2" );
 			}
-			else
+			else if ( melanin <= 22 )
 			{
 				H_->SetMaterial( "H3" );
 			}
+			else if ( melanin <= 30 )
+			{
+				H_->SetMaterial( "H4" );
+			}
+			else if ( melanin <= 40 )
+			{
+				H_->SetMaterial( "H5" );
+			}
+			else
+			{
+				H_->SetMaterial( "H6" );
+			}
 		}
-
+		
 		{
 			auto compVal = moisture - .2f * fat - .1f * melanin;
 			compVal = std::max( compVal, 0.f );
@@ -452,6 +463,8 @@ public:
 		
 
 		ResultNode_->setVisible( true );
+		SexNode_->setVisible( false );
+		AgeNode_->setVisible( false );
 	}
 };
 
@@ -503,11 +516,11 @@ IndicatorController::IndicatorController( Ogre::RenderWindow *rt ):ImpUPtr_( new
 		scaleNode->attachObject( rect );
 
 		{//sex
-			auto sexNode = imp_.ResultNode_->createChildSceneNode();
-			sexNode->setPosition(0.f, 392.f, 0.f);
+			imp_.SexNode_ = imp_.ResultNode_->createChildSceneNode();
+			imp_.SexNode_->setPosition( 0.f, 392.f, 0.f );
 
 			{
-				auto sex1Node = sexNode->createChildSceneNode();
+				auto sex1Node = imp_.SexNode_->createChildSceneNode();
 				sex1Node->setPosition(-90.f, 0.f, 0.f);
 				sex1Node->setScale(90.f, 45.f, 1.f);
 				auto sexRect = RectExtFactory::CreateInstance(imp_.Smgr_);
@@ -517,7 +530,7 @@ IndicatorController::IndicatorController( Ogre::RenderWindow *rt ):ImpUPtr_( new
 			}
 
 			{
-				auto sex2Node = sexNode->createChildSceneNode();
+				auto sex2Node = imp_.SexNode_->createChildSceneNode();
 				sex2Node->setPosition(50.f, 0.f, 0.f);
 				sex2Node->setScale(45.f, 45.f, 1.f);
 				imp_.Sex_ = RectExtFactory::CreateInstance(imp_.Smgr_);
@@ -528,11 +541,11 @@ IndicatorController::IndicatorController( Ogre::RenderWindow *rt ):ImpUPtr_( new
 		}
 
 		{//age
-			auto ageNode = imp_.ResultNode_->createChildSceneNode();
-			ageNode->setPosition(0.f, 342.f, 0.f);
+			imp_.AgeNode_ = imp_.ResultNode_->createChildSceneNode();
+			imp_.AgeNode_->setPosition( 0.f, 342.f, 0.f );
 
 			{//tex
-				auto texNode = ageNode->createChildSceneNode();
+				auto texNode = imp_.AgeNode_->createChildSceneNode();
 				texNode->setPosition(-90.f, 0.f, 0.f);
 				texNode->setScale(90.f, 45.f, 1.f);
 				auto ageRect = RectExtFactory::CreateInstance(imp_.Smgr_);
@@ -541,7 +554,7 @@ IndicatorController::IndicatorController( Ogre::RenderWindow *rt ):ImpUPtr_( new
 				texNode->attachObject(ageRect);
 			}
 
-			auto numNode = ageNode->createChildSceneNode();
+			auto numNode = imp_.AgeNode_->createChildSceneNode();
 			numNode->setPosition(50.f, 0.f, 0.f);
 			{//num
 				auto n1Node = numNode->createChildSceneNode();
@@ -585,72 +598,6 @@ IndicatorController::IndicatorController( Ogre::RenderWindow *rt ):ImpUPtr_( new
 			n3Node->setPosition( -70.f, -20.f, 0.f );
 			n3Node->setScale( 35.f, 55.f, 1.f );
 			n3Node->attachObject( imp_.ComN1_ );
-		}
-
-		{//summy
-			auto sumCharHeight = 30.f;
-			auto sumCharWidth = 30.f;
-			auto sumCharAspect = sumCharWidth / sumCharHeight;
-
-			auto sumNode = imp_.ResultNode_->createChildSceneNode();
-			sumNode->setPosition(0.f, -240.f, 0.f);
-
-			{//post
-				auto postNode = sumNode->createChildSceneNode();
-				postNode->setPosition(10.f, 0.f, 0.f);
-				auto scaleNode = postNode->createChildSceneNode();
-				scaleNode->setScale(sumCharHeight * sumCharAspect, sumCharHeight, 1.f);
-				auto nbNode = scaleNode->createChildSceneNode();
-				nbNode->setScale(4.f, 1.f, 1.f);
-				auto offsetNode = nbNode->createChildSceneNode();
-				offsetNode->setPosition(0.5f, 0.f, 0.f);
-				auto postTex = RectExtFactory::CreateInstance(imp_.Smgr_);
-				postTex->SetMaterial("TexChar");
-				postTex->SetUV(4 / 10.f, 8 / 10.f, 0.f, 1.f);
-				offsetNode->attachObject(postTex);
-			}
-
-			{//seg
-				auto segNode = sumNode->createChildSceneNode();
-				//segNode->setPosition(-10.f, 0.f, 0.f);
-
-				auto charScaleNode = segNode->createChildSceneNode();
-				charScaleNode->setScale(20.f, 20.f, 1.f);
-
-				auto offsetNode = charScaleNode->createChildSceneNode();
-				offsetNode->setPosition(-.5f, 0.f, 0.f);
-
-				auto n5Node = offsetNode->createChildSceneNode();
-				imp_.SumNum5_ = TexNumberFactory::CreateInstance(imp_.Smgr_);
-				n5Node->attachObject(imp_.SumNum5_);
-
-				auto n4Node = offsetNode->createChildSceneNode();
-				imp_.SumNum4_ = TexNumberFactory::CreateInstance(imp_.Smgr_);
-				n4Node->setPosition(-1.f, 0.f, 0.f);
-				n4Node->attachObject(imp_.SumNum4_);
-
-				auto n3Node = offsetNode->createChildSceneNode();
-				imp_.SumNum3_ = TexNumberFactory::CreateInstance(imp_.Smgr_);
-				n3Node->setPosition(-2.f, 0.f, 0.f);
-				n3Node->attachObject(imp_.SumNum3_);
-
-				auto sbNode = offsetNode->createChildSceneNode();
-				auto sb = RectExtFactory::CreateInstance(imp_.Smgr_);
-				sb->SetUV(9.f / 10.f, 10.f / 10.f, 0.f, 1.f);
-				sb->SetMaterial("TexChar");
-				sbNode->setPosition(-3.f, 0.f, 0.f);
-				sbNode->attachObject(sb);
-
-				auto n2Node = offsetNode->createChildSceneNode();
-				imp_.SumNum2_ = TexNumberFactory::CreateInstance(imp_.Smgr_);
-				n2Node->setPosition(-4.5f, 0.f, 0.f);
-				n2Node->attachObject(imp_.SumNum2_);
-
-				auto n1Node = offsetNode->createChildSceneNode();
-				imp_.SumNum1_ = TexNumberFactory::CreateInstance(imp_.Smgr_);
-				n1Node->setPosition(-5.5f, 0.f, 0.f);
-				n1Node->attachObject(imp_.SumNum1_);
-			}
 		}
 	}
 
@@ -968,7 +915,7 @@ IndicatorController::IndicatorController( Ogre::RenderWindow *rt ):ImpUPtr_( new
 		}
 	}
 
-	imp_.SetAge( 0 );
+	//imp_.SetAge( 0 );
 	imp_.UpdateValue( 0, 0, 0 );
 	imp_.ResultNode_->setVisible( false );
 	imp_.S_->SetMaterial( "Introduction" );
@@ -1033,7 +980,7 @@ void IndicatorController::_FrameStart( const Ogre::FrameEvent& fevt )
 
 			imp_.UpdateValue( evt->Moisture, evt->Fat, evt->Melanin );
 			imp_.SetSex( evt->Male );
-			imp_.SetAge( evt->Age );
+			//imp_.SetAge( evt->Age );
 			
 			switch ( evt->DisplayType )
 			{
@@ -1075,7 +1022,7 @@ void IndicatorController::_FrameStart( const Ogre::FrameEvent& fevt )
 		auto evt = PopFrameEvent<ClearEvt>();
 		if ( evt )
 		{
-			imp_.SetAge( 0 );
+			//imp_.SetAge( 0 );
 			imp_.UpdateValue( 0, 0, 0 );
 			imp_.ResultNode_->setVisible( false );
 			imp_.S_->SetMaterial( "Introduction" );

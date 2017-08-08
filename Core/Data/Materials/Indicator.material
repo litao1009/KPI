@@ -332,6 +332,49 @@ material H3 : Introduction
 	}
 }
 
+material H4 : Introduction
+{
+	technique
+	{
+		pass
+		{			
+			texture_unit
+			{
+				texture h4.png 2d 0
+			}
+		}
+	}
+}
+
+material H5 : Introduction
+{
+	technique
+	{
+		pass
+		{			
+			texture_unit
+			{
+				texture h5.png 2d 0
+			}
+		}
+	}
+}
+
+material H6 : Introduction
+{
+	technique
+	{
+		pass
+		{			
+			texture_unit
+			{
+				texture h6.png 2d 0
+			}
+		}
+	}
+}
+
+
 material TexNumber
 {
 	technique

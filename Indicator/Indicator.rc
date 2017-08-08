@@ -110,6 +110,10 @@ BEGIN
         MENUITEM "调整参数\tR",                     ID_MODIFY_PARAM
         MENUITEM "切换样本\tC",                     ID_SWITCH_ITEM
     END
+    POPUP "皮肤护理指导"
+    BEGIN
+        MENUITEM "查看皮肤护理指导\tZ",                 ID_SKIN_GUIDE
+    END
     POPUP "帮助(&H)"
     BEGIN
         MENUITEM "关于 Indicator(&A)...",         ID_APP_ABOUT
@@ -141,6 +145,7 @@ BEGIN
     VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
     VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
     "C",            ID_SWITCH_ITEM,         VIRTKEY, NOINVERT
+    "Z",            ID_SKIN_GUIDE,          VIRTKEY, NOINVERT
 END
 
 
@@ -190,6 +195,14 @@ BEGIN
     DEFPUSHBUTTON   "确定",IDOK,7,44,50,14
     PUSHBUTTON      "取消",IDCANCEL,61,44,50,14
     COMBOBOX        IDC_CB_ITEMLIST,7,7,103,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_DLG_SKIN_GUIDE DIALOGEX 0, 0, 417, 138
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,172,117,50,14
+    LTEXT           "Static",IDC_STATIC_CONTENT,7,7,403,89
 END
 
 
@@ -262,6 +275,14 @@ BEGIN
         RIGHTMARGIN, 110
         TOPMARGIN, 7
         BOTTOMMARGIN, 58
+    END
+
+    IDD_DLG_SKIN_GUIDE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 410
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 131
     END
 END
 #endif    // APSTUDIO_INVOKED

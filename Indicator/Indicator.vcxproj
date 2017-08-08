@@ -59,6 +59,7 @@
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)Core;$(SolutionDir)ois/includes;$(SolutionDir)ogre/OgreMain/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -86,6 +87,7 @@
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)Core;$(SolutionDir)ois/includes;$(SolutionDir)ogre/OgreMain/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -110,6 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DlgParam.h" />
+    <ClInclude Include="DlgSkinGuide.h" />
     <ClInclude Include="DlgSwitchItem.h" />
     <ClInclude Include="Indicator.h" />
     <ClInclude Include="IndicatorDoc.h" />
@@ -121,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DlgParam.cpp" />
+    <ClCompile Include="DlgSkinGuide.cpp" />
     <ClCompile Include="DlgSwitchItem.cpp" />
     <ClCompile Include="Indicator.cpp" />
     <ClCompile Include="IndicatorIDoc.cpp" />

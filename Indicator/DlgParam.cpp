@@ -1,6 +1,5 @@
 // DlgParam.cpp : 实现文件
 //
-
 #include "stdafx.h"
 #include "Indicator.h"
 #include "DlgParam.h"
@@ -275,18 +274,16 @@ void CDlgParam::OnCbnSelchangeCbSex()
 
 void CDlgParam::OnBnClickedBtnImport()
 {
-	// TODO:  在此添加控件通知处理程序代码
-	CFileDialog dlg( TRUE, 0, 0, 6UL, _T( "文件 (*.txt)|*.txt||" ) );
-
-	auto ret = dlg.DoModal();
-	if ( ret == 1 )
+	if ( ImpUPtr_->DisplayIndex_ == 0 )
 	{
-		auto fp = dlg.GetPathName();
-		std::wstring wstr = fp.GetBuffer();
-		fp.ReleaseBuffer();
-
-		if ( ImpUPtr_->DisplayIndex_ == 0 )
+		CFileDialog dlg( TRUE, 0, 0, 6UL, _T( "文件 (*.txt)|*.txt||" ) );
+		auto ret = dlg.DoModal();
+		if ( ret == 1 )
 		{
+			auto fp = dlg.GetPathName();
+			std::wstring wstr = fp.GetBuffer();
+			fp.ReleaseBuffer();
+
 			try
 			{
 				boost::filesystem::ifstream ifs( wstr );
@@ -353,8 +350,17 @@ void CDlgParam::OnBnClickedBtnImport()
 				MessageBox( _T( "格式错误！" ) );
 			}
 		}
-		else
+	}
+	else
+	{
+		CFileDialog dlg( TRUE, 0, 0, 6UL, _T( "文件 (*.csv)|*.csv||" ) );
+		auto ret = dlg.DoModal();
+		if ( ret == 1 )
 		{
+			auto fp = dlg.GetPathName();
+			std::wstring wstr = fp.GetBuffer();
+			fp.ReleaseBuffer();
+
 			try
 			{
 				boost::filesystem::ifstream ifs( wstr );
@@ -375,7 +381,14 @@ void CDlgParam::OnBnClickedBtnImport()
 						continue;
 					}
 
-					auto val = std::stoi( line );
+					std::vector<std::string> vec;
+					boost::algorithm::split( vec, line, boost::is_any_of( "," ) );
+					if ( vec.size() < 2 )
+					{
+						continue;
+					}
+
+					auto val = std::stoi( vec[1] );
 
 					int sf{}, yz{}, hss{};
 
